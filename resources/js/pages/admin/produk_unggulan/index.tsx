@@ -7,29 +7,28 @@ import { produkUnggulan } from "@/routes/admin";
 
 
 
-export default function produkUnggulans(){
+export default function ProdukUnggulans(){
     const { props } = usePage<{ produk_unggulan: any[] }>();
-    const produk_unggulan = props.produk_unggulan;
     const dummyData = [
-    {
-        id: 1,
-        name: "Smart Cat House",
-        uploader: "John Doe",
-        uploadDate: "2025-09-14",
-    },
-    {
-        id: 2,
-        name: "AI Learning Platform",
-        uploader: "Jane Smith",
-        uploadDate: "2025-09-10",
-    },
-    {
-        id: 3,
-        name: "IoT Greenhouse Monitor",
-        uploader: "Michael Chen",
-        uploadDate: "2025-09-01",
-    },
-];
+        {
+            id: 1,
+            name: "Smart Cat House",
+            uploader: "John Doe",
+            uploadDate: "2025-09-14",
+        },
+        {
+            id: 2,
+            name: "AI Learning Platform",
+            uploader: "Jane Smith",
+            uploadDate: "2025-09-10",
+        },
+        {
+            id: 3,
+            name: "IoT Greenhouse Monitor",
+            uploader: "Michael Chen",
+            uploadDate: "2025-09-01",
+        },
+    ];
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Produk Unggulan',

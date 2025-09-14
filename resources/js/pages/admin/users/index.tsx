@@ -1,4 +1,4 @@
-    import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
@@ -86,7 +86,6 @@ export const userColumns: ColumnDef<User>[] = [
             </Button>
         ),
         cell: ({ row }) => {
-            const user = row.original;
             return (
                 <div className="text-center px-2 font-medium">
                     #{row.getValue('id')}
@@ -96,8 +95,8 @@ export const userColumns: ColumnDef<User>[] = [
     },
     {
         accessorKey: 'name',
-        header: ({ column }) => (
-            <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className='text-left w-full'>
+        header: () => (
+            <Button variant="ghost" className='text-left w-full'>
                 Name
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
