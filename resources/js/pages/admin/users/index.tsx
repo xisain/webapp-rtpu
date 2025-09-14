@@ -53,6 +53,7 @@ interface User {
 interface PageProps {
     flash?: { message?: string; error?: string };
     users: User[];
+    [key: string]: unknown;
 }
 
 // User columns definition
@@ -246,22 +247,6 @@ export default function Users() {
     });
 
     // Calculate user statistics
-    const totalUsers = safeUsers.length;
-    const activeUsers = safeUsers.length; // Adjust based on your user status logic
-
-    // Prepare data for pie chart (example: users by domain)
-    const emailDomains = safeUsers.reduce((acc, user) => {
-        const domain = user.email.split('@')[1];
-        acc[domain] = (acc[domain] || 0) + 1;
-        return acc;
-    }, {} as Record<string, number>);
-
-    const pieData = Object.entries(emailDomains).map(([domain, count], index) => ({
-        name: domain,
-        value: count,
-        percentage: totalUsers > 0 ? (count / totalUsers * 100) : 0,
-        color: `hsl(${(index * 137.5) % 360}, 70%, 60%)`
-    }));
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
