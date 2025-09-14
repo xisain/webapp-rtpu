@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\produk_unggulan;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Models\role;
 
-class ProdukUnggulanController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $produk_unggulan = Produk_unggulan::all();
-        return inertia('admin/produk_unggulan/index');
+        $roles = Role::all();
+        // dd($roles);
+        return Inertia::render('admin/roles/index', [
+            'roles' => $roles,
+        ]);
+
     }
 
     /**
@@ -21,7 +26,7 @@ class ProdukUnggulanController extends Controller
      */
     public function create()
     {
-        return inertia('admin/produk_unggulan/create');
+        //
     }
 
     /**
@@ -35,7 +40,7 @@ class ProdukUnggulanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(produk_unggulan $produk_unggulan)
+    public function show(string $id)
     {
         //
     }
@@ -43,7 +48,7 @@ class ProdukUnggulanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(produk_unggulan $produk_unggulan)
+    public function edit(string $id)
     {
         //
     }
@@ -51,7 +56,7 @@ class ProdukUnggulanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, produk_unggulan $produk_unggulan)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +64,7 @@ class ProdukUnggulanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(produk_unggulan $produk_unggulan)
+    public function destroy(string $id)
     {
         //
     }
