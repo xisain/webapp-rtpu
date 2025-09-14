@@ -27,5 +27,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
+// Routing For User
+Route::get('/', function () {
+    return Inertia::render('UI-VIEW/portal');
+})->name('home');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get("portal",function(){
+        return Inertia::render('UI-VIEW/portal');
+    });
+});
+
+Route::get('detail-pu', function () {
+    return Inertia::render('\UI-VIEW\detailpu.tsx');
+})->name('detail-pu');
+
+Route::get('pu', function () {
+    return Inertia::render('\UI-VIEW\pu.tsx');
+})->name('pu');
+
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
