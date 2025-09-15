@@ -1,7 +1,7 @@
 import App from "@/actions/App";
 import AppLayout from "@/layouts/app-layout";
 import { type BreadcrumbItem } from "@/types";
-import { Head, usePage, Link } from "@inertiajs/react";
+import { Head, usePage, Link, router } from "@inertiajs/react";
 import { produkUnggulan } from "@/routes/admin";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -195,9 +195,7 @@ const produkUnggulanColumns: ColumnDef<ProdukUnggulan>[] = [
                             <AlertDialogFooter>
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                                 <AlertDialogAction
-                                    onClick={() => {
-                                        console.log('Delete produk unggulan:', produk.id);
-                                    }}
+                                    onClick={() => router.delete(`/admin/produk-unggulan/${produk.id}`)}
                                     className="bg-red-600 hover:bg-red-700 text-white"
                                 >
                                     Delete

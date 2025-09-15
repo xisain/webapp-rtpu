@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreign("user_id")->references('id')->on('users');
             $table->timestamps();
         });
-        Schema::create('produk_unggulan_gallerys', function (Blueprint $table) {
+        Schema::create('produk_unggulan_galleries', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('produk_unggulan_id');
             $table->string('image_path');

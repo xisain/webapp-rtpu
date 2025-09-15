@@ -33,17 +33,16 @@ class ProdukUnggulanController extends Controller
      */
     public function store(Request $request)
     {
-
-        // dd($request->all());
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'link_video_demo' => 'required|string|max:255',
             'link_video_pemaparan' => 'required|string|max:255',
-            'main_image'=> 'required|file|mimes:jpg,png|max:25600'
+            'main_image' => 'required|file|mimes:jpg,png,jpeg|max:25600',
+            'gallery.*' => 'file|mimes:jpg,png,jpeg|max:25600', // Validate gallery images
         ]);
 
-        // Save the uploaded image to storage and get the path
+        // Save the uploaded main image to storage and get the path
         if ($request->hasFile('main_image')) {
             $path = $request->file('main_image')->store('produk-unggulan', 'public');
             $validated['main_image'] = $path; // Save the storage path to the database
@@ -52,12 +51,22 @@ class ProdukUnggulanController extends Controller
         $validated['user_id'] = Auth::user()->id;
         $produk_unggulan = produk_unggulan::create($validated);
 
-        if($produk_unggulan) {
+        // Handle gallery images
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $galleryImage) {
+                $galleryPath = $galleryImage->store('produk-unggulan/gallery', 'public');
+                $produk_unggulan->gallery()->create([
+                    'image_path' => $galleryPath,
+                ]);
+            }
+        }
+
+        if ($produk_unggulan) {
             return redirect('/admin/produk-unggulan')
-            ->with('message', 'Task created successfully.');
+                ->with('message', 'Produk unggulan created successfully.');
         } else {
-           return redirect()->route('admin.produk-unggulan')
-            ->with('message', 'Failed');
+            return redirect()->route('admin.produk-unggulan')
+                ->with('message', 'Failed to create produk unggulan.');
         }
     }
 
@@ -97,8 +106,23 @@ class ProdukUnggulanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(produk_unggulan $produk_unggulan)
+    public function destroy($id)
     {
-        //
+        $produk_unggulan = produk_unggulan::findOrFail($id); // Find the produk unggulan by ID
+
+        // Delete associated gallery images from storage
+        foreach ($produk_unggulan->gallery as $gallery) {
+            \Storage::disk('public')->delete($gallery->image_path);
+            $gallery->delete();
+        }
+
+        // Delete the main image from storage
+        \Storage::disk('public')->delete($produk_unggulan->main_image);
+
+        // Delete the produk unggulan record
+        $produk_unggulan->delete();
+
+        return redirect('/admin/produk-unggulan')
+            ->with('message', 'Produk unggulan deleted successfully.');
     }
 }
