@@ -1,11 +1,16 @@
 <?php
 
+use App\Http\Controllers\ProdukUnggulanController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Middleware\AdminMiddleware;
+// Default Route
+// Route::get('/', function () {
+//     return Inertia::render('welcome');
+// })->name('home');
 
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return Inertia::render('UI-VIEW/portal');
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -24,13 +29,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Produk Unggulan Routing For Admin
         Route::get('produk-unggulan', [\App\Http\Controllers\ProdukUnggulanController::class, 'index'])->name('admin.produk-unggulan');
         Route::get('produk-unggulan/create', [\App\Http\Controllers\ProdukUnggulanController::class, 'create'])->name('admin.produk-unggulan.create');
+        Route::post('produk-unggulan/store', [\App\Http\Controllers\ProdukUnggulanController::class, 'store'])->name('admin.produk-unggulan.store');
     });
 });
-
-// Routing For User
-Route::get('/', function () {
-    return Inertia::render('UI-VIEW/portal');
-})->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get("portal",function(){
@@ -38,12 +39,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-Route::get('detail-pu', function () {
-    return Inertia::render('\UI-VIEW\detailpu.tsx');
-})->name('detail-pu');
+// Routing For User Guest
+Route::get('detail-produk-unggulan/{id}', [ProdukUnggulanController::class, 'show'])->name('detail-produk-unggulan');
 
 Route::get('pu', function () {
-    return Inertia::render('\UI-VIEW\pu.tsx');
+    return Inertia::render('UI-VIEW/pu');
 })->name('pu');
 
 

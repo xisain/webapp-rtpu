@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { User, ChevronLeft, ChevronRight, ExternalLink, ChevronDown } from 'lucide-react';
-
+import { pu,login } from '@/routes';
 // Types Definition
 interface Product {
   id: number;
@@ -42,7 +42,7 @@ const Header: React.FC = () => {
   ];
 
   const handleUserClick = (): void => {
-    console.log('User account clicked');
+    window.location.href = login().url;
     // Add user account logic here
   };
 
@@ -57,7 +57,7 @@ const Header: React.FC = () => {
               <span className="font-bold text-xl text-gray-800">RTPU PNJ</span>
             </div>
           </div>
-          
+
           {/* Navigation Menu */}
           <nav className="flex-1 flex justify-center space-x-8">
             {navigationItems.map((item: NavigationItem) => (
@@ -67,8 +67,8 @@ const Header: React.FC = () => {
                     <ChevronDown className="ml-1 h-4 w-4 transition-transform group-hover:rotate-180" />
                   </button>
                 ) : (
-                  <a 
-                    href={item.href} 
+                  <a
+                    href={item.href}
                     className="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal-500 after:transition-all after:duration-300 hover:after:w-full"
                   >
                     {item.label}
@@ -80,7 +80,7 @@ const Header: React.FC = () => {
 
           {/* User Account Icon */}
           <div className="flex items-center">
-            <button 
+            <button
               onClick={handleUserClick}
               className="bg-gray-100 hover:bg-teal-50 hover:text-teal-600 p-2 rounded-full transition-all duration-200 group"
               aria-label="User Account"
@@ -95,9 +95,9 @@ const Header: React.FC = () => {
 };
 
 // Hero Section Component
-const HeroSection: React.FC<HeroSectionProps> = ({ 
-  onViewInnovation, 
-  onGoToLMS 
+const HeroSection: React.FC<HeroSectionProps> = ({
+  onViewInnovation,
+  onGoToLMS
 }) => {
   const handleViewInnovation = (): void => {
     if (onViewInnovation) {
@@ -131,17 +131,17 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               </h1>
             </div>
             <p className="text-lg text-gray-600 leading-relaxed">
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry.
               Discover innovative solutions and cutting-edge technology.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button 
+              <button
                 onClick={handleViewInnovation}
                 className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 Lihat Inovasi
               </button>
-              <button 
+              <button
                 onClick={handleGoToLMS}
                 className="border-2 border-teal-500 text-teal-500 hover:bg-teal-500 hover:text-white px-8 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105"
               >
@@ -149,12 +149,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               </button>
             </div>
           </div>
-          
+
           {/* Image Section */}
           <div className="relative">
             <div className="bg-white rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
-              <img 
-                src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+              <img
+                src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
                 alt="RTPU PNJ Building"
                 className="w-full h-64 lg:h-80 object-cover"
               />
@@ -186,13 +186,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
   };
 
   return (
-    <div 
+    <div
       className="flex-none w-1/4 min-w-[280px] cursor-pointer group"
       onClick={handleCardClick}
     >
       <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
         <div className="aspect-video overflow-hidden relative">
-          <img 
+          <img
             src={product.image}
             alt={product.title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
@@ -211,14 +211,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
           <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
             {product.description}
           </p>
-          <a 
-            href={product.link}
-            onClick={handleLinkClick}
-            className="text-teal-500 hover:text-teal-600 inline-flex items-center text-sm font-medium group/link"
-          >
-            Lihat Selengkapnya
+            <a
+              href={product.link}
+              onClick={handleLinkClick}
+              className="text-teal-500 hover:text-teal-600 inline-flex items-center text-sm font-medium group/link"
+            >
+              Lihat Selengkapnya
             <ExternalLink href='localhostL8000/detail-pu' className="ml-2 h-4 w-4 group-hover/link:translate-x-1 transition-transform duration-200" />
-          </a>
+            </a>
         </div>
       </div>
     </div>
@@ -226,12 +226,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
 };
 
 // Product Gallery Component
-const ProductGallery: React.FC<ProductGalleryProps> = ({ 
-  products: propProducts, 
-  onProductClick 
+const ProductGallery: React.FC<ProductGalleryProps> = ({
+  products: propProducts,
+  onProductClick
 }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  
+
   const defaultProducts: Product[] = [
     {
       id: 1,
@@ -288,13 +288,13 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
   const maxIndex = Math.max(0, products.length - itemsPerView);
 
   const nextSlide = useCallback((): void => {
-    setCurrentIndex((prevIndex: number) => 
+    setCurrentIndex((prevIndex: number) =>
       prevIndex >= maxIndex ? 0 : prevIndex + 1
     );
   }, [maxIndex]);
 
   const prevSlide = useCallback((): void => {
-    setCurrentIndex((prevIndex: number) => 
+    setCurrentIndex((prevIndex: number) =>
       prevIndex === 0 ? maxIndex : prevIndex - 1
     );
   }, [maxIndex]);
@@ -326,8 +326,8 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
           <p className="text-lg text-gray-600 mb-4 max-w-2xl mx-auto">
             Berikut adalah produk inovatif dari RTPU yang telah dikembangkan dengan teknologi terdepan
           </p>
-          <a 
-            href="localhost:8000/detail-pu" 
+          <a
+            href={pu().url}
             className="text-teal-500 hover:text-teal-600 inline-flex items-center font-medium group"
           >
             Lihat Selengkapnya
@@ -338,7 +338,7 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
         {/* Gallery Container */}
         <div className="relative">
           {/* Navigation Buttons */}
-          <button 
+          <button
             onClick={prevSlide}
             className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-teal-50 shadow-xl rounded-full p-4 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
             disabled={currentIndex === 0}
@@ -346,8 +346,8 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
           >
             <ChevronLeft className="h-6 w-6 text-gray-600 group-hover:text-teal-600 transition-colors duration-200" />
           </button>
-          
-          <button 
+
+          <button
             onClick={nextSlide}
             className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-teal-50 shadow-xl rounded-full p-4 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
             disabled={currentIndex >= maxIndex}
@@ -358,7 +358,7 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
 
           {/* Product Cards Container */}
           <div className="overflow-hidden mx-16">
-            <div 
+            <div
               className="flex transition-transform duration-500 ease-out gap-6"
               style={{ transform: `translateX(-${currentIndex * 25}%)` }}
             >
@@ -379,8 +379,8 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  currentIndex === index 
-                    ? 'bg-teal-500 scale-125' 
+                  currentIndex === index
+                    ? 'bg-teal-500 scale-125'
                     : 'bg-gray-300 hover:bg-gray-400'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
@@ -537,14 +537,14 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <HeroSection 
+      <HeroSection
         onViewInnovation={handleViewInnovation}
         onGoToLMS={handleGoToLMS}
       />
       <ProductGallery onProductClick={handleProductClick} />
       <ResearchGallery onProductClick={handleProductClick} />
       <IndustryGallery onProductClick={handleProductClick} />
-      
+
       {/* Footer */}
       <footer className="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

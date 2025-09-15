@@ -1,10 +1,28 @@
 import React, { useState, useRef } from 'react';
 import { Play, Pause, ChevronLeft, ChevronRight } from 'lucide-react';
-
+import { detailProdukUnggulan } from '@/routes';
+import { usePage } from '@inertiajs/react';
 interface Product {
   id: number;
   name: string;
   image: string;
+}
+
+interface DetailProdukUnggulan {
+  id: number;
+  name: string;
+  description: string;
+  link_video_demo: string;
+  link_video_pemaparan: string;
+  main_image: string;
+  user: {
+    id: number;
+    name: string;
+  };
+  gallery: Array<{
+    id: number;
+    image: string;
+  }>;
 }
 
 const FigmaStyleWebsite: React.FC = () => {
@@ -13,6 +31,9 @@ const FigmaStyleWebsite: React.FC = () => {
   const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
   const videoRef1 = useRef<HTMLVideoElement>(null);
   const videoRef2 = useRef<HTMLVideoElement>(null);
+  const { props } = usePage<{ produkUnggulan: DetailProdukUnggulan }>();
+  const { produkUnggulan } = props;
+
 
   const toggleVideo1 = () => {
     if (videoRef1.current) {
@@ -92,11 +113,11 @@ const FigmaStyleWebsite: React.FC = () => {
         {/* Title Section */}
         <section className="mb-12">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            &lt; Judul Produk Unggulan&gt;
+            {produkUnggulan.name}
           </h1>
           <div className="bg-gray-200 rounded-lg p-8">
             <p className="text-gray-700 leading-relaxed">
-              Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+              {produkUnggulan.description}
             </p>
           </div>
         </section>
@@ -176,7 +197,7 @@ const FigmaStyleWebsite: React.FC = () => {
 
         {/* Bottom Section - Poster and Gallery */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Large Poster Section */}
+          {/* Large Poster/Main_image Section */}
           <div className="lg:col-span-2">
             <div className="bg-gray-200 rounded-lg p-8 h-96 flex items-center justify-center relative overflow-hidden">
               <img
@@ -186,7 +207,7 @@ const FigmaStyleWebsite: React.FC = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-lg"></div>
               <div className="absolute bottom-6 left-6 text-white">
-                <h3 className="text-2xl font-bold mb-2">Featured Campaign</h3>
+                <h3 className="text-2xl font-bold mb-2">Poster</h3>
                 <p className="text-sm opacity-90">Premium Collection 2024</p>
               </div>
             </div>

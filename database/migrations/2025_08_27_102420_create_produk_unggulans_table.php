@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('link_video_demo')->nullable(true);
             $table->string('link_video_pemaparan')->nullable(true);
             $table->string('main_image');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign("user_id")->references('id')->on('users');
             $table->timestamps();
         });
         Schema::create('produk_unggulan_gallerys', function (Blueprint $table) {
