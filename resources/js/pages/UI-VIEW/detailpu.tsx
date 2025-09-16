@@ -115,11 +115,6 @@ const FigmaStyleWebsite: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900 mb-6">
             {produkUnggulan.name}
           </h1>
-          <div className="bg-gray-200 rounded-lg p-8">
-            <p className="text-gray-700 leading-relaxed">
-              {produkUnggulan.description}
-            </p>
-          </div>
         </section>
 
         {/* Video Section */}
@@ -194,12 +189,17 @@ const FigmaStyleWebsite: React.FC = () => {
             </div>
           </div>
         </section>
-
+          <div className="bg-gray-200 rounded-lg p-8 mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Deskripsi Produk</h2>
+            <p className="text-gray-700 leading-relaxed">
+              {produkUnggulan.description}
+            </p>
+          </div>
         {/* Bottom Section - Poster and Gallery */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Large Poster/Main_image Section */}
-          <div className="lg:col-span-2">
-            <div className="bg-gray-200 rounded-lg p-8 h-96 flex items-center justify-center relative overflow-hidden">
+          <div className="lg:col-span-1">
+            <div className="bg-gray-200 rounded-lg p-8 h-200 w-135 flex items-center justify-center relative overflow-hidden">
               <img
                 src="https://images.unsplash.com/photo-1567359781514-3b964e2b04d6?w=600&h=400&fit=crop"
                 alt="Featured Poster"
@@ -215,16 +215,16 @@ const FigmaStyleWebsite: React.FC = () => {
 
           {/* Gallery Section */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-200 rounded-lg p-6 h-96">
-              <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
+            <div className="bg-gray-200 rounded-lg p-6 h-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-1 text-center">
                 Gallery
               </h3>
               <div className="space-y-4">
                 {/* Gallery Item 1 */}
-                <div className="bg-white rounded-lg p-4 h-28 flex items-center justify-center relative overflow-hidden">
+                <div className="bg-white rounded-lg p-4 h-80 flex items-center justify-center relative overflow-hidden">
                   <img
                     src={galleryProducts[currentGalleryIndex].image}
-                    alt={galleryProducts[currentGalleryIndex].name}
+                    alt={galleryProducts[currentGalleryIndex].name} 
                     className="w-full h-full object-cover rounded"
                   />
                   <div className="absolute inset-0 bg-black/20 rounded"></div>
@@ -234,7 +234,7 @@ const FigmaStyleWebsite: React.FC = () => {
                 </div>
 
                 {/* Gallery Item 2 */}
-                <div className="bg-white rounded-lg p-4 h-28 flex items-center justify-center relative overflow-hidden">
+                <div className="bg-white rounded-lg p-4 h-80 flex items-center justify-center relative overflow-hidden">
                   <img
                     src={galleryProducts[(currentGalleryIndex + 1) % galleryProducts.length].image}
                     alt={galleryProducts[(currentGalleryIndex + 1) % galleryProducts.length].name}
@@ -247,7 +247,7 @@ const FigmaStyleWebsite: React.FC = () => {
                 </div>
 
                 {/* Gallery Navigation */}
-                <div className="flex justify-center space-x-4 mt-4">
+                <div className="flex justify-center space-x-20">
                   <button
                     onClick={prevGalleryItem}
                     className="bg-white border border-gray-300 p-2 rounded-full hover:bg-gray-50 transition-all"
@@ -263,7 +263,7 @@ const FigmaStyleWebsite: React.FC = () => {
                 </div>
 
                 {/* Gallery Indicators */}
-                <div className="flex justify-center space-x-2">
+                <div className="flex justify-center space-x-2 mb-4">
                   {galleryProducts.map((_, index) => (
                     <button
                       key={index}

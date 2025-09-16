@@ -42,10 +42,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Routing For User Guest
 Route::get('detail-produk-unggulan/{id}', [ProdukUnggulanController::class, 'show'])->name('detail-produk-unggulan');
-
 Route::get('pu', function () {
     return Inertia::render('UI-VIEW/pu');
 })->name('pu');
+
 
 
 require __DIR__.'/settings.php';

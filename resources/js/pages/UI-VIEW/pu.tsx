@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Home, ChevronDown } from 'lucide-react';
+import { Link } from '@inertiajs/react';
+
 
 interface Category {
   id: number;
@@ -75,7 +77,7 @@ const App: React.FC = () => {
         
         {/* Lihat Button */}
         <button
-          onClick={() => handleCategoryClick(category)}
+          onClick={() => window.location.href = `/detail-produk-unggulan/${category.id}`}
           className="bg-transparent border-2 border-blue-400 text-blue-600 px-8 py-2 rounded-full hover:bg-blue-50 transition-colors duration-200 font-medium"
         >
           Lihat
@@ -137,15 +139,22 @@ const App: React.FC = () => {
             </p>
             
             {/* Projects Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5].map((project) => (
-                <div key={project} className="bg-gray-50 rounded-lg p-4">
+            <div className="flex flex-wrap justify-center gap-6">
+              {[1, 2, 3, 4, 5, 6].map((project) => (
+                <div key={project} className="bg-gray-50 rounded-lg p-4 w-92 h-70 flex flex-col">
                   <div className="w-full h-32 bg-gray-200 rounded mb-3"></div>
                   <h3 className="font-semibold text-gray-900">Proyek {project}</h3>
                   <p className="text-sm text-gray-600">Deskripsi singkat proyek {project}</p>
+                  <button
+                    onClick={() => window.location.href = `/detail-produk-unggulan/${project}`} 
+                    className="bg-transparent border-2 border-blue-400 text-blue-600 px-8 py-2 rounded-full hover:bg-blue-50 transition-colors duration-200 font-medium mt-4 self-end"
+                  >
+                    Lihat
+                  </button>                  
                 </div>
               ))}
             </div>
+  
 
             {/* Back Button */}
             <div className="mt-8 text-center">

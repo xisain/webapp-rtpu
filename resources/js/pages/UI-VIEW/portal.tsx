@@ -359,7 +359,7 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
           {/* Product Cards Container */}
           <div className="overflow-hidden mx-16">
             <div
-              className="flex transition-transform duration-500 ease-out gap-6"
+              className="flex transition-transform duration-500 ease-out gap-6 mb-10 mt-4"
               style={{ transform: `translateX(-${currentIndex * 25}%)` }}
             >
               {products.map((product: Product) => (
