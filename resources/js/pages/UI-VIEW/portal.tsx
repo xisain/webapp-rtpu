@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { User, ChevronLeft, ChevronRight, ExternalLink, ChevronDown } from 'lucide-react';
 import { pu,login } from '@/routes';
+import { usePage } from '@inertiajs/react';
 // Types Definition
 interface Product {
   id: number;
@@ -230,60 +231,21 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
   products: propProducts,
   onProductClick
 }) => {
+  const { props } = usePage<{ produkUnggulan: any[] }>();
+  const produkUnggulan = props.produkUnggulan;
+
+
+  const inertiaProducts: Product[] = produkUnggulan.map((pu) => ({
+    id: pu.id,
+    title: pu.name,
+    description: pu.description,
+    image: `/storage/${pu.main_image}`,       // pastikan kolom ini ada di tabel
+    link: `/detail-produk-unggulan/${pu.id}`, // contoh link detail
+    category: "Unggulan",     // bisa pakai field lain kalau ada
+  }));
+
+  const products: Product[] = propProducts || inertiaProducts;
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
-  const defaultProducts: Product[] = [
-    {
-      id: 1,
-      title: "Produk Unggulan",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Innovation"
-    },
-    {
-      id: 2,
-      title: "Teknologi AI",
-      description: "Inovasi terbaru dalam bidang artificial intelligence dan machine learning untuk masa depan yang lebih baik.",
-      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "AI/ML"
-    },
-    {
-      id: 3,
-      title: "IoT Solutions",
-      description: "Solusi Internet of Things untuk industri 4.0 dan smart city development dengan teknologi terdepan.",
-      image: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "IoT"
-    },
-    {
-      id: 4,
-      title: "Mobile Apps",
-      description: "Pengembangan aplikasi mobile yang user-friendly dan innovative untuk berbagai kebutuhan bisnis.",
-      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Mobile"
-    },
-    {
-      id: 5,
-      title: "Web Development",
-      description: "Layanan pengembangan website modern dengan teknologi terkini dan design yang responsive.",
-      image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Web"
-    },
-    {
-      id: 6,
-      title: "Blockchain Tech",
-      description: "Teknologi blockchain untuk keamanan data dan transparansi dalam berbagai aplikasi enterprise.",
-      image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Blockchain"
-    }
-  ];
-
-  const products: Product[] = propProducts || defaultProducts;
   const itemsPerView = 4;
   const maxIndex = Math.max(0, products.length - itemsPerView);
 

@@ -9,9 +9,7 @@ use App\Http\Middleware\AdminMiddleware;
 //     return Inertia::render('welcome');
 // })->name('home');
 
-Route::get('/', function () {
-    return Inertia::render('UI-VIEW/portal');
-})->name('home');
+Route::get('/', [\App\Http\Controllers\portalController::class,'index'])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {

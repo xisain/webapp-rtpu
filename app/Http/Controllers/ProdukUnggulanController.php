@@ -75,16 +75,10 @@ class ProdukUnggulanController extends Controller
      */
     public function show($id)
     {
-        $produk_unggulan = Produk_unggulan::with('user')->findOrFail($id);
+        $produk_unggulan = Produk_unggulan::with('user', 'gallery')->findOrFail($id);
         return inertia('UI-VIEW/detailpu', [
         'produkUnggulan' => $produk_unggulan,
     ]);
-    }
-    public function portalshow(){
-        $produk_unggulan = produk_unggulan::all();
-        return inertia('UI-VIEW/portal', [
-            'produkUnggulan'=> $produk_unggulan
-        ]);
     }
 
     /**
