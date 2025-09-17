@@ -19,10 +19,11 @@ class portalController extends Controller
         ]);
     }
 
-
-    public function show(string $id)
-    {
-        //
+    public function showList(){
+        $produk_unggulan = Produk_unggulan::all();
+        return Inertia::render("UI-VIEW/pu",[
+            'produkUnggulan' => $produk_unggulan,
+        ]);
     }
 
 }

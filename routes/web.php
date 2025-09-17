@@ -10,6 +10,7 @@ use App\Http\Middleware\AdminMiddleware;
 // })->name('home');
 
 Route::get('/', [\App\Http\Controllers\portalController::class,'index'])->name('home');
+Route::get('/pu', [\App\Http\Controllers\portalController::class,'showList'])->name('produk_unggulan');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
@@ -40,9 +41,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Routing For User Guest
 Route::get('detail-produk-unggulan/{id}', [ProdukUnggulanController::class, 'show'])->name('detail-produk-unggulan');
-Route::get('pu', function () {
-    return Inertia::render('UI-VIEW/pu');
-})->name('pu');
+// Route::get('pu', function () {
+//     return Inertia::render('UI-VIEW/pu');
+// })->name('pu');
 
 
 

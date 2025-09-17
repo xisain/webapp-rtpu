@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { User, ChevronLeft, ChevronRight, ExternalLink, ChevronDown } from 'lucide-react';
-import { pu,login } from '@/routes';
+import { login,produk_unggulan } from '@/routes';
 import { usePage } from '@inertiajs/react';
 // Types Definition
 interface Product {
@@ -239,9 +239,9 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
     id: pu.id,
     title: pu.name,
     description: pu.description,
-    image: `/storage/${pu.main_image}`,       // pastikan kolom ini ada di tabel
-    link: `/detail-produk-unggulan/${pu.id}`, // contoh link detail
-    category: "Unggulan",     // bisa pakai field lain kalau ada
+    image: `/storage/${pu.main_image}`,
+    link: `/detail-produk-unggulan/${pu.id}`,
+    category: "Unggulan",
   }));
 
   const products: Product[] = propProducts || inertiaProducts;
@@ -289,7 +289,7 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
             Berikut adalah produk inovatif dari RTPU yang telah dikembangkan dengan teknologi terdepan
           </p>
           <a
-            href={pu().url}
+            href={produk_unggulan().url}
             className="text-teal-500 hover:text-teal-600 inline-flex items-center font-medium group"
           >
             Lihat Selengkapnya
