@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Input } from '@/components/ui/input';
+import { useRef } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -232,6 +233,18 @@ export default function ProdukUnggulans() {
         },
     });
 
+    const debounce = (fn: Function, delay: number) => {
+    let timer: NodeJS.Timeout;
+    return (...args: any[]) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(...args), delay);
+    };
+    };
+
+    const filterRef = useRef(debounce((value: string) => {
+        table.getColumn('name')?.setFilterValue(value);
+    }, 300));
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Manage Produk Unggulan" />
@@ -265,9 +278,7 @@ export default function ProdukUnggulans() {
                                     <Input
                                         placeholder="Filter Produk Unggulan..."
                                         value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-                                        onChange={(event) =>
-                                            table.getColumn('name')?.setFilterValue(event.target.value)
-                                        }
+                                        onChange={(event) => filterRef.current(event.target.value)}
                                         className="pl-8 max-w-sm"
                                     />
                                 </div>
@@ -276,7 +287,7 @@ export default function ProdukUnggulans() {
                                     <Link href={create().url}>
                                 <Button>
                                     <CirclePlus className="mr-2 h-4 w-4" />
-                                    Add Produk Unggulan
+                                    Tambah Produk Unggulan
                                 </Button>
                                 </Link>
                             </div>

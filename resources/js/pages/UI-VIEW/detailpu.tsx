@@ -138,7 +138,7 @@ const FigmaStyleWebsite: React.FC = () => {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Large Poster/Main_image Section */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-200 rounded-lg p-8 h-96 flex items-center justify-center relative overflow-hidden">
+            <div className="bg-gray-200 rounded-lg p-8 h-180 flex items-center justify-center relative overflow-hidden">
               <img
                 src={`/storage/${produkUnggulan.main_image}`}
                 alt="Featured Poster"
@@ -154,14 +154,14 @@ const FigmaStyleWebsite: React.FC = () => {
 
           {/* Gallery Section */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-200 rounded-lg p-6 h-96">
+            <div className="bg-gray-200 rounded-lg p-6 h-180">
               <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
                 Gallery
               </h3>
               {produkUnggulan.gallery.length > 0 ? (
                 <div className="space-y-4 h-full">
                   {/* Current Gallery Item */}
-                  <div className="bg-white rounded-lg p-4 h-60 flex items-center justify-center relative overflow-hidden">
+                  <div className="bg-white rounded-lg p-4 h-68 flex items-center justify-center relative overflow-hidden">
                     <img
                       src={`/storage/${produkUnggulan.gallery[currentGalleryIndex].image_path}`}
                       alt={`Gallery ${currentGalleryIndex + 1}`}
@@ -172,6 +172,20 @@ const FigmaStyleWebsite: React.FC = () => {
                       {currentGalleryIndex + 1} / {produkUnggulan.gallery.length}
                     </div>
                   </div>
+                  {currentGalleryIndex + 1 < produkUnggulan.gallery.length && (
+                  <div className="bg-white rounded-lg p-4 h-68 flex items-center justify-center relative overflow-hidden">
+                    <img
+                      src={`/storage/${produkUnggulan.gallery[currentGalleryIndex + 1].image_path}`}
+                      alt={`Gallery ${currentGalleryIndex + 2}`}
+                      className="w-full h-full object-cover rounded"
+                    />
+                    <div className="absolute inset-0 bg-black/20 rounded"></div>
+                    <div className="absolute bottom-2 left-2 text-white text-xs bg-black/60 px-2 py-1 rounded">
+                      {currentGalleryIndex + 2} / {produkUnggulan.gallery.length}
+                    </div>
+                  </div>
+                  )}
+                  
 
                   {/* Gallery Navigation */}
                   {produkUnggulan.gallery.length > 1 && (

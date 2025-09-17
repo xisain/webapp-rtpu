@@ -209,7 +209,7 @@ export default function ProdukUnggulanCreate() {
                                 </div>
 
                                 <div className="flex flex-col gap-2 md:col-span-2">
-                                    <Label htmlFor="main_image">Gambar Utama *</Label>
+                                    <Label htmlFor="main_image">Gambar Poster (Rasio 9:16) *</Label>
                                     <Input
                                         id="main_image"
                                         type="file"
@@ -233,7 +233,7 @@ export default function ProdukUnggulanCreate() {
                             <Card>
                                 <CardHeader className="flex flex-row items-center justify-between">
                                     <div>
-                                        <CardTitle>Galeri Produk</CardTitle>
+                                        <CardTitle>Galeri Produk (Rasio 16:9) *</CardTitle>
                                         <CardDescription>
                                             Tambahkan foto-foto tambahan untuk galeri produk
                                         </CardDescription>
@@ -259,7 +259,7 @@ export default function ProdukUnggulanCreate() {
                                     ) : (
                                         <div className="space-y-4">
                                             {galleryItems.map((item, index) => (
-                                                <div key={item.id} className="flex items-start gap-4 p-4 border rounded-lg bg-gray-50">
+                                                <div key={item.id} className="flex items-start gap-4 p-4 border rounded-lg bg-black">
                                                     <div className="flex-1">
                                                         <Label htmlFor={`gallery-${item.id}`} className="font-medium">
                                                             Foto Galeri {index + 1}
@@ -274,7 +274,7 @@ export default function ProdukUnggulanCreate() {
                                                             }}
                                                             className="mt-2"
                                                         />
-                                                        <span className="text-xs text-gray-500 mt-1 block">
+                                                        <span className="text-xs text-gray-0 mt-1 block mt-3">
                                                             Format: JPEG, PNG, JPG, GIF. Maksimal 2MB
                                                         </span>
                                                     </div>
@@ -315,7 +315,7 @@ export default function ProdukUnggulanCreate() {
                                         Batal
                                     </Link>
                                 </Button>
-                                <Button type="submit" disabled={processing} className="min-w-[120px]">
+                                <Button type="submit" disabled={processing} className="min-w-[120px] bg-green-500 text-white hover:bg-green-600">
                                     {processing ? (
                                         <div className="flex items-center gap-2">
                                             <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
