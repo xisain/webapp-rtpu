@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
+import { home, produk_unggulan} from '@/routes';
 
 interface DetailProdukUnggulan {
   id: number;
@@ -46,6 +47,13 @@ const FigmaStyleWebsite: React.FC = () => {
     }
   };
 
+  const handleViewGalery = (): void => {
+  const section = document.getElementById('gallery');
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -53,12 +61,12 @@ const FigmaStyleWebsite: React.FC = () => {
         <div className="max-w-6xl mx-auto px-6 py-4">
           <nav className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 rounded"></div>
-              <span className="text-xl font-semibold text-gray-800">RTPU</span>
+              <img src="/images/logo.png" alt="Logo" className='w-10 h-10'/>
+              <span className="text-xl font-semibold text-gray-800">RTPU PNJ</span>
             </div>
             <div className="hidden md:flex space-x-8">
-              <a href="#home" className="text-gray-600 hover:text-gray-900">Home</a>
-              <a href="#gallery" className="text-gray-600 hover:text-gray-900">Galeri</a>
+              <a href= {home().url} className="text-gray-600 hover:text-gray-900">Home</a>
+              <button onClick= {handleViewGalery} className="text-gray-600 hover:text-gray-900">Galeri</button>
               <a href="#about" className="text-gray-600 hover:text-gray-900">About</a>
               <a href="#contact" className="text-gray-600 hover:text-gray-900">Contact</a>
             </div>
@@ -70,7 +78,8 @@ const FigmaStyleWebsite: React.FC = () => {
       <main className="max-w-6xl mx-auto px-6 py-8">
         {/* Title Section */}
         <section className="mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">
+          <a href= {produk_unggulan().url} className="text-gray-600 hover:text-gray-900"><ArrowLeft strokeWidth={2.25} /></a>
+          <h1 className="text-3xl font-bold text-gray-900 mb-6 mt-4">
             {produkUnggulan.name}
           </h1>
           <div className="text-sm text-gray-600">
@@ -208,7 +217,7 @@ const FigmaStyleWebsite: React.FC = () => {
 
         {/* Extended Gallery Section */}
         {produkUnggulan.gallery.length > 0 && (
-          <section className="mt-12">
+          <section className="mt-12" id="gallery">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Semua Gambar Gallery</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {produkUnggulan.gallery.map((galleryItem, index) => (
@@ -237,8 +246,8 @@ const FigmaStyleWebsite: React.FC = () => {
       <footer className="bg-gray-800 text-white py-8 mt-16">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-6 h-6 bg-blue-600 rounded"></div>
-            <span className="text-lg font-semibold">BTKU PRO</span>
+            <img src="/images/logo.png" alt="Logo" className='w-10 h-10'/>
+            <span className="text-lg font-semibold">RTPU PNJ</span>
           </div>
           <p className="text-gray-400">© 2024 BTKU PRO. All rights reserved.</p>
         </div>

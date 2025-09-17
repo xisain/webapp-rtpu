@@ -147,7 +147,7 @@ const PelatihanHeader: React.FC = () => {
 const Header: React.FC = () => {
   const navigationItems: NavigationItem[] = [
     { label: 'Home', href: '#' },
-    { label: 'Kelas', href: '#', hasDropdown: true },
+    { label: 'LMS', href: 'https://rtpu.vercel.app' },
     { label: 'About', href: '#' },
     { label: 'Contact', href: '#' }
   ];
@@ -157,13 +157,13 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-white shadow-sm border-b">
+    <header className="bg-white shadow-sm h-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 w-full">
           <div className="flex items-center">
             <div className="flex-shrink-0 flex items-center">
-              <div className="w-8 h-8 bg-gradient-to-r from-teal-400 to-teal-600 rounded mr-3"></div>
-              <span className="font-bold text-xl text-gray-800">RTPU PNJ</span>
+              <img src="/images/logo.png" alt="Logo" className='w-10 h-10'/>
+              <span className="font-bold text-xl text-gray-800 ml-2">RTPU PNJ</span>
             </div>
           </div>
 
@@ -207,12 +207,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   onViewInnovation,
   onGoToLMS
 }) => {
-  const handleViewInnovation = (): void => {
-    if (onViewInnovation) {
-      onViewInnovation();
-    }
-    console.log('View Innovation clicked');
-  };
+const handleViewInnovation = (): void => {
+  const section = document.getElementById('inovasi');
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth' });
+  }
+};
 
   const handleGoToLMS = (): void => {
     if (onGoToLMS) {
@@ -248,12 +248,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               >
                 Lihat Inovasi
               </button>
-              <button
-                onClick={handleGoToLMS}
+              <a
+                href="https://rtpu.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="border-2 border-teal-500 text-teal-500 hover:bg-teal-500 hover:text-white px-8 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105"
               >
                 Menuju LMS
-              </button>
+              </a>
             </div>
           </div>
 
@@ -321,7 +323,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
             onClick={handleLinkClick}
             className="text-teal-500 hover:text-teal-600 inline-flex items-center text-sm font-medium group/link"
           >
-            Lihat Selengkapnya
+            Lihat Selengkapnyaa
             <ExternalLink className="ml-2 h-4 w-4 group-hover/link:translate-x-1 transition-transform duration-200" />
           </a>
         </div>
@@ -495,7 +497,7 @@ const ResearchGallery: React.FC<ProductGalleryProps> = ({ onProductClick }) => {
   ];
 
   return (
-    <section className="-p-5 bg-white -mt-20">
+    <section className="-p-5 bg-white -mt-20" id="inovasi">
       <div className="text-center mb-16">
         <ProductGallery
           products={researchProducts}
@@ -525,7 +527,7 @@ const TrainingGallery: React.FC<ProductGalleryProps> = ({ onProductClick }) => {
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       link: "#",
       category: "Data Science"
-    },
+    },  
     {
       id: 21,
       title: "IoT Development Workshop",
@@ -612,8 +614,8 @@ const App: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="flex items-center justify-center mb-6">
-              <div className="w-10 h-10 bg-gradient-to-r from-teal-400 to-teal-600 rounded-lg mr-4"></div>
-              <span className="font-bold text-2xl">RTPU PNJ</span>
+              <img src="/images/logo.png" alt="Logo" className='w-10 h-10'/>
+              <span className="font-bold text-2xl ml-2">RTPU PNJ</span>
             </div>
             <p className="text-gray-400 text-lg mb-4">
               Research and Technology Transfer Unit - Politeknik Negeri Jakarta

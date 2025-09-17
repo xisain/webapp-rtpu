@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Home, ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Home, ChevronDown, ArrowLeft} from 'lucide-react';
 import { Link, usePage } from '@inertiajs/react';
+import { home } from '@/routes';
 
 interface Product {
   id: number;
@@ -69,9 +70,7 @@ const App: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
-                <span className="text-white font-bold text-sm">R</span>
-              </div>
+              <img src="/images/logo.png" alt="Logo" className='w-10 h-10'/>
               <span className="font-bold text-xl text-gray-900">RTPU PNJ</span>
             </div>
             <nav className="flex items-center space-x-6">
@@ -94,6 +93,7 @@ const App: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-12">
         {/* Title Section */}
         <div className="text-center mb-12">
+          <a href= {home().url} className="text-gray-600 hover:text-gray-900"><ArrowLeft strokeWidth={2.25} /></a>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Produk Unggulan</h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Jelajahi berbagai hasil inovasi dari dosen, mahasiswa, dan mitra RTPU PNJ
