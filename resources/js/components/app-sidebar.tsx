@@ -56,26 +56,18 @@ const footerNavItems: NavItem[] = [
 export function AppSidebar() {
     const { props } = usePage<any>();
     const userRole = props?.auth?.user?.role; // Pastikan struktur sesuai props user
-    // Menu untuk dosen
-    const dosenNavItems: NavItem[] = [
+
+    // Menu default hanya Dashboard
+    const limitedNavItems: NavItem[] = [
         {
             title: 'Dashboard',
             href: dashboard(),
             icon: LayoutGrid,
         },
-        {
-            title: 'Produk Unggulan',
-            href: produkUnggulan(),
-            icon: LayoutGrid,
-        },
-        {
-            title: 'Produk Inovasi',
-            href: dashboard(), // Ganti dengan route inovasi jika ada
-            icon: LayoutGrid,
-        },
     ];
 
-    const navItems = userRole === 'dosen' ? dosenNavItems : mainNavItems;
+    // Tentukan menu berdasarkan role
+    const navItems = userRole === 'admin' ? mainNavItems : limitedNavItems;
 
     return (
         <Sidebar collapsible="icon" variant="inset">
@@ -92,7 +84,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={navItems} />
             </SidebarContent>
 
             <SidebarFooter>
