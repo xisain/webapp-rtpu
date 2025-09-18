@@ -8,11 +8,12 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, User, Briefcase } from 'lucide-react';
 import AppLogo from './app-logo';
+import { usePage } from '@inertiajs/react'
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: dashboard(),
+        href: index(),
         icon: LayoutGrid,
     },
     {
@@ -52,6 +53,29 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { props } = usePage<any>();
+    const userRole = props?.auth?.user?.role; // Pastikan struktur sesuai props user
+    // Menu untuk dosen
+    const dosenNavItems: NavItem[] = [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+        {
+            title: 'Produk Unggulan',
+            href: produkUnggulan(),
+            icon: LayoutGrid,
+        },
+        {
+            title: 'Produk Inovasi',
+            href: dashboard(), // Ganti dengan route inovasi jika ada
+            icon: LayoutGrid,
+        },
+    ];
+
+    const navItems = userRole === 'dosen' ? dosenNavItems : mainNavItems;
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>

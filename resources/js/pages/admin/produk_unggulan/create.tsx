@@ -259,7 +259,7 @@ export default function ProdukUnggulanCreate() {
                                     ) : (
                                         <div className="space-y-4">
                                             {galleryItems.map((item, index) => (
-                                                <div key={item.id} className="flex items-start gap-4 p-4 border rounded-lg bg-black">
+                                                <div key={item.id} className="flex items-start gap-4 p-4 border rounded-lg">
                                                     <div className="flex-1">
                                                         <Label htmlFor={`gallery-${item.id}`} className="font-medium">
                                                             Foto Galeri {index + 1}
