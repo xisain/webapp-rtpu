@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\produk_inovasi;
 use Illuminate\Http\Request;
 use App\Models\produk_unggulan;
 use Inertia\Inertia;
@@ -23,6 +24,12 @@ class portalController extends Controller
         $produk_unggulan = Produk_unggulan::all();
         return Inertia::render("UI-VIEW/pu",[
             'produkUnggulan' => $produk_unggulan,
+        ]);
+    }
+    public function showPI(){
+        $produk_inovasi = produk_inovasi::all();
+        return Inertia::render('UI-VIEW.pi',[
+            'produkInovasi' => $produk_inovasi
         ]);
     }
 

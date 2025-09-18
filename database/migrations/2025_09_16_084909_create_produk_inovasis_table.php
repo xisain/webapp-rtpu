@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('produk_inovasis', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->text('description'); // Ubah ke text dan lowercase
+            $table->text('keunggulan_produk');
+            $table->string('images');
+            $table->unsignedBigInteger('user_id'); // Tambahkan kolom user_id
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        Schema::create('produk_inovasis_fitur_utama', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_fitur');
+            $table->unsignedBigInteger('produk_inovasi_id'); // Tambahkan kolom sebelum foreign key
+            $table->foreign('produk_inovasi_id')->references('id')->on('produk_inovasis')->onDelete('cascade'); // Perbaiki nama tabel
             $table->timestamps();
         });
     }
@@ -22,6 +36,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('produk_inovasis_fitur_utama'); // Drop child table first
         Schema::dropIfExists('produk_inovasis');
     }
 };

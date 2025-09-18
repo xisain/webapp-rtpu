@@ -11,6 +11,7 @@ use App\Http\Middleware\AdminMiddleware;
 
 Route::get('/', [\App\Http\Controllers\portalController::class,'index'])->name('home');
 Route::get('/pu', [\App\Http\Controllers\portalController::class,'showList'])->name('produk_unggulan');
+Route::get('/pi', [\App\Http\Controllers\portalController::class,'showPI'])->name('produk_inovasi');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
@@ -26,10 +27,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // User Routing For Admin
         Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('admin.users');
         // Produk Unggulan Routing For Admin
-        Route::get('produk-unggulan', [\App\Http\Controllers\ProdukUnggulanController::class, 'index'])->name('admin.produk-unggulan');
-        Route::get('produk-unggulan/create', [\App\Http\Controllers\ProdukUnggulanController::class, 'create'])->name('admin.produk-unggulan.create');
-        Route::post('produk-unggulan/store', [\App\Http\Controllers\ProdukUnggulanController::class, 'store'])->name('admin.produk-unggulan.store');
-        Route::delete('produk-unggulan/{id}', [\App\Http\Controllers\ProdukUnggulanController::class, 'destroy'])->name('admin.produk-unggulan.delete');
+        Route::prefix('produk-unggulan')->group(function ()
+        {
+            Route::get('/', [\App\Http\Controllers\ProdukUnggulanController::class, 'index'])->name('admin.produk-unggulan');
+            Route::get('/create', [\App\Http\Controllers\ProdukUnggulanController::class, 'create'])->name('admin.produk-unggulan.create');
+            Route::post('/store', [\App\Http\Controllers\ProdukUnggulanController::class, 'store'])->name('admin.produk-unggulan.store');
+            Route::delete('/{id}', [\App\Http\Controllers\ProdukUnggulanController::class, 'destroy'])->name('admin.produk-unggulan.delete');
+        });
+        Route::prefix('produk-inovasi')->group(function ()
+        {
+            Route::get('/', [\App\Http\Controllers\ProdukInovasiController::class, 'index'])->name('admin.produk-inovasi');
+            Route::get('/create', [\App\Http\Controllers\ProdukInovasiController::class, 'create'])->name('admin.produk-inovasi.create');
+            Route::post('/store', [\App\Http\Controllers\ProdukInovasiController::class, 'store'])->name('admin.produk-inovasi.store');
+            Route::delete('/{id}', [\App\Http\Controllers\ProdukInovasiController::class, 'destroy'])->name('admin.produk-inovasi.delete');
+
+        });
+
+
     });
 });
 
@@ -41,9 +55,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Routing For User Guest
 Route::get('detail-produk-unggulan/{id}', [ProdukUnggulanController::class, 'show'])->name('detail-produk-unggulan');
-// Route::get('pu', function () {
-//     return Inertia::render('UI-VIEW/pu');
-// })->name('pu');
+Route::get('pi', function () {
+    return Inertia::render('UI-VIEW/pi');
+})->name('pi');
+Route::get('detail-produk-inovasi', function () {
+    return Inertia::render('UI-VIEW/detailpi');
+})->name('detailpi');
 
 
 
