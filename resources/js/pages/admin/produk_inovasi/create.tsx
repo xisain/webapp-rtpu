@@ -36,6 +36,7 @@ export default function ProdukInovasiCreate() {
         description: '',
         keunggulan_produk: '',
         images: null as File | null,
+         pdf: null as File | null, // tambahin field PDF
     });
 
     const addFiturUtamaItem = () => {
@@ -75,6 +76,12 @@ export default function ProdukInovasiCreate() {
         if (data.images) {
             formData.append('images', data.images);
         }
+
+                // Add pdf if exists
+        if (data.pdf) {
+            formData.append('pdf', data.pdf);
+        }
+
 
         // Add fitur utama data
         const validFiturUtamaItems = fiturUtamaItems.filter(item =>
@@ -159,7 +166,7 @@ export default function ProdukInovasiCreate() {
                                 </div>
 
                                 <div className="flex flex-col gap-2 md:col-span-2">
-                                    <Label htmlFor="images">Gambar Produk *</Label>
+                                    <Label htmlFor="images">Gambar Produk Rasio(16:9) *</Label>
                                     <Input
                                         id="images"
                                         type="file"
@@ -175,6 +182,25 @@ export default function ProdukInovasiCreate() {
                                     </span>
                                     {errors.images && (
                                         <span className="text-red-500 text-sm">{errors.images}</span>
+                                    )}
+                                </div>
+                                <div className="flex flex-col gap-2 md:col-span-2">
+                                    <Label htmlFor="pdf">File PDF Lampiran Penelitian*</Label>
+                                    <Input
+                                        id="pdf"
+                                        type="file"
+                                        accept="application/pdf"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0] || null;
+                                            setData('pdf', file);
+                                        }}
+                                        className={errors.pdf ? "border-red-500" : ""}
+                                    />
+                                    <span className="text-sm text-gray-500">
+                                        Format: PDF. Maksimal 2MB
+                                    </span>
+                                    {errors.pdf && (
+                                        <span className="text-red-500 text-sm">{errors.pdf}</span>
                                     )}
                                 </div>
                             </div>

@@ -35,13 +35,14 @@ class ProdukInovasiController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->fitur_utama_count);
+        //dd($request->all());
         // Validasi data
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'keunggulan_produk' => 'required|string',
             'images' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'pdf' => 'nullable|mimes:pdf|max:5120', // Maksimal 5MB
             'fitur_utama' => 'sometimes|array',
             'fitur_utama.*.nama_fitur' => 'required_with:fitur_utama|string|max:255',
         ], [
@@ -63,12 +64,19 @@ class ProdukInovasiController extends Controller
                 $imagePath = $request->file('images')->store('produk-inovasi', 'public');
             }
 
+            // Upload PDF jika ada
+            $pdfPath = null;
+            if ($request->hasFile('pdf')) {
+                $pdfPath = $request->file('pdf')->store('produk-inovasi-pdf', 'public');
+            }
+
             // Simpan produk inovasi
             $produkInovasi = produk_inovasi::create([
                 'name' => $validated['name'],
                 'description' => $validated['description'],
                 'keunggulan_produk' => $validated['keunggulan_produk'],
                 'images' => $imagePath,
+                'pdf' => $pdfPath,
                 'user_id' => Auth::id(),
             ]);
 

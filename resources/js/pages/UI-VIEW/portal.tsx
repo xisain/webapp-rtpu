@@ -452,7 +452,7 @@ const ResearchGallery: React.FC<ProductGalleryProps> = ({ onProductClick }) => {
     id: pi.id,
     title: pi.name || pi.title,
     description: pi.description,
-    image: `/storage//${pi.main_image}`,
+    image: `/storage/${pi.images}`,
     link: `/detail-produk-inovasi/${pi.id}`,
     category: "Inovasi",
   }));
@@ -463,7 +463,7 @@ const ResearchGallery: React.FC<ProductGalleryProps> = ({ onProductClick }) => {
         <ProductGallery
           products={inovasiProducts}
           onProductClick={onProductClick}
-          headerComponent={<ProdukInovasiHeader />}
+          headerComponent={<ProdukInovasiHeader/>}
         />
       </div>
     </section>

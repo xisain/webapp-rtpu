@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description'); // Ubah ke text dan lowercase
             $table->text('keunggulan_produk');
             $table->string('images');
+            $table->string('pdf')->nullable(); 
             $table->unsignedBigInteger('user_id'); // Tambahkan kolom user_id
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

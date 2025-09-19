@@ -26,6 +26,7 @@ class produk_inovasi extends Model
         'description',
         'keunggulan_produk',
         'images',
+        'pdf',
         'user_id',
     ];
 
