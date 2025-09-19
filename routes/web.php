@@ -58,9 +58,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('produk-inovasi')->group(function ()
     {
         Route::get('/', [\App\Http\Controllers\ProdukInovasiController::class, 'index'])->name('dosen.produk-inovasi');
-        Route::get('/create', [\App\Http\Controllers\ProdukInovasiController::class, 'create'])->name('dosen.produk-inovasi.create');
-        Route::post('/store', [\App\Http\Controllers\ProdukInovasiController::class, 'store'])->name('dosen.produk-inovasi.store');
-        Route::delete('/{id}', [\App\Http\Controllers\ProdukInovasiController::class, 'destroy'])->name('dosen.produk-inovasi.delete');
+        Route::get('/create', [\App\Http\Controllers\ProdukInovasiController::class, 'create'])->name('dosen.produk-inovasi.dosen-create');
+        Route::post('/store', [\App\Http\Controllers\ProdukInovasiController::class, 'store'])->name('dosen.produk-inovasi.dosen-store');
+        Route::delete('/{id}', [\App\Http\Controllers\ProdukInovasiController::class, 'destroy'])->name('dosen.produk-inovasi.dosen-delete');
 
     });
     });

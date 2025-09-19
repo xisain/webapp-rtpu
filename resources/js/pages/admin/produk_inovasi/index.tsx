@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { useRef } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
+
 import {
     ColumnDef,
     flexRender,
@@ -42,12 +43,21 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { dosenCreate } from "@/routes/dosen/produk-inovasi";
 import { create } from "@/routes/admin/produk-inovasi";
+
 
 interface FiturUtama {
     id: number;
     nama_fitur: string;
     produk_inovasi_id: number;
+}
+interface User {
+    id: number,
+    name: string,
+    role: [
+        name:string
+    ]
 }
 
 interface ProdukInovasi {
@@ -67,8 +77,10 @@ interface ProdukInovasi {
 interface PageProps {
     flash?: { message?: string; error?: string };
     produkInovasi: ProdukInovasi[];
+    user : User;
     [key: string]: unknown;
 }
+
 
 const produkInovasiColumns: ColumnDef<ProdukInovasi>[] = [
     {
@@ -261,8 +273,9 @@ const produkInovasiColumns: ColumnDef<ProdukInovasi>[] = [
 
 export default function ProdukInovasiIndex() {
     const { props } = usePage<PageProps>();
-    const { produkInovasi, flash } = props;
-
+    const { produkInovasi, flash, user} = props;
+    // console.log(user.role.id)
+   const link = user?.role?.id === 1 ? create().url : dosenCreate().url;
     const safeProdukInovasi = Array.isArray(produkInovasi) ? produkInovasi.map((item) => ({
         ...item,
         created_at: new Date(item.created_at), // Ensure created_at is a Date object
@@ -383,7 +396,7 @@ export default function ProdukInovasiIndex() {
                             </div>
 
                             <div className="flex items-center gap-2">
-                                <Link href={create().url}>
+                                <Link href={link}>
                                     <Button>
                                         <CirclePlus className="mr-2 h-4 w-4" />
                                         Tambah Produk Inovasi

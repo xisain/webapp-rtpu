@@ -16,9 +16,11 @@ class ProdukInovasiController extends Controller
      */
     public function index()
     {
-        $produk_inovasi = Produk_inovasi::with('user')->get();
+      $produk_inovasi = Produk_inovasi::with('user')->get();
+        $user = Auth::user();
         return inertia("admin/produk_inovasi/index",[
             'produkInovasi' => $produk_inovasi,
+            'user'=> $user,
         ]);
     }
 
