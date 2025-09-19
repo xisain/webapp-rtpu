@@ -4,6 +4,7 @@ use App\Http\Controllers\ProdukUnggulanController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\DosenMiddleware;
 // Default Route
 // Route::get('/', function () {
 //     return Inertia::render('welcome');
@@ -44,6 +45,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
 
+    });
+    Route::prefix('dosen')->middleware(DosenMiddleware::class)->group(function () {
+        Route::prefix('produk-unggulan')->group(function ()
+    {
+        Route::get('/', [\App\Http\Controllers\ProdukUnggulanController::class, 'index'])->name('dosen.produk-unggulan');
+        Route::get('/create', [\App\Http\Controllers\ProdukUnggulanController::class, 'create'])->name('dosen.produk-unggulan.create');
+        Route::post('/store', [\App\Http\Controllers\ProdukUnggulanController::class, 'store'])->name('dosen.produk-unggulan.store');
+        Route::delete('/{id}', [\App\Http\Controllers\ProdukUnggulanController::class, 'destroy'])->name('dosen.produk-unggulan.delete');
+    });
+    Route::prefix('produk-inovasi')->group(function ()
+    {
+        Route::get('/', [\App\Http\Controllers\ProdukInovasiController::class, 'index'])->name('dosen.produk-inovasi');
+        Route::get('/create', [\App\Http\Controllers\ProdukInovasiController::class, 'create'])->name('dosen.produk-inovasi.create');
+        Route::post('/store', [\App\Http\Controllers\ProdukInovasiController::class, 'store'])->name('dosen.produk-inovasi.store');
+        Route::delete('/{id}', [\App\Http\Controllers\ProdukInovasiController::class, 'destroy'])->name('dosen.produk-inovasi.delete');
+
+    });
     });
 });
 

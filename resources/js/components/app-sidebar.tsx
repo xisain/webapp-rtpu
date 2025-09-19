@@ -3,15 +3,14 @@ import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { index,roles,users,produkUnggulan, produkInovasi } from '@/routes/admin/';
+import { index, roles, users, produkUnggulan, produkInovasi } from '@/routes/admin/';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, User, Briefcase } from 'lucide-react';
 import AppLogo from './app-logo';
-import { usePage } from '@inertiajs/react'
+import dosen from '@/routes/dosen';
 
-
-const mainNavItems: NavItem[] = [
+const adminNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: index(),
@@ -37,7 +36,24 @@ const mainNavItems: NavItem[] = [
         href: produkInovasi(),
         icon: LayoutGrid,
     },
+];
 
+const dosenNavItems: NavItem[] = [
+    {
+        title: 'Dashboard',
+        href: dashboard(),
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Produk Unggulan',
+        href: dosen.produkUnggulan(),
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Produk Inovasi',
+        href: dosen.produkInovasi(),
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
@@ -53,21 +69,37 @@ const footerNavItems: NavItem[] = [
     },
 ];
 
+function getNavItemsForRole(role: string): NavItem[] {
+    switch (role.toLowerCase()) {
+        case 'admin':
+            return adminNavItems;
+        case 'dosen':
+            return dosenNavItems;
+        default:
+            return [
+                {
+                    title: 'Dashboard',
+                    href: dashboard(),
+                    icon: LayoutGrid,
+                },
+            ];
+    }
+}
+
 export function AppSidebar() {
-    const { props } = usePage<any>();
-    const userRole = props?.auth?.user?.role; // Pastikan struktur sesuai props user
+    const { auth } = usePage().props as {
+        auth: {
+            user: {
+                id: number;
+                name: string;
+                email: string;
+                role: string;
+            } | null
+        }
+    };
 
-    // Menu default hanya Dashboard
-    const limitedNavItems: NavItem[] = [
-        {
-            title: 'Dashboard',
-            href: dashboard(),
-            icon: LayoutGrid,
-        },
-    ];
-
-    // Tentukan menu berdasarkan role
-    const navItems = userRole === 'admin' ? mainNavItems : limitedNavItems;
+    // Get navigation items based on user role
+    const navItems = auth.user ? getNavItemsForRole(auth.user.role) : [];
 
     return (
         <Sidebar collapsible="icon" variant="inset">

@@ -445,62 +445,23 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
 
 // Research Gallery Component
 const ResearchGallery: React.FC<ProductGalleryProps> = ({ onProductClick }) => {
-  const researchProducts: Product[] = [
-    {
-      id: 7,
-      title: "Smart Campus System",
-      description: "Sistem manajemen kampus pintar dengan integrasi IoT untuk monitoring dan kontrol fasilitas kampus secara real-time.",
-      image: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Research"
-    },
-    {
-      id: 8,
-      title: "Renewable Energy Monitor",
-      description: "Platform monitoring energi terbarukan untuk optimalisasi penggunaan solar panel dan sistem pembangkit listrik alternatif.",
-      image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Green Tech"
-    },
-    {
-      id: 9,
-      title: "Digital Library System",
-      description: "Sistem perpustakaan digital dengan AI recommendation dan advanced search untuk meningkatkan akses informasi akademik.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Education"
-    },
-    {
-      id: 10,
-      title: "Lab Equipment IoT",
-      description: "Sistem monitoring peralatan laboratorium berbasis IoT untuk maintenance predictive dan safety monitoring.",
-      image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Laboratory"
-    },
-    {
-      id: 11,
-      title: "Student Portal 2.0",
-      description: "Portal mahasiswa generasi baru dengan fitur lengkap untuk academic planning, career guidance, dan social networking.",
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Student Life"
-    },
-    {
-      id: 12,
-      title: "AR/VR Learning Lab",
-      description: "Platform pembelajaran immersive menggunakan teknologi Augmented Reality dan Virtual Reality untuk pengalaman belajar yang interaktif.",
-      image: "https://images.unsplash.com/photo-1592478411213-6153e4ebc696?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "AR/VR"
-    }
-  ];
+  const { props } = usePage<PageProps>();
+  const produkInovasi = props.produkInovasi || [];
+
+  const inovasiProducts: Product[] = produkInovasi.map((pi) => ({
+    id: pi.id,
+    title: pi.name || pi.title,
+    description: pi.description,
+    image: `/storage//${pi.main_image}`,
+    link: `/detail-produk-inovasi/${pi.id}`,
+    category: "Inovasi",
+  }));
 
   return (
     <section className="-p-5 bg-white -mt-20" id="inovasi">
       <div className="text-center mb-16">
         <ProductGallery
-          products={researchProducts}
+          products={inovasiProducts}
           onProductClick={onProductClick}
           headerComponent={<ProdukInovasiHeader />}
         />
@@ -527,7 +488,7 @@ const TrainingGallery: React.FC<ProductGalleryProps> = ({ onProductClick }) => {
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       link: "#",
       category: "Data Science"
-    },  
+    },
     {
       id: 21,
       title: "IoT Development Workshop",

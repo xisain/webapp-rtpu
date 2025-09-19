@@ -33,13 +33,14 @@ class ProdukUnggulanController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'link_video_demo' => 'required|string|max:255',
             'link_video_pemaparan' => 'required|string|max:255',
-            'main_image' => 'required|file|mimes:jpg,png,jpeg|max:25600',
-            'gallery.*' => 'file|mimes:jpg,png,jpeg|max:25600', // Validate gallery images
+            'main_image' => 'required|file|mimes:jpg,png,jpeg|max:256000',
+            'gallery.*' => 'file|mimes:jpg,png,jpeg|max:256000', // Validate gallery images
         ]);
 
         // Save the uploaded main image to storage and get the path

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('produk_inovasis_fitur_utama', function (Blueprint $table) {
+        Schema::create('produk_inovasis_fitur_utamas', function (Blueprint $table) {
             $table->id();
             $table->string('nama_fitur');
             $table->unsignedBigInteger('produk_inovasi_id'); // Tambahkan kolom sebelum foreign key

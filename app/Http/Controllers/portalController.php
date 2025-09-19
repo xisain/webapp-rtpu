@@ -15,8 +15,10 @@ class portalController extends Controller
     public function index()
     {
         $produk_unggulan = Produk_unggulan::all();
+        $produk_inovasi = Produk_inovasi::all();
         return Inertia::render("UI-VIEW/portal",[
             'produkUnggulan' => $produk_unggulan,
+            'produkInovasi' => $produk_inovasi
         ]);
     }
 

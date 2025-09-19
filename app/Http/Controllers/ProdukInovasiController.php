@@ -8,6 +8,7 @@ use App\Models\produk_inovasi_fitur_utama;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
 class ProdukInovasiController extends Controller
 {
     /**
@@ -15,7 +16,7 @@ class ProdukInovasiController extends Controller
      */
     public function index()
     {
-        $produk_inovasi = Produk_inovasi::all();
+        $produk_inovasi = Produk_inovasi::with('user')->get();
         return inertia("admin/produk_inovasi/index",[
             'produkInovasi' => $produk_inovasi,
         ]);
@@ -82,7 +83,7 @@ class ProdukInovasiController extends Controller
                 }
             }
 
-            return redirect()->route('admin.produk-inovasi')
+            return redirect(route('admin.produk-inovasi'))
                 ->with('success', 'Produk inovasi berhasil ditambahkan');
 
         } catch (\Exception $e) {
