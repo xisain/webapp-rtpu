@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('produk_inovasis_fitur_utamas', function (Blueprint $table) {
+        Schema::create('produk_inovasi_fitur_utamas', function (Blueprint $table) {
             $table->id();
             $table->string('nama_fitur');
             $table->unsignedBigInteger('produk_inovasi_id'); // Tambahkan kolom sebelum foreign key
@@ -36,7 +36,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('produk_inovasis_fitur_utama'); // Drop child table first
+        Schema::dropIfExists('produk_inovasi_fitur_utamas'); // Drop child table first
         Schema::dropIfExists('produk_inovasis');
     }
 };

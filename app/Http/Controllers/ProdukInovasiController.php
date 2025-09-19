@@ -35,6 +35,7 @@ class ProdukInovasiController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->fitur_utama_count);
         // Validasi data
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -72,13 +73,15 @@ class ProdukInovasiController extends Controller
             ]);
 
             // Simpan fitur utama jika ada
-            if (isset($validated['fitur_utama']) && is_array($validated['fitur_utama'])) {
+            if ($request->fitur_utama_count > 0) {
+                // dd($validated['fitur_utama']);
                 foreach ($validated['fitur_utama'] as $fitur) {
                     if (!empty($fitur['nama_fitur'])) {
                         produk_inovasi_fitur_utama::create([
                             'produk_inovasi_id' => $produkInovasi->id,
                             'nama_fitur' => $fitur['nama_fitur'],
                         ]);
+
                     }
                 }
             }
@@ -100,9 +103,12 @@ class ProdukInovasiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(produk_inovasi $produk_inovasi)
+    public function show($id)
     {
-        //
+        $produk_inovasi = produk_inovasi::with('user', 'fiturUtama')->findOrFail($id);
+        return inertia('UI-VIEW/detailpi', [
+        'produkInovasi' => $produk_inovasi,
+    ]);
     }
 
     /**

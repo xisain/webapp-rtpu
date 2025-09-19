@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProdukUnggulanController;
+use App\Http\Controllers\ProdukInovasiController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Middleware\AdminMiddleware;
@@ -76,9 +77,7 @@ Route::get('detail-produk-unggulan/{id}', [ProdukUnggulanController::class, 'sho
 Route::get('pi', function () {
     return Inertia::render('UI-VIEW/pi');
 })->name('pi');
-Route::get('detail-produk-inovasi', function () {
-    return Inertia::render('UI-VIEW/detailpi');
-})->name('detailpi');
+Route::get('detail-produk-inovasi/{id}', [ProdukInovasiController::class, 'show'])->name('detail-produk-inovasi');
 
 
 
