@@ -55,6 +55,7 @@ class ProdukInovasiController extends Controller
             'images.required' => 'Gambar produk harus diupload',
             'images.image' => 'File harus berupa gambar',
             'images.mimes' => 'Format gambar harus: jpeg, png, jpg, atau gif',
+            'pdf' => 'Maksimal 5MB', // Maksimal 5MB
             'images.max' => 'Ukuran gambar maksimal 2MB',
             'fitur_utama.*.nama_fitur.required_with' => 'Nama fitur harus diisi',
         ]);
