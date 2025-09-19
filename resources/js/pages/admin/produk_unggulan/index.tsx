@@ -43,6 +43,22 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { create } from "@/routes/admin/produk-unggulan";
+import  dosenCreate  from "@/routes/dosen/produk-unggulan";
+
+
+interface gallery{
+    id: number;
+    produk_unggulan_id: number;
+    image_path: string; 
+}
+
+interface User {
+    id: number,
+    name: string,
+    role: [
+        name:string
+    ]
+}
 
 interface ProdukUnggulan {
     id: number;
@@ -61,6 +77,7 @@ interface ProdukUnggulan {
 interface PageProps {
     flash?: { message?: string; error?: string };
     produkunggulan: ProdukUnggulan[];
+    user : User;
     [key: string]: unknown;
 }
 
@@ -195,8 +212,9 @@ const produkUnggulanColumns: ColumnDef<ProdukUnggulan>[] = [
 
 export default function ProdukUnggulans() {
     const { props } = usePage<PageProps>();
-    const { produkunggulan, flash } = props;
+    const { produkunggulan, flash, user} = props;
 
+    const link = user?.role?.id === 1 ? create().url : dosenCreate().url;
     const safeProdukUnggulan = Array.isArray(produkunggulan) ? produkunggulan.map((item) => ({
         ...item,
         created_at: new Date(item.created_at), // Ensure created_at is a Date object
@@ -284,7 +302,7 @@ export default function ProdukUnggulans() {
                                 </div>
                             </div>
                             <div className="flex items-center gap-2">
-                                    <Link href={create().url}>
+                                <Link href={link}>
                                 <Button>
                                     <CirclePlus className="mr-2 h-4 w-4" />
                                     Tambah Produk Unggulan
