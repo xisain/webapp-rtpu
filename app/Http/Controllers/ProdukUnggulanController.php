@@ -13,12 +13,21 @@ class ProdukUnggulanController extends Controller
      */
     public function index()
     {
+        if(Auth::user()->role_id == 1) {
         $produk_unggulan = Produk_unggulan::with('user')->get(); // Eager load the user relationship
         $user = Auth::user();
         return inertia('admin/produk_unggulan/index', [
         'produkunggulan' => $produk_unggulan,
         'user'=> $user
     ]);
+    } else {
+         $produk_unggulan = Produk_unggulan::with('user')->where('user_id', Auth::user()->id)->get(); // Eager load the user relationship
+        $user = Auth::user();
+        return inertia('admin/produk_unggulan/index', [
+        'produkunggulan' => $produk_unggulan,
+        'user'=> $user
+    ]);
+    }
     }
 
     /**

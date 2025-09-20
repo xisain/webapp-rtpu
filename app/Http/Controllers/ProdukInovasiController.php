@@ -16,12 +16,22 @@ class ProdukInovasiController extends Controller
      */
     public function index()
     {
-      $produk_inovasi = Produk_inovasi::with('user')->get();
+        if(Auth::user()->role_id == 1)  {
+        $produk_inovasi = Produk_inovasi::with('user')->get();
         $user = Auth::user();
         return inertia("admin/produk_inovasi/index",[
             'produkInovasi' => $produk_inovasi,
             'user'=> $user,
         ]);
+        } else {
+        $produk_inovasi = Produk_inovasi::with('user')->where('user_id', Auth::user()->id)->get();
+        $user = Auth::user();
+        return inertia("admin/produk_inovasi/index",[
+            'produkInovasi' => $produk_inovasi,
+            'user'=> $user,
+        ]);
+        }
+
     }
 
     /**
