@@ -43,13 +43,13 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { create } from "@/routes/admin/produk-unggulan";
-import  dosenCreate  from "@/routes/dosen/produk-unggulan";
+import { dosenCreate } from "@/routes/dosen/produk-unggulan";
 
 
 interface gallery{
     id: number;
     produk_unggulan_id: number;
-    image_path: string; 
+    image_path: string;
 }
 
 interface User {
@@ -213,8 +213,10 @@ const produkUnggulanColumns: ColumnDef<ProdukUnggulan>[] = [
 export default function ProdukUnggulans() {
     const { props } = usePage<PageProps>();
     const { produkunggulan, flash, user} = props;
+    console.log(user?.role?.id)
 
     const link = user?.role?.id === 1 ? create().url : dosenCreate().url;
+
     const safeProdukUnggulan = Array.isArray(produkunggulan) ? produkunggulan.map((item) => ({
         ...item,
         created_at: new Date(item.created_at), // Ensure created_at is a Date object

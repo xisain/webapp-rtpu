@@ -75,7 +75,7 @@ interface ProdukInovasi {
     created_at: Date;
 }
 
-interface PageProps {
+export interface PageProps {
     flash?: { message?: string; error?: string };
     produkInovasi: ProdukInovasi[];
     user : User;

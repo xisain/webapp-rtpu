@@ -3,7 +3,7 @@ import AppLayout from "@/layouts/app-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from "@/components/ui/button";
 import { type BreadcrumbItem } from "@/types";
-import { Link, useForm, router } from "@inertiajs/react";
+import { Link, useForm, router, usePage } from "@inertiajs/react";
 import { CirclePlus, Trash2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -29,10 +29,20 @@ interface GalleryItem {
     preview: string | null;
     name: string;
 }
-
+interface User {
+    role:[
+        id:number,
+    ]
+}
+export interface PageProps {
+ user : User;
+}
 export default function ProdukUnggulanCreate() {
+    const { props } = usePage<PageProps>();
+    const {user} = props
     const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
     const [nextId, setNextId] = useState(1);
+    console.log(user?.role?.id)
 
     const { data, setData, post, processing, errors, clearErrors } = useForm({
         name: '',
@@ -108,23 +118,25 @@ export default function ProdukUnggulanCreate() {
         formData.append('gallery_count', validGalleryItems.length.toString());
 
         // Use router.post for better control over FormData
-        router.post('/admin/produk-unggulan/store', formData, {
-            onSuccess: () => {
-                // Clean up preview URLs
-                galleryItems.forEach(item => {
-                    if (item.preview) {
-                        URL.revokeObjectURL(item.preview);
-                    }
-                });
-                // Redirect will be handled by Laravel
-            },
-            onError: (errors) => {
-                console.error('Validation errors:', errors);
-                // Errors will be handled by Inertia and displayed in form
-            },
-            forceFormData: true,
-            preserveScroll: true,
-        });
+        const url =
+        user?.role?.id === 1
+            ? '/admin/produk-unggulan/store'
+            : '/dosen/produk-unggulan/store';
+
+    router.post(url, formData, {
+        onSuccess: () => {
+            galleryItems.forEach(item => {
+                if (item.preview) {
+                    URL.revokeObjectURL(item.preview);
+                }
+            });
+        },
+        onError: (errors) => {
+            console.error('Validation errors:', errors);
+        },
+        forceFormData: true,
+        preserveScroll: true,
+    });
     };
 
     // Cleanup preview URLs on component unmount

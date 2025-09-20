@@ -14,9 +14,10 @@ class ProdukUnggulanController extends Controller
     public function index()
     {
         $produk_unggulan = Produk_unggulan::with('user')->get(); // Eager load the user relationship
-
+        $user = Auth::user();
         return inertia('admin/produk_unggulan/index', [
         'produkunggulan' => $produk_unggulan,
+        'user'=> $user
     ]);
     }
 
@@ -25,7 +26,10 @@ class ProdukUnggulanController extends Controller
      */
     public function create()
     {
-        return inertia('admin/produk_unggulan/create');
+        $user = Auth::user();
+        return inertia('admin/produk_unggulan/create',[
+             'user'=> $user
+        ]);
     }
 
     /**
@@ -63,12 +67,23 @@ class ProdukUnggulanController extends Controller
         }
 
         if ($produk_unggulan) {
+        // Redirect sesuai role
+        if (Auth::user()->role_id === 1) {
             return redirect('/admin/produk-unggulan')
                 ->with('message', 'Produk unggulan created successfully.');
         } else {
+            return redirect('/dosen/produk-unggulan')
+                ->with('message', 'Produk unggulan created successfully.');
+        }
+    } else {
+        if (Auth::user()->role_id === 1) {
             return redirect()->route('admin.produk-unggulan')
                 ->with('message', 'Failed to create produk unggulan.');
+        } else {
+            return redirect()->route('dosen.produk-unggulan')
+                ->with('message', 'Failed to create produk unggulan.');
         }
+    }
     }
 
     /**
@@ -82,7 +97,8 @@ class ProdukUnggulanController extends Controller
     ]);
     }
 
-    /**
+    /**error when starting dev server:
+[vite] Error: Error generating types: Error: Command failed: php artisan wayfinder:generate --with-form
      * Show the form for editing the specified resource.
      */
     public function edit(produk_unggulan $produk_unggulan)
