@@ -22,7 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Routing For Admin
     Route::prefix('admin')->middleware(['auth',AdminMiddleware::class ])->group(function ()
     {
-        Route::get('/', [\App\Http\Controllers\PortalController::class, 'adminpanel'])->name('admin.index');
+        Route::get('/', [\App\Http\Controllers\portalController::class, 'adminpanel'])->name('admin.index');
         Route::get('roles', [\App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles');
         // User Routing For Admin
         Route::prefix('users')->group(function (){
