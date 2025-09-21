@@ -106,8 +106,7 @@ class ProdukUnggulanController extends Controller
     ]);
     }
 
-    /**error when starting dev server:
-[vite] Error: Error generating types: Error: Command failed: php artisan wayfinder:generate --with-form
+    /**\
      * Show the form for editing the specified resource.
      */
     public function edit(produk_unggulan $produk_unggulan)

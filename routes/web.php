@@ -20,7 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
     // Routing For Admin
-    Route::prefix('admin')->middleware(['auth',AdminMiddleware::class ])->group(function ()
+    Route::prefix('admin')->middleware([AdminMiddleware::class ])->group(function ()
     {
         Route::get('/', [\App\Http\Controllers\portalController::class, 'adminpanel'])->name('admin.index');
         Route::get('roles', [\App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles');

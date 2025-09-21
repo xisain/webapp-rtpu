@@ -42,7 +42,7 @@ export default function ProdukUnggulanCreate() {
     const {user} = props
     const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
     const [nextId, setNextId] = useState(1);
-    console.log(user?.role?.id)
+    // console.log(user?.role?.id)
 
     const { data, setData, post, processing, errors, clearErrors } = useForm({
         name: '',

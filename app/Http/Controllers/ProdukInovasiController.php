@@ -169,8 +169,16 @@ class ProdukInovasiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(produk_inovasi $produk_inovasi)
+    public function destroy($id)
     {
-        //
+        $produk_inovasi = produk_inovasi::findOrfail($id);
+        $nama = $produk_inovasi->name;
+        foreach($produk_inovasi->fiturUtama as $fitur){
+            $fitur->delete();
+        }
+        $produk_inovasi->delete();
+        return redirect('/admin/produk-inovasi')
+            ->with('message', "Produk inovasi {$nama} deleted successfully.");
+
     }
 }

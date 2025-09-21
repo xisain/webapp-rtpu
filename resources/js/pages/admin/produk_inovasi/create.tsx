@@ -40,7 +40,7 @@ export default function ProdukInovasiCreate() {
     const { user } = props
     const [fiturUtamaItems, setFiturUtamaItems] = useState<FiturUtamaItem[]>([]);
     const [nextId, setNextId] = useState(1);
-    console.log(user?.role?.id)
+
 
     const { data, setData, post, processing, errors, clearErrors } = useForm({
         name: '',

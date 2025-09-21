@@ -213,7 +213,7 @@ const produkUnggulanColumns: ColumnDef<ProdukUnggulan>[] = [
 export default function ProdukUnggulans() {
     const { props } = usePage<PageProps>();
     const { produkunggulan, flash, user} = props;
-    console.log(user?.role?.id)
+    // console.log(user?.role?.id)
 
     const link = user?.role?.id === 1 ? create().url : dosenCreate().url;
 
