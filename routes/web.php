@@ -22,12 +22,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Routing For Admin
     Route::prefix('admin')->middleware(['auth',AdminMiddleware::class ])->group(function ()
     {
-        Route::get('/', function () {
-            return Inertia::render('admin/admindashboard');
-        })->name('admin.index');
+        Route::get('/', [\App\Http\Controllers\PortalController::class, 'adminpanel'])->name('admin.index');
         Route::get('roles', [\App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles');
         // User Routing For Admin
-        Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('admin.users');
+        Route::prefix('users')->group(function (){
+            Route::get('/', [\App\Http\Controllers\UserController::class, 'index'])->name('admin.users');
+            Route::get('create', [\App\Http\Controllers\UserController::class, 'create'])->name('admin.create-users');
+            Route::get('/edit/{id}', [\App\Http\Controllers\UserController::class, 'edit'])->name('admin.edit-users');
+            Route::post('/',[\App\Http\Controllers\UserController::class, 'store'])->name('admin.store-users');
+            Route::delete('/delete/{id}',[\App\Http\Controllers\UserController::class, 'destroy'])->name('admin.destroy-users');
+
+        });
         // Produk Unggulan Routing For Admin
         Route::prefix('produk-unggulan')->group(function ()
         {

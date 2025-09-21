@@ -40,6 +40,7 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { createUsers } from '@/routes/admin';
 
 interface User {
     id: number;
@@ -140,9 +141,7 @@ export const userColumns: ColumnDef<User>[] = [
             const roleName = row.getValue<string>('role_name');
             return (
                 <div className="text-center px-2">
-                    <Badge variant="outline" className="bg-blue-50 text-blue-800 border-blue-200">
                     {roleName || 'No Role'}
-                    </Badge>
                 </div>
             );
         },
@@ -190,8 +189,9 @@ export const userColumns: ColumnDef<User>[] = [
                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                                 <AlertDialogAction
                                     onClick={() => {
-                                        // Add your delete logic here
-                                        console.log('Delete user:', user.id);
+                                    router.delete(`users/delete/${user.id}`, {
+                                     preserveScroll: true,
+                                    });
                                     }}
                                     className="bg-red-600 hover:bg-red-700 text-white"
                                 >
@@ -221,7 +221,7 @@ export default function Users() {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
-            title: 'Users',
+            title: 'Pengguna',
             href: '#',
         },
     ];
@@ -316,10 +316,12 @@ export default function Users() {
                                 </DropdownMenu>
                             </div>
                             <div className="flex items-center gap-2">
+                                <Link href={createUsers().url}>
                                 <Button>
                                     <CirclePlus className="mr-2 h-4 w-4" />
                                     Add User
                                 </Button>
+                                </Link>
                             </div>
                         </div>
                         <div className="rounded-md border">
