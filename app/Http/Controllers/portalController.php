@@ -8,6 +8,7 @@ use App\Models\produk_unggulan;
 use Inertia\Inertia;
 use App\Models\role;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class portalController extends Controller
 {
@@ -35,6 +36,16 @@ class portalController extends Controller
         return Inertia::render('UI-VIEW/pi',[
             'produkInovasi' => $produk_inovasi
         ]);
+    }
+    public function dashboard(){
+        $user = Auth::user();
+        if($user->role_id == 1){
+            return redirect(route('admin.index'));
+        } else if($user->role_id == 2) {
+            return redirect(route('dosendashboard'));
+        } else {
+            return redirect(route('/'));
+        }
     }
     public function adminpanel()
     {

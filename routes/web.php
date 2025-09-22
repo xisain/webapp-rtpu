@@ -19,7 +19,7 @@ Route::get('detail-produk-inovasi/{id}', [ProdukInovasiController::class, 'show'
 Route::get('/produk-inovasi/pdf/{filename}', [ProdukInovasiController::class, 'downloadPdf'])->name('produk-inovasi.pdf');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
+    Route::get('dashboard', [\App\Http\Controllers\portalController::class,'dashboard'])->name('dashboard');
     // Routing For Admin
     Route::prefix('admin')->middleware([AdminMiddleware::class ])->group(function ()
     {
@@ -58,7 +58,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     });
     Route::prefix('dosen')->middleware(DosenMiddleware::class)->group(function () {
-        Route::get('/', function () { return Inertia::render('dashboard');})->name('dashboard');
+        Route::get('/', function() {return Inertia::render('dashboard');})->name('dosendashboard');
         Route::prefix('produk-unggulan')->group(function ()
     {
         Route::get('/', [\App\Http\Controllers\ProdukUnggulanController::class, 'index'])->name('dosen.produk-unggulan');
