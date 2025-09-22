@@ -220,7 +220,7 @@ const produkInovasiColumns: ColumnDef<ProdukInovasi>[] = [
                         variant="outline"
                         size="sm"
                         className="hover:bg-blue-50 dark:hover:bg-blue-900/20 border-gray-300 text-blue-600 hover:text-blue-700"
-                        onClick={() => router.get(`/admin/produk-inovasi/${produk.id}`)}
+                        onClick={() => router.get(`/detail-produk-inovasi/${produk.id}`)}
                     >
                         <Eye className="w-4 h-4" />
                     </Button>
@@ -229,7 +229,7 @@ const produkInovasiColumns: ColumnDef<ProdukInovasi>[] = [
                         variant="outline"
                         size="sm"
                         className="hover:bg-gray-100 dark:hover:bg-gray-800 border-gray-300"
-                        onClick={() => router.get(`/admin/produk-inovasi/${produk.id}/edit`)}
+                        onClick={() => router.get(`/admin/produk-inovasi/edit/${produk.id}`)}
                     >
                         <EditIcon className="w-4 h-4" />
                     </Button>

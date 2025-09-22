@@ -40,7 +40,7 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { createUsers } from '@/routes/admin';
+import { createUsers, editUsers } from '@/routes/admin';
 
 interface User {
     id: number;
@@ -158,6 +158,8 @@ export const userColumns: ColumnDef<User>[] = [
 
             return (
                 <div className="flex justify-center space-x-2">
+                    <Link href={editUsers(user.id).url}>
+
                     <Button
                         variant="outline"
                         size="sm"
@@ -165,6 +167,7 @@ export const userColumns: ColumnDef<User>[] = [
                     >
                         <EditIcon className="w-4 h-4" />
                     </Button>
+                    </Link>
 
                     <AlertDialog>
                         <AlertDialogTrigger asChild>

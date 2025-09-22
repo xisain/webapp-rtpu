@@ -32,23 +32,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/', [\App\Http\Controllers\UserController::class, 'index'])->name('admin.users');
             Route::get('create', [\App\Http\Controllers\UserController::class, 'create'])->name('admin.create-users');
             Route::get('/edit/{id}', [\App\Http\Controllers\UserController::class, 'edit'])->name('admin.edit-users');
-            Route::post('/',[\App\Http\Controllers\UserController::class, 'store'])->name('admin.store-users');
-            Route::delete('/delete/{id}',[\App\Http\Controllers\UserController::class, 'destroy'])->name('admin.destroy-users');
+            Route::post('/', [\App\Http\Controllers\UserController::class, 'store'])->name('admin.store-users');
+            Route::put('/{id}', [\App\Http\Controllers\UserController::class, 'update'])->name('admin.update-users'); // Added PUT route for updates
+            Route::delete('/delete/{id}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('admin.destroy-users');
 
         });
         // Produk Unggulan Routing For Admin
         Route::prefix('produk-unggulan')->group(function ()
         {
-            Route::get('/', [\App\Http\Controllers\ProdukUnggulanController::class, 'index'])->name('admin.produk-unggulan');
-            Route::get('/create', [\App\Http\Controllers\ProdukUnggulanController::class, 'create'])->name('admin.produk-unggulan.create');
-            Route::post('/store', [\App\Http\Controllers\ProdukUnggulanController::class, 'store'])->name('admin.produk-unggulan.store');
-            Route::delete('/{id}', [\App\Http\Controllers\ProdukUnggulanController::class, 'destroy'])->name('admin.produk-unggulan.delete');
+        Route::get('/', [\App\Http\Controllers\ProdukUnggulanController::class, 'index'])->name('admin.produk-unggulan');
+        Route::get('/create', [\App\Http\Controllers\ProdukUnggulanController::class, 'create'])->name('admin.produk-unggulan.create-PU');
+        Route::post('/store', [\App\Http\Controllers\ProdukUnggulanController::class, 'store'])->name('admin.produk-unggulan.store-PU');
+        Route::get('/edit/{id}', [\App\Http\Controllers\ProdukUnggulanController::class, 'edit'])->name('admin.produk-unggulan.edit-PU'); // New
+        Route::put('/update/{id}', [\App\Http\Controllers\ProdukUnggulanController::class, 'update'])->name('admin.produk-unggulan.update-PU'); // New
+        Route::delete('/{id}', [\App\Http\Controllers\ProdukUnggulanController::class, 'destroy'])->name('admin.produk-unggulan.delete-PU');
         });
         Route::prefix('produk-inovasi')->group(function ()
         {
             Route::get('/', [\App\Http\Controllers\ProdukInovasiController::class, 'index'])->name('admin.produk-inovasi');
             Route::get('/create', [\App\Http\Controllers\ProdukInovasiController::class, 'create'])->name('admin.produk-inovasi.create');
             Route::post('/store', [\App\Http\Controllers\ProdukInovasiController::class, 'store'])->name('admin.produk-inovasi.store');
+            Route::get('/edit/{id}', [\App\Http\Controllers\ProdukInovasiController::class, 'edit'])->name('admin.produk-inovasi.edit');
+            Route::put('/{id}/update', [\App\Http\Controllers\ProdukInovasiController::class, 'update'])->name('admin.produk-inovasi.update');
             Route::delete('/{id}', [\App\Http\Controllers\ProdukInovasiController::class, 'destroy'])->name('admin.produk-inovasi.delete');
         });
 

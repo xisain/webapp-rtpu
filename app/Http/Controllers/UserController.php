@@ -48,10 +48,9 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return Inertia::render('admin/users/create',[
+        return Inertia::render('admin/users/create', [ // Fixed: added missing comma
             'roles' => $roles,
-        ]
-    );
+        ]);
     }
 
     /**
@@ -63,6 +62,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
+            'role_id' => 'nullable|exists:roles,id', // Added role_id validation
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
@@ -97,14 +97,17 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::with('role')->findOrFail($id);
+        $roles = role::all(); // Get all roles for the dropdown
 
         return Inertia::render('admin/users/edit', [
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'role_id' => $user->role_id, // Include role_id for form initialization
                 'role_name' => optional($user->role)->name ?? 'No Role',
-            ]
+            ],
+            'roles' => $roles, // Added roles for the dropdown
         ]);
     }
 
@@ -118,11 +121,20 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8', // Password is optional for updates
+            'role_id' => 'nullable|exists:roles,id', // Added role_id validation
         ]);
+
+        // Only hash and update password if provided
+        if (!empty($validated['password'])) {
+            $validated['password'] = bcrypt($validated['password']);
+        } else {
+            unset($validated['password']); // Remove password from update if empty
+        }
 
         $user->update($validated);
 
-        return redirect()->route('users.index')->with('message', 'User updated successfully!');
+        return redirect(route('admin.users'))->with('message', 'User updated successfully!');
     }
 
     /**
@@ -138,7 +150,8 @@ class UserController extends Controller
         return redirect(route('admin.users'))->with('message', "User '{$userName}' deleted successfully!");
     }
 
-    public function bulkInsert(Request $request){
-
+    public function bulkInsert(Request $request)
+    {
+        // Implementation for bulk insert if needed
     }
 }

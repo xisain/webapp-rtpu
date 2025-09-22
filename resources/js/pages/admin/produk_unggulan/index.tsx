@@ -22,7 +22,7 @@ import {
     type ColumnFiltersState,
     type VisibilityState
 } from '@tanstack/react-table';
-import { ArrowUpDown, CirclePlus, EditIcon, TrashIcon, ChevronDown, CheckCircle2Icon, Search } from 'lucide-react';
+import { ArrowUpDown, CirclePlus, EditIcon, TrashIcon, ChevronDown, CheckCircle2Icon, Search, Eye } from 'lucide-react';
 import { useState } from 'react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import {
@@ -42,7 +42,7 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { create } from "@/routes/admin/produk-unggulan";
+import { createPU, editPU } from "@/routes/admin/produk-unggulan";
 import { dosenCreate } from "@/routes/dosen/produk-unggulan";
 
 
@@ -167,11 +167,20 @@ const produkUnggulanColumns: ColumnDef<ProdukUnggulan>[] = [
                     <Button
                         variant="outline"
                         size="sm"
+                        className="hover:bg-blue-50 dark:hover:bg-blue-900/20 border-gray-300 text-blue-600 hover:text-blue-700"
+                        onClick={() => router.get(`/detail-produk-unggulan/${produk.id}`)}
+                    >
+                        <Eye className="w-4 h-4" />
+                    </Button>
+                    <Link href={editPU(produk.id)}>
+                    <Button
+                        variant="outline"
+                        size="sm"
                         className="hover:bg-gray-100 dark:hover:bg-gray-800 border-gray-300"
                     >
                         <EditIcon className="w-4 h-4" />
                     </Button>
-
+                    </Link>
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
                             <Button
@@ -215,7 +224,7 @@ export default function ProdukUnggulans() {
     const { produkunggulan, flash, user} = props;
     // console.log(user?.role?.id)
 
-    const link = user?.role?.id === 1 ? create().url : dosenCreate().url;
+    const link = user?.role?.id === 1 ? createPU().url : dosenCreate().url;
 
     const safeProdukUnggulan = Array.isArray(produkunggulan) ? produkunggulan.map((item) => ({
         ...item,
