@@ -149,6 +149,7 @@ const produkInovasiColumns: ColumnDef<ProdukInovasi>[] = [
         header: () => (
             <Button variant="ghost" className='text-left w-full'>
                 Fitur Utama
+                <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
         cell: ({ row }) => {
@@ -174,7 +175,7 @@ const produkInovasiColumns: ColumnDef<ProdukInovasi>[] = [
                 </div>
             );
         },
-        enableSorting: false,
+        enableSorting: true,
     },
     {
         accessorKey: 'user_id',
@@ -220,7 +221,7 @@ const produkInovasiColumns: ColumnDef<ProdukInovasi>[] = [
                         variant="outline"
                         size="sm"
                         className="hover:bg-blue-50 dark:hover:bg-blue-900/20 border-gray-300 text-blue-600 hover:text-blue-700"
-                        onClick={() => router.get(`/admin/produk-inovasi/${produk.id}`)}
+                        onClick={() => router.get(`/detail-produk-inovasi/${produk.id}`)}
                     >
                         <Eye className="w-4 h-4" />
                     </Button>

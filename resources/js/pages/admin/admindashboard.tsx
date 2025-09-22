@@ -2,6 +2,7 @@ import AppLayout from '@/layouts/app-layout';
 import { Head, usePage } from '@inertiajs/react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 interface DashboardProps {
   totalUsers: number;
@@ -65,7 +66,7 @@ export default function Dashboard() {
           </Card>
         </div>
 
-        {/* Dua Tabel */}
+        {/* Dua Chart */}
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           {/* Produk Inovasi Terbaru */}
           <Card>
@@ -73,22 +74,21 @@ export default function Dashboard() {
               <CardTitle>Produk Inovasi Terbaru</CardTitle>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Nama</TableHead>
-                    <TableHead>Deskripsi</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {produkInovasiTerbaru.map((p) => (
-                    <TableRow key={p.id}>
-                      <TableCell className="font-medium">{p.name}</TableCell>
-                      <TableCell>{p.description}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart
+                  data={produkInovasiTerbaru.map((p) => ({
+                    name: p.name,
+                    deskripsi: p.description.length, // contoh: panjang deskripsi
+                  }))}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="deskripsi" fill="#3b82f6" name="Panjang Deskripsi" />
+                </BarChart>
+              </ResponsiveContainer>
             </CardContent>
           </Card>
 
@@ -98,22 +98,21 @@ export default function Dashboard() {
               <CardTitle>Produk Unggulan Terbaru</CardTitle>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Nama</TableHead>
-                    <TableHead>Deskripsi</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {produkUnggulanTerbaru.map((p) => (
-                    <TableRow key={p.id}>
-                      <TableCell className="font-medium">{p.name}</TableCell>
-                      <TableCell>{p.description}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart
+                  data={produkUnggulanTerbaru.map((p) => ({
+                    name: p.name,
+                    deskripsi: p.description.length,
+                  }))}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="deskripsi" fill="#10b981" name="Panjang Deskripsi" />
+                </BarChart>
+              </ResponsiveContainer>
             </CardContent>
           </Card>
         </div>
