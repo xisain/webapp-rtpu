@@ -149,6 +149,7 @@ const produkInovasiColumns: ColumnDef<ProdukInovasi>[] = [
         header: () => (
             <Button variant="ghost" className='text-left w-full'>
                 Fitur Utama
+                <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
         cell: ({ row }) => {
@@ -174,7 +175,7 @@ const produkInovasiColumns: ColumnDef<ProdukInovasi>[] = [
                 </div>
             );
         },
-        enableSorting: false,
+        enableSorting: true,
     },
     {
         accessorKey: 'user_id',
