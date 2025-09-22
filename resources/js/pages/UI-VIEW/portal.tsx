@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { User, ChevronLeft, ChevronRight, ExternalLink, ChevronDown } from 'lucide-react';
-import { login, produk_unggulan, pi} from '@/routes';
+import { login, produk_inovasi, produk_unggulan} from '@/routes';
 import { usePage } from '@inertiajs/react';
 
 // Types Definition
@@ -124,7 +124,7 @@ const ProdukInovasiHeader: React.FC = () => {
       title="Produk Inovasi Terbaru"
       description="Temukan inovasi-inovasi terbaru hasil riset dan pengembangan dari tim RTPU PNJ"
       linkText="Jelajahi Inovasi"
-      linkUrl={pi().url}
+      linkUrl={produk_inovasi().url}
       variant="gradient"
     />
   );
