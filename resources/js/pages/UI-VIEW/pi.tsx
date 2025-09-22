@@ -56,7 +56,7 @@ const produkInovasi = props.produkInovasi; // default jadi array kosong
 
         {/* Lihat Button */}
         <Link
-          href={`/detail-produk-unggulan/${product.id}`}
+          href={`/detail-produk-inovasi/${product.id}`}
           className="bg-transparent border-2 border-blue-400 text-blue-600 px-8 py-2 rounded-full hover:bg-blue-50 transition-colors duration-200 font-medium"
         >
           Lihat

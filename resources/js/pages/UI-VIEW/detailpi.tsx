@@ -1,6 +1,7 @@
 import React from 'react';
-import {  ChevronDown } from 'lucide-react';
+import {  ChevronDown, ArrowLeft } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
+import { produk_inovasi } from '@/routes';
 
 interface FiturUtama {
   id: number;
@@ -13,7 +14,7 @@ interface ProdukInovasi {
   description: string;
   keunggulan_produk: string;
   images: string;
-  pdf: string;
+  pdf: string;  
   fitur_utama: FiturUtama[];
 }
 
@@ -47,6 +48,7 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
       </div>
 <div className="max-w-7xl mx-auto px-4 py-12">
       {/* Judul */}
+      <a href= {produk_inovasi().url} className="text-gray-600 hover:text-gray-900"><ArrowLeft strokeWidth={2.25} /></a>
       <h1 className="text-4xl font-bold text-gray-900 mb-8">{produk.name}</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
