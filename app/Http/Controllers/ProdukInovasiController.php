@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+
 class ProdukInovasiController extends Controller
 {
     /**
@@ -145,4 +147,17 @@ class ProdukInovasiController extends Controller
     {
         //
     }
+
+    public function downloadPdf($filename)
+{
+    $path = storage_path('app/public/produk-inovasi-pdf/' . $filename);
+
+    if (!file_exists($path)) {
+        abort(404, 'File tidak ditemukan');
+    }
+
+    return Response::file($path); // langsung tampilkan di browser
+    // kalau mau force download:
+    // return Response::download($path);
+}
 }

@@ -14,6 +14,7 @@ use App\Http\Middleware\DosenMiddleware;
 Route::get('/', [\App\Http\Controllers\portalController::class,'index'])->name('home');
 Route::get('/pu', [\App\Http\Controllers\portalController::class,'showList'])->name('produk_unggulan');
 Route::get('/pi', [\App\Http\Controllers\portalController::class,'showPI'])->name('produk_inovasi');
+Route::get('/produk-inovasi/pdf/{filename}', [ProdukInovasiController::class, 'downloadPdf'])->name('produk-inovasi.pdf');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
@@ -42,7 +43,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/create', [\App\Http\Controllers\ProdukInovasiController::class, 'create'])->name('admin.produk-inovasi.create');
             Route::post('/store', [\App\Http\Controllers\ProdukInovasiController::class, 'store'])->name('admin.produk-inovasi.store');
             Route::delete('/{id}', [\App\Http\Controllers\ProdukInovasiController::class, 'destroy'])->name('admin.produk-inovasi.delete');
-
         });
 
 
@@ -61,7 +61,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/create', [\App\Http\Controllers\ProdukInovasiController::class, 'create'])->name('dosen.produk-inovasi.dosen-create');
         Route::post('/store', [\App\Http\Controllers\ProdukInovasiController::class, 'store'])->name('dosen.produk-inovasi.dosen-store');
         Route::delete('/{id}', [\App\Http\Controllers\ProdukInovasiController::class, 'destroy'])->name('dosen.produk-inovasi.dosen-delete');
-
     });
     });
 });

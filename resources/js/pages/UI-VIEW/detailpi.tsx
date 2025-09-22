@@ -13,6 +13,7 @@ interface ProdukInovasi {
   description: string;
   keunggulan_produk: string;
   images: string;
+  pdf: string;
   fitur_utama: FiturUtama[];
 }
 
@@ -63,6 +64,22 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
             <h2 className="text-2xl font-semibold mb-3">Deskripsi Produk</h2>
             <p className="text-gray-700 leading-relaxed">{produk.description}</p>
           </div>
+          {/* PDF Download */}
+          <div className="mt-6">
+            <h2 className="text-2xl font-semibold mb-3">Hasil Penelitian PDF</h2>
+            <object
+              data={`/produk-inovasi/pdf/${produk.pdf?.split('/').pop()}`}
+              type="application/pdf"
+              width="100%"
+              height="600px"
+            >
+              <p>Browser Anda tidak mendukung preview PDF. 
+                <a href={`/produk-inovasi/pdf/${produk.pdf?.split('/').pop()}`} target="_blank">Download PDF</a>
+              </p>
+            </object>
+          </div>
+
+
         </div>
 
         {/* Sidebar Keunggulan + Fitur */}
