@@ -32,7 +32,7 @@ class portalController extends Controller
     }
     public function showPI(){
         $produk_inovasi = produk_inovasi::all();
-        return Inertia::render('UI-VIEW.pi',[
+        return Inertia::render('UI-VIEW/pi',[
             'produkInovasi' => $produk_inovasi
         ]);
     }

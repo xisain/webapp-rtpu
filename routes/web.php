@@ -14,6 +14,8 @@ use App\Http\Middleware\DosenMiddleware;
 Route::get('/', [\App\Http\Controllers\portalController::class,'index'])->name('home');
 Route::get('/pu', [\App\Http\Controllers\portalController::class,'showList'])->name('produk_unggulan');
 Route::get('/pi', [\App\Http\Controllers\portalController::class,'showPI'])->name('produk_inovasi');
+Route::get('detail-produk-unggulan/{id}', [ProdukUnggulanController::class, 'show'])->name('detail-produk-unggulan');
+Route::get('detail-produk-inovasi/{id}', [ProdukInovasiController::class, 'show'])->name('detail-produk-inovasi');
 Route::get('/produk-inovasi/pdf/{filename}', [ProdukInovasiController::class, 'downloadPdf'])->name('produk-inovasi.pdf');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -77,11 +79,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Routing For User Guest
-Route::get('detail-produk-unggulan/{id}', [ProdukUnggulanController::class, 'show'])->name('detail-produk-unggulan');
-Route::get('pi', function () {
-    return Inertia::render('UI-VIEW/pi');
-})->name('pi');
-Route::get('detail-produk-inovasi/{id}', [ProdukInovasiController::class, 'show'])->name('detail-produk-inovasi');
+
 
 
 

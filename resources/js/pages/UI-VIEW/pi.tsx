@@ -10,12 +10,11 @@ interface ProdukInovasi { //ni yg bener kek mana?
   description: string;
   keunggulan_produk: string;
   images: string;
-  pdf: string;
 }
 
 const App: React.FC = () => {
 const { props } = usePage<{ produkInovasi: ProdukInovasi[] }>();
-const produkInovasi = props.produkInovasi ?? []; // default jadi array kosong
+const produkInovasi = props.produkInovasi; // default jadi array kosong
 
   const [currentPage, setCurrentPage] = useState<number>(0);
   const productsPerPage = 9;
