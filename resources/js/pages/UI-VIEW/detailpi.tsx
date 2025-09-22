@@ -1,5 +1,5 @@
 import React from 'react';
-import {  ChevronDown, ArrowLeft } from 'lucide-react';
+import { ChevronDown, ArrowLeft } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
 import { produk_inovasi } from '@/routes';
 import { home } from '@/routes';
@@ -106,7 +106,7 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
         </div>
       </div>
     </div>
-        </div>
+  </div>
 
   );
 };
