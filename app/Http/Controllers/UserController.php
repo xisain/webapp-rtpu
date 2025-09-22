@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\role;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -46,7 +47,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('admin/users/create');
+        $roles = Role::all();
+        return Inertia::render('admin/users/create',[
+            'roles' => $roles,
+        ]
+    );
     }
 
     /**
@@ -64,7 +69,7 @@ class UserController extends Controller
 
         User::create($validated);
 
-        return redirect()->route('users.index')->with('message', 'User created successfully!');
+        return redirect(route('admin.users'))->with('message', 'User created successfully!');
     }
 
     /**
@@ -130,10 +135,10 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect()->route('users.index')->with('message', "User '{$userName}' deleted successfully!");
+        return redirect(route('admin.users'))->with('message', "User '{$userName}' deleted successfully!");
     }
 
     public function bulkInsert(Request $request){
-        
+
     }
 }

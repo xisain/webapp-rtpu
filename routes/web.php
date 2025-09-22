@@ -21,14 +21,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
     // Routing For Admin
-    Route::prefix('admin')->middleware(['auth',AdminMiddleware::class ])->group(function ()
+    Route::prefix('admin')->middleware([AdminMiddleware::class ])->group(function ()
     {
-        Route::get('/', function () {
-            return Inertia::render('admin/admindashboard');
-        })->name('admin.index');
+        Route::get('/', [\App\Http\Controllers\portalController::class, 'adminpanel'])->name('admin.index');
         Route::get('roles', [\App\Http\Controllers\RoleController::class, 'index'])->name('admin.roles');
         // User Routing For Admin
-        Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('admin.users');
+        Route::prefix('users')->group(function (){
+            Route::get('/', [\App\Http\Controllers\UserController::class, 'index'])->name('admin.users');
+            Route::get('create', [\App\Http\Controllers\UserController::class, 'create'])->name('admin.create-users');
+            Route::get('/edit/{id}', [\App\Http\Controllers\UserController::class, 'edit'])->name('admin.edit-users');
+            Route::post('/',[\App\Http\Controllers\UserController::class, 'store'])->name('admin.store-users');
+            Route::delete('/delete/{id}',[\App\Http\Controllers\UserController::class, 'destroy'])->name('admin.destroy-users');
+
+        });
         // Produk Unggulan Routing For Admin
         Route::prefix('produk-unggulan')->group(function ()
         {
@@ -51,9 +56,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::prefix('produk-unggulan')->group(function ()
     {
         Route::get('/', [\App\Http\Controllers\ProdukUnggulanController::class, 'index'])->name('dosen.produk-unggulan');
-        Route::get('/create', [\App\Http\Controllers\ProdukUnggulanController::class, 'create'])->name('dosen.produk-unggulan.create');
-        Route::post('/store', [\App\Http\Controllers\ProdukUnggulanController::class, 'store'])->name('dosen.produk-unggulan.store');
-        Route::delete('/{id}', [\App\Http\Controllers\ProdukUnggulanController::class, 'destroy'])->name('dosen.produk-unggulan.delete');
+        Route::get('/create', [\App\Http\Controllers\ProdukUnggulanController::class, 'create'])->name('dosen.produk-unggulan.dosen-create');
+        Route::post('/store', [\App\Http\Controllers\ProdukUnggulanController::class, 'store'])->name('dosen.produk-unggulan.dosen-store');
+        Route::delete('/{id}', [\App\Http\Controllers\ProdukUnggulanController::class, 'destroy'])->name('dosen.produk-unggulan.dosen-delete');
     });
     Route::prefix('produk-inovasi')->group(function ()
     {

@@ -9,6 +9,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, User, Briefcase } from 'lucide-react';
 import AppLogo from './app-logo';
 import dosen from '@/routes/dosen';
+import admin from '@/routes/admin/';
 
 const adminNavItems: NavItem[] = [
     {
@@ -100,14 +101,13 @@ export function AppSidebar() {
 
     // Get navigation items based on user role
     const navItems = auth.user ? getNavItemsForRole(auth.user.role) : [];
-
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href={auth.user?.role === 'admin' || auth.user?.role_id === 1 ? index() : dashboard()} prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>

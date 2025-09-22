@@ -18,12 +18,22 @@ class ProdukInovasiController extends Controller
      */
     public function index()
     {
-      $produk_inovasi = Produk_inovasi::with('user')->get();
+        if(Auth::user()->role_id == 1)  {
+        $produk_inovasi = Produk_inovasi::with('user')->get();
         $user = Auth::user();
         return inertia("admin/produk_inovasi/index",[
             'produkInovasi' => $produk_inovasi,
             'user'=> $user,
         ]);
+        } else {
+        $produk_inovasi = Produk_inovasi::with('user')->where('user_id', Auth::user()->id)->get();
+        $user = Auth::user();
+        return inertia("admin/produk_inovasi/index",[
+            'produkInovasi' => $produk_inovasi,
+            'user'=> $user,
+        ]);
+        }
+
     }
 
     /**
@@ -31,7 +41,10 @@ class ProdukInovasiController extends Controller
      */
     public function create()
     {
-        return inertia("admin/produk_inovasi/create");
+        $user = Auth::user();
+        return inertia("admin/produk_inovasi/create",[
+            "user" => $user
+        ]);
     }
 
     /**
@@ -41,6 +54,7 @@ class ProdukInovasiController extends Controller
     {
         //dd($request->all());
         // Validasi data
+        $user = Auth::user();
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -98,9 +112,23 @@ class ProdukInovasiController extends Controller
                     }
                 }
             }
-
-            return redirect(route('admin.produk-inovasi'))
-                ->with('success', 'Produk inovasi berhasil ditambahkan');
+            if ($produkInovasi) {
+                if (Auth::user()->role_id === 1) {
+                return redirect(route('admin.produk-inovasi'))
+                    ->with('success', 'Produk inovasi berhasil ditambahkan');
+            } else {
+                return redirect(route('dosen.produk-inovasi'))
+                    ->with('success', 'Produk inovasi berhasil ditambahkan');
+            }
+        } else {
+            if (Auth::user()->role_id === 1) {
+                return redirect(route('admin.produk-inovasi'))->
+                    with('error', 'Gagal menambahkan produk inovasi');
+            } else {
+                return redirect(route('dosen.produk-inovasi'))
+                    ->with('error', 'Gagal menambahkan produk inovasi');
+            }
+        }
 
         } catch (\Exception $e) {
             // Hapus gambar jika terjadi error
@@ -143,9 +171,17 @@ class ProdukInovasiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(produk_inovasi $produk_inovasi)
+    public function destroy($id)
     {
-        //
+        $produk_inovasi = produk_inovasi::findOrfail($id);
+        $nama = $produk_inovasi->name;
+        foreach($produk_inovasi->fiturUtama as $fitur){
+            $fitur->delete();
+        }
+        $produk_inovasi->delete();
+        return redirect('/admin/produk-inovasi')
+            ->with('message', "Produk inovasi {$nama} deleted successfully.");
+
     }
 
     public function downloadPdf($filename)

@@ -3,7 +3,7 @@ import AppLayout from "@/layouts/app-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from "@/components/ui/button";
 import { type BreadcrumbItem } from "@/types";
-import { Link, useForm, router } from "@inertiajs/react";
+import { Link, useForm, router, usePage } from "@inertiajs/react";
 import { CirclePlus, Trash2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -21,15 +21,26 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '#',
     }
 ];
+interface User {
+    role : [
+        id:number
+    ]
+}
 
 interface FiturUtamaItem {
     id: number;
     nama_fitur: string;
 }
+export interface PageProps {
+    user:User;
+}
 
 export default function ProdukInovasiCreate() {
+    const { props } = usePage<PageProps>();
+    const { user } = props
     const [fiturUtamaItems, setFiturUtamaItems] = useState<FiturUtamaItem[]>([]);
     const [nextId, setNextId] = useState(1);
+
 
     const { data, setData, post, processing, errors, clearErrors } = useForm({
         name: '',
@@ -63,7 +74,9 @@ export default function ProdukInovasiCreate() {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         clearErrors();
-
+        const url = user?.role?.id === 1
+            ? '/admin/produk-inovasi/store'
+            : '/dosen/produk-inovasi/store';
         // Create FormData for file upload
         const formData = new FormData();
 
@@ -96,7 +109,7 @@ export default function ProdukInovasiCreate() {
         formData.append('fitur_utama_count', validFiturUtamaItems.length.toString());
 
         // Use router.post for better control over FormData
-        router.post('/admin/produk-inovasi/store', formData, {
+        router.post(url, formData, {
             onSuccess: () => {
                 console.log('Produk inovasi berhasil disimpan');
                 // Redirect will be handled by Laravel

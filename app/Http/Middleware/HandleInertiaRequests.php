@@ -49,12 +49,18 @@ class HandleInertiaRequests extends Middleware
                     'role' => $request->user()->role?->name,
                 ] : null,
             ],
+            'flash' => [
+            'message' => fn () => $request->session()->get('message'),
+            'error'   => fn () => $request->session()->get('error'),
+        ],
         ];
+
 
         // Debug shared data
 
             // \Log::info('Inertia shared data:', $sharedData);
 
         return $sharedData;
+
     }
 }

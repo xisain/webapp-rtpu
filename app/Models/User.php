@@ -48,14 +48,14 @@ class User extends Authenticatable
 
     public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(role::class);
     }
 
     public function produkUnggulans()
     {
-        return $this->hasMany(Produk_Unggulan::class);
+        return $this->hasMany(produk_Unggulan::class);
     }
     public function produkInovasis(){
-        return $this->hasMany(Produk_Inovasi::class);
+        return $this->hasMany(produk_Inovasi::class);
     }
 }
