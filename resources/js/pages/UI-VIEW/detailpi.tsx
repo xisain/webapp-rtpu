@@ -2,6 +2,7 @@ import React from 'react';
 import {  ChevronDown, ArrowLeft } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
 import { produk_inovasi } from '@/routes';
+import { home } from '@/routes';
 
 interface FiturUtama {
   id: number;
@@ -22,6 +23,13 @@ const App: React.FC = () => {
 const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
   const produk = props.produkInovasi;
 
+  const handlepdf = (): void => {
+  const section = document.getElementById('pdf');
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -29,20 +37,15 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-teal-500 to-blue-600 rounded flex items-center justify-center">
-                <span className="text-white font-bold text-sm">R</span>
-              </div>
+              <img src="/images/logo.png" alt="Logo" className='w-10 h-10'/>
               <span className="font-bold text-xl text-gray-900">RTPU PNJ</span>
             </div>
-            <nav className="flex items-center space-x-8">
-              <span className="text-gray-700 font-medium cursor-pointer hover:text-blue-600 transition-colors">Home</span>
-              <div className="flex items-center space-x-1 text-gray-700 font-medium cursor-pointer hover:text-blue-600 transition-colors">
-                <span>Kelas</span>
-                <ChevronDown size={16} />
-              </div>
-              <span className="text-gray-700 font-medium cursor-pointer hover:text-blue-600 transition-colors">About</span>
-              <span className="text-gray-700 font-medium cursor-pointer hover:text-blue-600 transition-colors">Contact</span>
-            </nav>
+            <div className="hidden md:flex space-x-8">
+              <a href= {home().url} className="text-gray-600 hover:text-gray-900">Home</a>
+              <button onClick= {handlepdf} className="text-gray-600 hover:text-gray-900">PDF</button>
+              <a href="#about" className="text-gray-600 hover:text-gray-900">About</a>
+              <a href="#contact" className="text-gray-600 hover:text-gray-900">Contact</a>
+            </div>
           </div>
         </div>
       </div>
@@ -67,7 +70,7 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
             <p className="text-gray-700 leading-relaxed">{produk.description}</p>
           </div>
           {/* PDF Download */}
-          <div className="mt-6">
+          <div className="mt-6" id="pdf">
             <h2 className="text-2xl font-semibold mb-3">Hasil Penelitian PDF</h2>
             <object
               data={`/produk-inovasi/pdf/${produk.pdf?.split('/').pop()}`}
@@ -80,8 +83,6 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
               </p>
             </object>
           </div>
-
-
         </div>
 
         {/* Sidebar Keunggulan + Fitur */}

@@ -76,16 +76,9 @@ const produkInovasi = props.produkInovasi; // default jadi array kosong
               <span className="font-bold text-xl text-gray-900">RTPU PNJ</span>
             </div>
             <nav className="flex items-center space-x-6">
-              <div className="flex items-center space-x-1 text-gray-600">
-                <Home size={16} />
-                <span>Home</span>
-              </div>
-              <div className="flex items-center space-x-1 text-gray-600">
-                <span>Kelas</span>
-                <ChevronDown size={16} />
-              </div>
-              <span className="text-gray-600">About</span>
-              <span className="text-gray-600">Contact</span>
+              <a href= {home().url} className="text-gray-600 hover:text-gray-900">Home</a>
+              <a href="#about" className="text-gray-600 hover:text-gray-900">About</a>
+              <a href="#contact" className="text-gray-600 hover:text-gray-900">Contact</a>
             </nav>
           </div>
         </div>
