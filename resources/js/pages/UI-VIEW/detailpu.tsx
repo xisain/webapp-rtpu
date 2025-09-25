@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
 import { home, produk_unggulan} from '@/routes';
+import Navbar from '@/components/navbar';
 
 interface DetailProdukUnggulan {
   id: number;
@@ -54,25 +55,17 @@ const FigmaStyleWebsite: React.FC = () => {
   }
 };
 
+  const navLinks = [
+    { label: "Home", href: home().url },
+    { label: "Galeri", onClick: handleViewGalery },
+    { label: "About", href: "#about" },
+    { label: "Contact", href: "#contact" },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <nav className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <img src="/images/logo.png" alt="Logo" className='w-10 h-10'/>
-              <span className="text-xl font-semibold text-gray-800">RTPU PNJ</span>
-            </div>
-            <div className="hidden md:flex space-x-8">
-              <a href= {home().url} className="text-gray-600 hover:text-gray-900">Home</a>
-              <button onClick= {handleViewGalery} className="text-gray-600 hover:text-gray-900">Galeri</button>
-              <a href="#about" className="text-gray-600 hover:text-gray-900">About</a>
-              <a href="#contact" className="text-gray-600 hover:text-gray-900">Contact</a>
-            </div>
-          </nav>
-        </div>
-      </header>
+      <Navbar links={navLinks} /> 
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-6 py-8">

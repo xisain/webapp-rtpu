@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ChevronDown, ArrowLeft } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
-import { produk_inovasi } from '@/routes';
-import { home } from '@/routes';
+import { home, produk_inovasi} from '@/routes';
+import Navbar from '@/components/navbar';
 
 interface FiturUtama {
   id: number;
@@ -30,27 +30,19 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
   }
 };
 
+  const navLinks = [
+    { label: "Home", href: home().url },
+    { label: "PDF", onClick: handlepdf },
+    { label: "About", href: "#about" },
+    { label: "Contact", href: "#contact" },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <img src="/images/logo.png" alt="Logo" className='w-10 h-10'/>
-              <span className="font-bold text-xl text-gray-900">RTPU PNJ</span>
-            </div>
-            <div className="hidden md:flex space-x-8">
-              <a href= {home().url} className="text-gray-600 hover:text-gray-900">Home</a>
-              <button onClick= {handlepdf} className="text-gray-600 hover:text-gray-900">PDF</button>
-              <a href="#about" className="text-gray-600 hover:text-gray-900">About</a>
-              <a href="#contact" className="text-gray-600 hover:text-gray-900">Contact</a>
-            </div>
-          </div>
-        </div>
-      </div>
-<div className="max-w-7xl mx-auto px-4 py-12">
+    <Navbar links={navLinks}/>
       {/* Judul */}
+    <div className="max-w-7xl mx-auto px-4 py-12">
       <a href= {produk_inovasi().url} className="text-gray-600 hover:text-gray-900"><ArrowLeft strokeWidth={2.25} /></a>
       <h1 className="text-4xl font-bold text-gray-900 mb-8">{produk.name}</h1>
 

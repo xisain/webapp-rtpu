@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from 'react';
-import { User, ChevronLeft, ChevronRight, ExternalLink, ChevronDown } from 'lucide-react';
+import { User, ChevronLeft, ChevronRight, ExternalLink, ChevronDown, Menu, X } from 'lucide-react';
 import { login, produk_inovasi, produk_unggulan} from '@/routes';
 import { usePage } from '@inertiajs/react';
+import Navbar from '@/components/navbar';
 
 // Types Definition
 interface Product {
@@ -20,7 +21,7 @@ interface NavigationItem {
 }
 
 interface ProductCardProps {
-  product: Product;
+  product: Product;           
   onClick?: (product: Product) => void;
 }
 
@@ -145,62 +146,23 @@ const PelatihanHeader: React.FC = () => {
 
 // Header Component
 const Header: React.FC = () => {
-  const navigationItems: NavigationItem[] = [
-    { label: 'Home', href: '#' },
-    { label: 'LMS', href: 'https://rtpu.vercel.app' },
-    { label: 'About', href: '#' },
-    { label: 'Contact', href: '#' }
-  ];
-
   const handleUserClick = (): void => {
     window.location.href = login().url;
   };
 
+  const navigationItems: NavigationItem[] = [
+    { label: "Home", href: "#" },
+    { label: "LMS", href: "https://rtpu.vercel.app" },
+    { label: "About", href: "#" },
+    { label: "Contact", href: "#" },
+    { label: "Login", onClick: handleUserClick },
+  ];
+
   return (
-    <header className="bg-white shadow-sm h-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 w-full">
-          <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <img src="/images/logo.png" alt="Logo" className='w-10 h-10'/>
-              <span className="font-bold text-xl text-gray-800 ml-2">RTPU PNJ</span>
-            </div>
-          </div>
-
-          <nav className="flex-1 flex justify-center space-x-8">
-            {navigationItems.map((item: NavigationItem) => (
-              <div key={item.label} className="relative group">
-                {item.hasDropdown ? (
-                  <button className="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium flex items-center transition-colors duration-200 -mt-[5px]">
-                    {item.label}
-                    <ChevronDown className="ml-1 h-4 w-4 transition-transform group-hover:rotate-180" />
-                  </button>
-                ) : (
-                  <a
-                    href={item.href}
-                    className="text-gray-700 hover:text-teal-600 px-3 py-2 text-sm font-medium transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal-500 after:transition-all after:duration-300 hover:after:w-full"
-                  >
-                    {item.label}
-                  </a>
-                )}
-              </div>
-            ))}
-          </nav>
-
-          <div className="flex items-center">
-            <button
-              onClick={handleUserClick}
-              className="bg-gray-100 hover:bg-teal-50 hover:text-teal-600 p-2 rounded-full transition-all duration-200 group"
-              aria-label="User Account"
-            >
-              <User className="h-5 w-5 text-gray-600 group-hover:text-teal-600 transition-colors duration-200" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
+  <Navbar links={navigationItems} showLoginRight />
   );
 };
+
 
 // Hero Section Component
 const HeroSection: React.FC<HeroSectionProps> = ({
