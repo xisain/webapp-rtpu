@@ -70,8 +70,27 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
               width="100%"
               height="600px"
             >
-              <p>Browser Anda tidak mendukung preview PDF. 
-                <a href={`/produk-inovasi/pdf/${produk.pdf?.split('/').pop()}`} target="_blank">Download PDF</a>
+              <p>Browser tidak mendukung preview PDF. 
+                <a 
+                  href={`/produk-inovasi/pdf/${produk.pdf?.split('/').pop()}`} 
+                  target="_blank" 
+                  className="flex items-center justify-center gap-2 w-full sm:w-auto px-4 py-2 mt-6
+                            text-white font-medium rounded-lg shadow-md 
+                            hover:bg-blue-700 focus:outline-none focus:ring-2 
+                            focus:ring-blue-400 focus:ring-offset-1 transition"
+                  style={{ backgroundColor: '#048996' }}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      strokeWidth={3} 
+                      stroke="currentColor" 
+                      className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" 
+                          d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-6L12 15m0 0l4.5-4.5M12 15V3" />
+                  </svg>
+                  Download PDF Hasil Penelitian
+                </a>
               </p>
             </object>
           </div>
