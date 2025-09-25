@@ -313,38 +313,28 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
   }));
 
   const products: Product[] = propProducts || inertiaProducts;
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const itemsPerView = 4;
-  const maxIndex = Math.max(0, products.length - itemsPerView);
 
-  const nextSlide = useCallback((): void => {
-    setCurrentIndex((prevIndex: number) =>
-      prevIndex >= maxIndex ? 0 : prevIndex + 1
-    );
-  }, [maxIndex]);
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const prevSlide = useCallback((): void => {
-    setCurrentIndex((prevIndex: number) =>
-      prevIndex === 0 ? maxIndex : prevIndex - 1
-    );
-  }, [maxIndex]);
-
-  const goToSlide = useCallback((index: number): void => {
-    if (index >= 0 && index <= maxIndex) {
-      setCurrentIndex(index);
-    }
-  }, [maxIndex]);
-
-  const handleProductClick = useCallback((product: Product): void => {
-    if (onProductClick) {
-      onProductClick(product);
-    }
-    console.log('Product clicked:', product);
+  const handleProductClick = useCallback((product: Product) => {
+    if (onProductClick) onProductClick(product);
   }, [onProductClick]);
 
-  if (products.length === 0) {
-    return null;
-  }
+  const scrollNext = () => {
+    if (containerRef.current) {
+      const cardWidth = containerRef.current.firstElementChild?.clientWidth || 0;
+      containerRef.current.scrollBy({ left: cardWidth + 24, behavior: 'smooth' }); // 24 = gap
+    }
+  };
+
+  const scrollPrev = () => {
+    if (containerRef.current) {
+      const cardWidth = containerRef.current.firstElementChild?.clientWidth || 0;
+      containerRef.current.scrollBy({ left: -(cardWidth + 24), behavior: 'smooth' });
+    }
+  };
+
+  if (products.length === 0) return null;
 
   return (
     <section className="py-20 bg-white">
@@ -352,58 +342,43 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
         {headerComponent}
 
         <div className="relative">
+          {/* Prev/Next Buttons - Hidden on mobile */}
           <button
-            onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-teal-50 shadow-xl rounded-full p-4 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
-            disabled={currentIndex === 0}
-            aria-label="Previous products"
+            onClick={scrollPrev}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-teal-50 shadow-xl rounded-full p-4 transition-all duration-200 group hidden lg:block"
           >
             <ChevronLeft className="h-6 w-6 text-gray-600 group-hover:text-teal-600 transition-colors duration-200" />
           </button>
 
           <button
-            onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-teal-50 shadow-xl rounded-full p-4 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
-            disabled={currentIndex >= maxIndex}
-            aria-label="Next products"
+            onClick={scrollNext}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-teal-50 shadow-xl rounded-full p-4 transition-all duration-200 group hidden lg:block"
           >
             <ChevronRight className="h-6 w-6 text-gray-600 group-hover:text-teal-600 transition-colors duration-200" />
           </button>
 
-          <div className="overflow-hidden mx-16">
-            <div
-              className="flex transition-transform duration-500 ease-out gap-6 mb-10 mt-4"
-              style={{ transform: `translateX(-${currentIndex * 25}%)` }}
-            >
-              {products.map((product: Product) => (
-                <ProductCard
+          {/* Scrollable Cards */}
+          <div
+            ref={containerRef}
+            className="overflow-x-auto scroll-smooth no-scrollbar snap-x snap-mandatory"
+          >
+            <div className="flex gap-6 mb-10 mt-4 ml-12 sm:ml-16 lg:ml-0 pr-8 sm:pr-12 lg:pr-0">
+              {products.map((product, idx) => (
+                <div
                   key={product.id}
-                  product={product}
-                  onClick={handleProductClick}
-                />
+                  className="flex-none w-[280px] sm:w-[320px] lg:w-[calc(25%-1.125rem)] snap-start"
+                >
+                  <ProductCard product={product} onClick={handleProductClick} />
+                </div>
               ))}
             </div>
-          </div>
-
-          <div className="flex justify-center mt-10 space-x-3">
-            {Array.from({ length: Math.max(1, maxIndex + 1) }).map((_, index: number) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  currentIndex === index
-                    ? 'bg-teal-500 scale-125'
-                    : 'bg-gray-300 hover:bg-gray-400'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
           </div>
         </div>
       </div>
     </section>
   );
 };
+
 
 // Research Gallery Component
 const ResearchGallery: React.FC<ProductGalleryProps> = ({ onProductClick }) => {
@@ -482,7 +457,55 @@ const TrainingGallery: React.FC<ProductGalleryProps> = ({ onProductClick }) => {
       image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       link: "#",
       category: "Security"
-    }
+    },
+    {
+      id: 25,
+      title: "IoT Development Workshop",
+      description: "Pelatihan pengembangan sistem IoT dengan Arduino, Raspberry Pi, dan cloud integration.",
+      image: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      link: "#",
+      category: "IoT"
+    },
+    {
+      id: 26,
+      title: "Digital Marketing Strategy",
+      description: "Workshop strategi pemasaran digital, SEO, social media marketing, dan content creation.",
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      link: "#",
+      category: "Marketing"
+    },
+    {
+      id: 27,
+      title: "UI/UX Design Masterclass",
+      description: "Pelatihan desain antarmuka dan pengalaman pengguna menggunakan Figma dan Adobe Creative Suite.",
+      image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      link: "#",
+      category: "Design"
+    },
+    {
+      id: 28,
+      title: "Cybersecurity Essentials",
+      description: "Workshop keamanan siber, ethical hacking, dan network security untuk melindungi infrastruktur digital.",
+      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      link: "#",
+      category: "Security"
+    },
+    {
+      id: 19,
+      title: "Web Development Bootcamp",
+      description: "Pelatihan intensif pengembangan web modern dengan React, Node.js, dan teknologi terkini selama 3 bulan.",
+      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      link: "#",
+      category: "Programming"
+    },
+    {
+      id: 20,
+      title: "Data Science Fundamentals",
+      description: "Workshop analisis data dan machine learning menggunakan Python, pandas, dan scikit-learn untuk pemula.",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      link: "#",
+      category: "Data Science"
+    },
   ];
 
   return (

@@ -64,36 +64,41 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
           {/* PDF Download */}
           <div className="mt-6" id="pdf">
             <h2 className="text-2xl font-semibold mb-3">Hasil Penelitian PDF</h2>
-            <object
-              data={`/produk-inovasi/pdf/${produk.pdf?.split('/').pop()}`}
-              type="application/pdf"
-              width="100%"
-              height="600px"
-            >
-              <p>Browser tidak mendukung preview PDF. 
-                <a 
-                  href={`/produk-inovasi/pdf/${produk.pdf?.split('/').pop()}`} 
-                  target="_blank" 
-                  className="flex items-center justify-center gap-2 w-full sm:w-auto px-4 py-2 mt-6
-                            text-white font-medium rounded-lg shadow-md 
-                            hover:bg-blue-700 focus:outline-none focus:ring-2 
-                            focus:ring-blue-400 focus:ring-offset-1 transition"
-                  style={{ backgroundColor: '#048996' }}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      strokeWidth={3} 
-                      stroke="currentColor" 
-                      className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" 
-                          d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-6L12 15m0 0l4.5-4.5M12 15V3" />
-                  </svg>
-                  Download PDF Hasil Penelitian
-                </a>
-              </p>
-            </object>
+
+            {/* Wrapper untuk responsif */}
+            <div className="w-full h-[600px] sm:h-[800px] md:h-[900px] lg:h-[600px] overflow-hidden">
+              <object
+                data={`/produk-inovasi/pdf/${produk.pdf?.split('/').pop()}`}
+                type="application/pdf"
+                className="w-full h-full"
+              >
+                <p>
+                  Browser tidak mendukung preview PDF. 
+                  <a 
+                    href={`/produk-inovasi/pdf/${produk.pdf?.split('/').pop()}`} 
+                    target="_blank" 
+                    className="flex items-center justify-center gap-2 w-full sm:w-auto px-4 py-2 mt-6
+                              text-white font-medium rounded-lg shadow-md 
+                              hover:bg-blue-700 focus:outline-none focus:ring-2 
+                              focus:ring-blue-400 focus:ring-offset-1 transition"
+                    style={{ backgroundColor: '#048996' }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        strokeWidth={3} 
+                        stroke="currentColor" 
+                        className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" 
+                            d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-6L12 15m0 0l4.5-4.5M12 15V3" />
+                    </svg>
+                    Download PDF Hasil Penelitian
+                  </a>
+                </p>
+              </object>
+            </div>
           </div>
+
         </div>
 
         {/* Sidebar Keunggulan + Fitur */}
