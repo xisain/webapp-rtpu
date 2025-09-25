@@ -1,36 +1,163 @@
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
-import { dashboard } from '@/routes';
-import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard().url,
-    },
-];
+interface DashboardProps {
+  user: { id: number; name: string };
+  totalProdukInovasi: number;
+  totalProdukUnggulan: number;
+  produkInovasiTerbaru: { id: number; name: string; description: string }[];
+  produkUnggulanTerbaru: { id: number; name: string; description: string }[];
+}
 
 export default function Dashboard() {
-    return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                </div>
-                <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                </div>
+  const {
+    user,
+    totalProdukInovasi,
+    totalProdukUnggulan,
+    produkInovasiTerbaru,
+    produkUnggulanTerbaru,
+  } = usePage<{ props: DashboardProps }>().props;
+
+  const chartData = [
+    { name: 'Produk Inovasi', total: totalProdukInovasi },
+    { name: 'Produk Unggulan', total: totalProdukUnggulan },
+  ];
+
+  return (
+    <AppLayout breadcrumbs={[{ title: 'Dashboard', href: '/dashboard' }]}>
+      <Head title="Dashboard" />
+
+      <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-4 overflow-x-auto">
+        {/* Halo User */}
+        <h2 className="text-xl font-semibold">Halo, {user.name} 👋</h2>
+
+        {/* Ringkasan */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Produk Inovasi</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-bold">{totalProdukInovasi}</p>
+              <p className="text-sm text-muted-foreground">Total data inovasi</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Produk Unggulan</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-bold">{totalProdukUnggulan}</p>
+              <p className="text-sm text-muted-foreground">Total data unggulan</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Grafik */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Statistik Produk</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="w-full h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="total" fill="#4f46e5" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
-        </AppLayout>
-    );
+          </CardContent>
+        </Card>
+
+        {/* Produk Terbaru */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>Produk Inovasi Terbaru Anda</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Nama</TableHead>
+                    <TableHead>Deskripsi</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {produkInovasiTerbaru.length > 0 ? (
+                    produkInovasiTerbaru.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell className="font-medium">{item.name}</TableCell>
+                        <TableCell className="truncate max-w-[200px]">
+                          {item.description}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={2} className="text-center text-muted-foreground">
+                        Belum ada produk inovasi terbaru
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Produk Unggulan Terbaru Anda</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Nama</TableHead>
+                    <TableHead>Deskripsi</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {produkUnggulanTerbaru.length > 0 ? (
+                    produkUnggulanTerbaru.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell className="font-medium">{item.name}</TableCell>
+                        <TableCell className="truncate max-w-[200px]">
+                          {item.description}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={2} className="text-center text-muted-foreground">
+                        Belum ada produk unggulan terbaru
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </AppLayout>
+  );
 }

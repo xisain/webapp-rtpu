@@ -8,6 +8,7 @@ use App\Models\produk_unggulan;
 use Inertia\Inertia;
 use App\Models\role;
 use App\Models\User;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Support\Facades\Auth;
 
 class portalController extends Controller
@@ -49,22 +50,35 @@ class portalController extends Controller
     }
     public function adminpanel()
     {
-        $usersPerRole = role::withCount('user')->get()->map(function($role) {
-            return [
-                'role' => $role->name,
-                'count' => $role->users_count
-            ];
-        });
+        if(Auth::user()->role_id == 1 ) {
 
-        return Inertia::render('admin/admindashboard', [
-            'totalUsers' => User::count(),
-            'totalRoles' => role::count(),
-            'totalProdukInovasi' => produk_inovasi::count(),
-            'totalProdukUnggulan' => produk_unggulan::count(),
-            'usersPerRole' => $usersPerRole,
-            'produkUnggulanTerbaru' => produk_unggulan::latest()->take(5)->get(['id','name','description']),
-            'produkInovasiTerbaru' => produk_inovasi::latest()->take(5)->get(['id','name','description']),
-        ]);
+            $usersPerRole = role::withCount('user')->get()->map(function($role) {
+                return [
+                    'role' => $role->name,
+                    'count' => $role->users_count
+                ];
+            });
+
+            return Inertia::render('admin/admindashboard', [
+                'users' => Auth::user(),
+                'totalUsers' => User::count(),
+                'totalRoles' => role::count(),
+                'totalProdukInovasi' => produk_inovasi::count(),
+                'totalProdukUnggulan' => produk_unggulan::count(),
+                'usersPerRole' => $usersPerRole,
+                'produkUnggulanTerbaru' => produk_unggulan::latest()->take(5)->get(['id','name','description','created_at']),
+                'produkInovasiTerbaru' => produk_inovasi::latest()->take(5)->get(['id','name','description','created_at']),
+                'usersTerbaru' => User::latest()->take(5)->get(['id','name','email', 'created_at']),
+            ]);
+        } else {
+             return Inertia::render('dashboard', [
+                'user' => Auth::user(),
+                'totalProdukInovasi' => produk_inovasi::where('user_id', Auth::user()->id)->count(),
+                'totalProdukUnggulan' => produk_unggulan::where('user_id', Auth::user()->id)->count(),
+                'produkUnggulanTerbaru' => produk_unggulan::where('user_id', Auth::user()->id)->latest()->take(5)->get(['id','name','description']),
+                'produkInovasiTerbaru' => produk_inovasi::where('user_id', Auth::user()->id)->latest()->take(5)->get(['id','name','description']),
+            ]);
+        }
     }
 
 }

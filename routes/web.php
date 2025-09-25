@@ -58,7 +58,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     });
     Route::prefix('dosen')->middleware(DosenMiddleware::class)->group(function () {
-        Route::get('/', function() {return Inertia::render('dashboard');})->name('dosendashboard');
+        Route::get('/',[\App\Http\Controllers\portalController::class, 'adminpanel'])->name('dosendashboard');
         Route::prefix('produk-unggulan')->group(function ()
     {
         Route::get('/', [\App\Http\Controllers\ProdukUnggulanController::class, 'index'])->name('dosen.produk-unggulan');
