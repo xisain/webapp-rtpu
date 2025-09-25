@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { produkUnggulan } from "@/routes/admin";
 import React, { useState, FormEvent } from "react";
+import { detailProdukUnggulan } from "@/routes";
 
 interface GalleryItem {
     id: number;
@@ -45,21 +46,25 @@ export interface PageProps {
     produkUnggulan: ProdukUnggulan;
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
+
+
+export default function ProdukUnggulanEdit() {
+    const { props } = usePage<PageProps>();
+    const { user, produkUnggulan: product } = props;
+    const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Produk Unggulan',
         href: produkUnggulan().url,
+    },
+    {
+        title: `Produk : ${product.name}`,  // ✅ langsung pakai template literal
+        href: detailProdukUnggulan(product.id).url, // ✅ jangan lupa .url
     },
     {
         title: 'Edit Produk Unggulan',
         href: '#',
     }
 ];
-
-export default function ProdukUnggulanEdit() {
-    const { props } = usePage<PageProps>();
-    const { user, produkUnggulan: product } = props;
-
     const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
     const [existingGallery, setExistingGallery] = useState<ExistingGallery[]>(product.gallery || []);
     const [removedGalleryIds, setRemovedGalleryIds] = useState<number[]>([]);

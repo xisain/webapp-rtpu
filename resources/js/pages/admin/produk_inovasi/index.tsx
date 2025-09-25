@@ -1,505 +1,335 @@
-import App from "@/actions/App";
+import React, { useState, useMemo, useEffect } from "react";
 import AppLayout from "@/layouts/app-layout";
 import { type BreadcrumbItem } from "@/types";
-import { Head, usePage, Link, router } from "@inertiajs/react";
-import { produkInovasi } from "@/routes/admin";
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Input } from '@/components/ui/input';
-import { useRef } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge } from '@/components/ui/badge';
-
 import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    getFilteredRowModel,
-    useReactTable,
-    type SortingState,
-    type ColumnFiltersState,
-    type VisibilityState
-} from '@tanstack/react-table';
-import { ArrowUpDown, CirclePlus, EditIcon, TrashIcon, ChevronDown, CheckCircle2Icon, Search, Eye } from 'lucide-react';
-import { useState } from 'react';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+} from "@/components/ui/table";
 import {
-    AlertDialog,
-    AlertDialogTrigger,
-    AlertDialogContent,
-    AlertDialogHeader,
-    AlertDialogFooter,
-    AlertDialogTitle,
-    AlertDialogDescription,
-    AlertDialogCancel,
-    AlertDialogAction,
-} from '@/components/ui/alert-dialog';
+  Card, CardContent, CardDescription, CardHeader, CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { dosenCreate } from "@/routes/dosen/produk-inovasi";
-import { create } from "@/routes/admin/produk-inovasi";
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Search, Plus, MoreHorizontal, Eye, Edit2, Trash2, ArrowUpDown,
+  Image as ImageIcon, ChevronLeft, ChevronRight, CheckCircle, XCircle,
+} from "lucide-react";
+import { Link, router } from "@inertiajs/react";
+import { Alert } from "@/components/ui/alert";
+import { detailProdukInovasi } from "@/routes";
 
+// --- Types ---
+type ProdukInovasi = {
+  id: number;
+  name: string;
+  description: string;
+  fitur_utama: string[];
+  user?: { id: number; name: string; email: string };
+  created_at: string;
+};
 
-interface FiturUtama {
-    id: number;
-    nama_fitur: string;
-    produk_inovasi_id: number;
+interface FlashMessage {
+  type: "success" | "error";
+  message: string;
 }
 
-interface User {
-    id: number,
-    name: string,
-    role: [
-        name:string
-    ]
+interface Props {
+  produkInovasi: ProdukInovasi[];
+  user: { id: number; name: string; role_id: number };
+  flash?: { message?: string; error?: string };
 }
 
-interface ProdukInovasi {
-    id: number;
-    name: string;
-    description: string;
-    keunggulan_produk: string;
-    images: string;
-    user_id: string;
-    user?: {
-        name: string;
-    };
-    fitur_utama?: FiturUtama[];
-    created_at: Date;
-}
+// --- Breadcrumbs ---
+const breadcrumbs: BreadcrumbItem[] = [{ title: "Produk Inovasi", href: "#" }];
 
-export interface PageProps {
-    flash?: { message?: string; error?: string };
-    produkInovasi: ProdukInovasi[];
-    user : User;
-    [key: string]: unknown;
-}
+export default function ProdukInovasiIndex({ produkInovasi, user, flash }: Props) {
+  const [search, setSearch] = useState("");
+  const [sortField, setSortField] = useState<keyof ProdukInovasi>("name");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; item: ProdukInovasi | null }>({ open: false, item: null });
+  const [flashMessages, setFlashMessages] = useState<FlashMessage[]>([]);
+  const itemsPerPage = 10;
 
+  // --- Initialize flash messages ---
+  useEffect(() => {
+    const messages: FlashMessage[] = [];
+    if (flash?.message) messages.push({ type: "success", message: flash.message });
+    if (flash?.error) messages.push({ type: "error", message: flash.error });
+    setFlashMessages(messages);
+  }, [flash]);
 
-const produkInovasiColumns: ColumnDef<ProdukInovasi>[] = [
-    {
-        accessorKey: 'id',
-        header: ({ column }) => (
-            <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} className="text-left w-full">
-                ID
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
-        cell: ({ row }) => (
-            <div className="text-center px-2 font-medium">
-                #{row.getValue('id')}
+  // --- Helpers ---
+  const truncateText = (text: string, maxLength: number = 80) =>
+    text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+
+  const getInitials = (name: string) =>
+    name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+
+  const handleSort = (field: keyof ProdukInovasi) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
+  const handleDelete = (item: ProdukInovasi) => setDeleteDialog({ open: true, item });
+
+  const confirmDelete = () => {
+    if (user.role_id === 1) {
+      router.delete(`/admin/produk-inovasi/${deleteDialog.item?.id}`);
+    } else {
+      router.delete(`/dosen/produk-inovasi/${deleteDialog.item?.id}`);
+    }
+    setDeleteDialog({ open: false, item: null });
+  };
+
+  const dismissFlashMessage = (index: number) =>
+    setFlashMessages(prev => prev.filter((_, i) => i !== index));
+
+  // --- Filter + Sort ---
+  const filteredData = produkInovasi.filter(item =>
+    item.name.toLowerCase().includes(search.toLowerCase()) ||
+    (item.user?.name || "").toLowerCase().includes(search.toLowerCase())
+  );
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    let aValue: any = a[sortField];
+    let bValue: any = b[sortField];
+    if (sortField === "user" && a.user && b.user) {
+      aValue = a.user.name;
+      bValue = b.user.name;
+    }
+    if (typeof aValue === "string" && typeof bValue === "string") {
+      return sortDirection === "asc" ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+    }
+    return sortDirection === "asc" ? (aValue < bValue ? -1 : 1) : (aValue > bValue ? -1 : 1);
+  });
+
+  // --- Pagination ---
+  const totalPages = Math.ceil(sortedData.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedData = sortedData.slice(startIndex, startIndex + itemsPerPage);
+
+  return (
+    <AppLayout breadcrumbs={breadcrumbs}>
+      <div className="flex flex-col gap-4 p-4">
+        {/* Flash Messages */}
+        {flashMessages.map((msg, index) => (
+          <div
+            key={index}
+            className={`flex items-start gap-2 rounded-md border p-3 text-sm ${
+              msg.type === "success"
+                ? "border-green-200 bg-green-50 text-green-700"
+                : "border-red-200 bg-red-50 text-red-700"
+            }`}
+          >
+            {msg.type === "success" ? (
+              <CheckCircle className="h-5 w-5 text-green-600 mt-0.5" />
+            ) : (
+              <XCircle className="h-5 w-5 text-red-600 mt-0.5" />
+            )}
+            <div className="flex-1">{msg.message}</div>
+            <button onClick={() => dismissFlashMessage(index)} className="ml-2 text-gray-400 hover:text-gray-600">
+              ✕
+            </button>
+          </div>
+        ))}
+
+        {/* Header */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl font-bold">Produk Inovasi</CardTitle>
+                <CardDescription>Kelola data produk inovasi Anda</CardDescription>
+              </div>
+              {user.role_id === 1 ? (
+                <Link href="/admin/produk-inovasi/create">
+                  <Button className="gap-2"><Plus className="h-4 w-4" /> Tambah Produk</Button>
+                </Link>
+              ) : (
+                <Link href="/dosen/produk-inovasi/create">
+                  <Button className="gap-2"><Plus className="h-4 w-4" /> Tambah Produk</Button>
+                </Link>
+              )}
             </div>
-        ),
-    },
-    {
-        accessorKey: 'name',
-        header: () => (
-            <Button variant="ghost" className='text-left w-full'>
-                Nama Produk
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
-        cell: ({ row }) => (
-            <div className="text-center px-2 font-medium">
-                {row.getValue('name')}
+          </CardHeader>
+        </Card>
+
+        {/* Data Table */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between gap-4">
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  placeholder="Cari produk inovasi..."
+                  className="pl-10"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {paginatedData.length} dari {sortedData.length} produk
+              </div>
             </div>
-        ),
-    },
-    {
-        accessorKey: 'description',
-        header: () => (
-            <Button variant="ghost" className='text-left w-full'>
-                Deskripsi
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
-        cell: ({ row }) => (
-            <div className="text-center px-2 max-w-xs">
-                <div className="truncate">
-                    {row.getValue('description')}
-                </div>
-            </div>
-        ),
-    },
-    {
-        accessorKey: 'keunggulan_produk',
-        header: () => (
-            <Button variant="ghost" className='text-left w-full'>
-                Keunggulan Produk
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
-        cell: ({ row }) => (
-            <div className="text-center px-2 max-w-xs">
-                <div className="truncate">
-                    {row.getValue('keunggulan_produk')}
-                </div>
-            </div>
-        ),
-    },
-    {
-        accessorKey: 'fitur_utama',
-        header: () => (
-            <Button variant="ghost" className='text-left w-full'>
-                Fitur Utama
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
-        cell: ({ row }) => {
-            const fiturUtama = row.original.fitur_utama || [];
-            return (
-                <div className="text-center px-2">
-                    {fiturUtama.length > 0 ? (
-                        <div className="flex flex-wrap gap-1 justify-center">
-                            {fiturUtama.slice(0, 2).map((fitur) => (
-                                <Badge key={fitur.id} variant="secondary" className="text-xs">
-                                    {fitur.nama_fitur}
-                                </Badge>
-                            ))}
-                            {fiturUtama.length > 2 && (
-                                <Badge variant="outline" className="text-xs">
-                                    +{fiturUtama.length - 2} lainnya
-                                </Badge>
-                            )}
-                        </div>
-                    ) : (
-                        <span className="text-gray-500 text-sm">-</span>
-                    )}
-                </div>
-            );
-        },
-        enableSorting: true,
-    },
-    {
-        accessorKey: 'user_id',
-        header: () => (
-            <Button variant="ghost" className='text-left w-full'>
-                Dibuat Oleh
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
-        cell: ({ row }) => (
-            <div className="text-center px-2 font-medium">
-                {row.original.user?.name || 'N/A'}
-            </div>
-        ),
-    },
-    {
-        accessorKey: 'created_at',
-        header: () => (
-            <Button variant="ghost" className='text-left w-full'>
-                Tanggal Dibuat
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
-        cell: ({ row }) => (
-            <div className="text-center px-2">
-                {new Date(row.getValue('created_at')).toLocaleDateString('id-ID')}
-            </div>
-        ),
-    },
-    {
-        id: 'actions',
-        header: () => (
-            <Button variant="ghost" className="text-right w-full">
-                Aksi
-            </Button>
-        ),
-        cell: ({ row }) => {
-            const produk = row.original;
-
-            return (
-                <div className="flex justify-center space-x-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="hover:bg-blue-50 dark:hover:bg-blue-900/20 border-gray-300 text-blue-600 hover:text-blue-700"
-                        onClick={() => router.get(`/detail-produk-inovasi/${produk.id}`)}
-                    >
-                        <Eye className="w-4 h-4" />
-                    </Button>
-
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="hover:bg-gray-100 dark:hover:bg-gray-800 border-gray-300"
-                        onClick={() => router.get(`/admin/produk-inovasi/edit/${produk.id}`)}
-                    >
-                        <EditIcon className="w-4 h-4" />
-                    </Button>
-
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                className="hover:bg-red-50 dark:hover:bg-red-900/20 border-gray-300 text-red-600 hover:text-red-700"
-                            >
-                                <TrashIcon className="w-4 h-4" />
-                            </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                    Apakah Anda yakin ingin menghapus produk inovasi ini?
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    Tindakan ini tidak dapat dibatalkan. Ini akan menghapus secara permanen produk inovasi <strong>{produk.name}</strong> beserta semua fitur utamanya.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Batal</AlertDialogCancel>
-                                <AlertDialogAction
-                                    onClick={() => router.delete(`/admin/produk-inovasi/${produk.id}`)}
-                                    className="bg-red-600 hover:bg-red-700 text-white"
-                                >
-                                    Hapus
-                                </AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                </div>
-            );
-        },
-        enableSorting: false,
-        enableHiding: false,
-    },
-];
-
-export default function ProdukInovasiIndex() {
-    const { props } = usePage<PageProps>();
-    const { produkInovasi, flash, user} = props;
-    // console.log(user.role.id)
-   const link = user?.role?.id === 1 ? create().url : dosenCreate().url;
-    const safeProdukInovasi = Array.isArray(produkInovasi) ? produkInovasi.map((item) => ({
-        ...item,
-        created_at: new Date(item.created_at), // Ensure created_at is a Date object
-    })) : [];
-
-    const [sorting, setSorting] = useState<SortingState>([]);
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-    const [rowSelection, setRowSelection] = useState({});
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Produk Inovasi',
-            href: '#',
-        },
-    ];
-
-    const table = useReactTable({
-        data: safeProdukInovasi,
-        columns: produkInovasiColumns,
-        onSortingChange: setSorting,
-        onColumnFiltersChange: setColumnFilters,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        onColumnVisibilityChange: setColumnVisibility,
-        onRowSelectionChange: setRowSelection,
-        state: {
-            sorting,
-            columnFilters,
-            columnVisibility,
-            rowSelection,
-        },
-    });
-
-    const debounce = (fn: Function, delay: number) => {
-        let timer: NodeJS.Timeout;
-        return (...args: any[]) => {
-            clearTimeout(timer);
-            timer = setTimeout(() => fn(...args), delay);
-        };
-    };
-
-    const filterRef = useRef(debounce((value: string) => {
-        table.getColumn('name')?.setFilterValue(value);
-    }, 300));
-
-    return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Kelola Produk Inovasi" />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
-                <div>
-                    {flash?.message && (
-                        <Alert className="border-green-200 bg-green-50 dark:border-green-300 dark:bg-green-500 mb-4">
-                            <CheckCircle2Icon className="h-4 w-4 text-green-600" />
-                            <AlertTitle className="text-green-800">Berhasil!</AlertTitle>
-                            <AlertDescription className="text-green-700">{flash.message}</AlertDescription>
-                        </Alert>
-                    )}
-                    {flash?.error && (
-                        <Alert variant="destructive" className="mb-4">
-                            <AlertTitle>Error!</AlertTitle>
-                            <AlertDescription>{flash.error}</AlertDescription>
-                        </Alert>
-                    )}
-                </div>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Produk Inovasi</CardTitle>
-                        <CardDescription>Kelola produk inovasi dan fitur-fitur utamanya</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="flex items-center justify-between py-4">
-                            <div className="flex items-center gap-2">
-                                <div className="relative">
-                                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                                    <Input
-                                        placeholder="Cari produk inovasi..."
-                                        value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-                                        onChange={(event) => filterRef.current(event.target.value)}
-                                        className="pl-8 max-w-sm"
-                                    />
-                                </div>
-
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button variant="outline" className="ml-auto">
-                                            Kolom <ChevronDown className="ml-2 h-4 w-4" />
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                        {table
-                                            .getAllColumns()
-                                            .filter((column) => column.getCanHide())
-                                            .map((column) => {
-                                                return (
-                                                    <DropdownMenuCheckboxItem
-                                                        key={column.id}
-                                                        className="capitalize"
-                                                        checked={column.getIsVisible()}
-                                                        onCheckedChange={(value) =>
-                                                            column.toggleVisibility(!!value)
-                                                        }
-                                                    >
-                                                        {column.id === 'name' ? 'Nama Produk' :
-                                                         column.id === 'description' ? 'Deskripsi' :
-                                                         column.id === 'keunggulan_produk' ? 'Keunggulan' :
-                                                         column.id === 'user_id' ? 'Dibuat Oleh' :
-                                                         column.id === 'created_at' ? 'Tanggal Dibuat' :
-                                                         column.id}
-                                                    </DropdownMenuCheckboxItem>
-                                                );
-                                            })}
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>ID</TableHead>
+                    <TableHead>
+                      <Button variant="ghost" onClick={() => handleSort("name")} className="flex items-center gap-2">
+                        Judul <ArrowUpDown className="h-4 w-4" />
+                      </Button>
+                    </TableHead>
+                    <TableHead>Deskripsi</TableHead>
+                    <TableHead>
+                      <Button variant="ghost" onClick={() => handleSort("user")} className="flex items-center gap-2">
+                        Author <ArrowUpDown className="h-4 w-4" />
+                      </Button>
+                    </TableHead>
+                    <TableHead>
+                      <Button variant="ghost" onClick={() => handleSort("created_at")} className="flex items-center gap-2">
+                        Tanggal <ArrowUpDown className="h-4 w-4" />
+                      </Button>
+                    </TableHead>
+                    <TableHead className="w-[100px]">Aksi</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {paginatedData.length > 0 ? (
+                    paginatedData.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell>{item.id}</TableCell>
+                        <TableCell>{item.name}</TableCell>
+                        <TableCell>{truncateText(item.description)}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Avatar className="h-8 w-8">
+                              <AvatarImage src="" />
+                              <AvatarFallback>{item.user?.name ? getInitials(item.user.name) : "N/A"}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <div className="font-medium">{item.user?.name || "N/A"}</div>
+                              <div className="text-sm text-muted-foreground">{item.user?.email}</div>
                             </div>
-
-                            <div className="flex items-center gap-2">
-                                <Link href={link}>
-                                    <Button>
-                                        <CirclePlus className="mr-2 h-4 w-4" />
-                                        Tambah Produk Inovasi
-                                    </Button>
-                                </Link>
-                            </div>
-                        </div>
-
-                        <div className="rounded-md border">
-                            <Table>
-                                <TableHeader>
-                                    {table.getHeaderGroups().map((headerGroup) => (
-                                        <TableRow key={headerGroup.id}>
-                                            {headerGroup.headers.map((header) => (
-                                                <TableHead key={header.id}>
-                                                    {header.isPlaceholder
-                                                        ? null
-                                                        : flexRender(
-                                                              header.column.columnDef.header,
-                                                              header.getContext()
-                                                          )}
-                                                </TableHead>
-                                            ))}
-                                        </TableRow>
-                                    ))}
-                                </TableHeader>
-                                <TableBody>
-                                    {table.getRowModel().rows?.length ? (
-                                        table.getRowModel().rows.map((row) => (
-                                            <TableRow
-                                                key={row.id}
-                                                data-state={row.getIsSelected() && "selected"}
-                                                className="hover:bg-gray-50 dark:hover:bg-gray-800/50"
-                                            >
-                                                {row.getVisibleCells().map((cell) => (
-                                                    <TableCell key={cell.id}>
-                                                        {flexRender(
-                                                            cell.column.columnDef.cell,
-                                                            cell.getContext()
-                                                        )}
-                                                    </TableCell>
-                                                ))}
-                                            </TableRow>
-                                        ))
-                                    ) : (
-                                        <TableRow>
-                                            <TableCell
-                                                colSpan={produkInovasiColumns.length}
-                                                className="h-24 text-center"
-                                            >
-                                                <div className="flex flex-col items-center justify-center py-6">
-                                                    <div className="text-gray-500 mb-2">
-                                                        Tidak ada produk inovasi yang ditemukan.
-                                                    </div>
-                                                    <Link href={create().url}>
-                                                        <Button variant="outline" size="sm">
-                                                            <CirclePlus className="mr-2 h-4 w-4" />
-                                                            Tambah Produk Inovasi Pertama
-                                                        </Button>
-                                                    </Link>
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </div>
-
-                        <div className="flex items-center justify-between space-x-2 py-4">
-                            <div className="flex-1 text-sm text-muted-foreground">
-                                {table.getFilteredSelectedRowModel().rows.length} dari{" "}
-                                {table.getFilteredRowModel().rows.length} produk dipilih.
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <p className="text-sm font-medium">
-                                    Halaman {table.getState().pagination.pageIndex + 1} dari{" "}
-                                    {table.getPageCount()}
-                                </p>
-                                <div className="space-x-2">
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => table.previousPage()}
-                                        disabled={!table.getCanPreviousPage()}
-                                    >
-                                        Sebelumnya
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => table.nextPage()}
-                                        disabled={!table.getCanNextPage()}
-                                    >
-                                        Selanjutnya
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          {new Date(item.created_at).toLocaleDateString("id-ID", {
+                            day: "2-digit", month: "short", year: "numeric",
+                          })}
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" className="h-8 w-8 p-0">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              {user.role_id === 1 ? (
+                                <>
+                                  <DropdownMenuItem onClick={() => router.visit(detailProdukInovasi(item.id).url)}>
+                                    <Eye className="mr-2 h-4 w-4" /> Lihat Detail
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem onClick={() => router.get(`/admin/produk-inovasi/edit/${item.id}`)}>
+                                    <Edit2 className="mr-2 h-4 w-4" /> Edit
+                                  </DropdownMenuItem>
+                                </>
+                              ) : (
+                                <>
+                                  <DropdownMenuItem onClick={() => router.visit(detailProdukInovasi(item.id).url)}>
+                                    <Eye className="mr-2 h-4 w-4" /> Lihat Detail
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem onClick={() => router.get(`/dosen/produk-inovasi/${item.id}/edit`)}>
+                                    <Edit2 className="mr-2 h-4 w-4" /> Edit
+                                  </DropdownMenuItem>
+                                </>
+                              )}
+                              <DropdownMenuItem
+                                className="text-red-600"
+                                onClick={() => handleDelete(item)}
+                              >
+                                <Trash2 className="mr-2 h-4 w-4" /> Hapus
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} className="h-32 text-center">
+                        Tidak ada data produk inovasi
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
             </div>
-        </AppLayout>
-    );
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between pt-4">
+                <div className="text-sm text-muted-foreground">
+                  Halaman {currentPage} dari {totalPages}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4" /> Sebelumnya
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
+                  >
+                    Selanjutnya <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Delete Confirmation */}
+        <AlertDialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ ...deleteDialog, open })}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Konfirmasi Hapus</AlertDialogTitle>
+              <AlertDialogDescription>
+                Apakah Anda yakin ingin menghapus produk "{deleteDialog.item?.name}"?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Batal</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDelete} className="bg-red-600 hover:bg-red-700">
+                Hapus
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </AppLayout>
+  );
 }

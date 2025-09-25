@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\ProdukUnggulanGallery;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class ProdukUnggulanController extends Controller
 {
@@ -19,7 +20,7 @@ class ProdukUnggulanController extends Controller
         if(Auth::user()->role_id == 1) {
         $produk_unggulan = Produk_unggulan::with('user')->get(); // Eager load the user relationship
         $user = Auth::user();
-        return inertia('admin/produk_unggulan/index', [
+        return Inertia::render('admin/produk_unggulan/index', [
         'produkunggulan' => $produk_unggulan,
         'user'=> $user
     ]);
@@ -90,10 +91,10 @@ class ProdukUnggulanController extends Controller
     } else {
         if (Auth::user()->role_id === 1) {
             return redirect()->route('admin.produk-unggulan')
-                ->with('message', 'Failed to create produk unggulan.');
+                ->with('error', 'Failed to create produk unggulan.');
         } else {
             return redirect()->route('dosen.produk-unggulan')
-                ->with('message', 'Failed to create produk unggulan.');
+                ->with('error', 'Failed to create produk unggulan.');
         }
     }
     }
