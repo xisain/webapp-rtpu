@@ -6,7 +6,7 @@ import { dashboard } from '@/routes';
 import { index, roles, users, produkUnggulan, produkInovasi } from '@/routes/admin/';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, User, Briefcase } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, User, Briefcase, Lightbulb , Trophy } from 'lucide-react';
 import AppLogo from './app-logo';
 import dosen from '@/routes/dosen';
 import admin from '@/routes/admin/';
@@ -23,19 +23,14 @@ const adminNavItems: NavItem[] = [
         icon: User,
     },
     {
-        title: 'Role',
-        href: roles(),
-        icon: Briefcase,
-    },
-    {
         title: 'Produk Unggulan',
         href: produkUnggulan(),
-        icon: LayoutGrid,
+        icon: Trophy,
     },
     {
         title: 'Produk Inovasi',
         href: produkInovasi(),
-        icon: LayoutGrid,
+        icon: Lightbulb,
     },
 ];
 
@@ -48,24 +43,24 @@ const dosenNavItems: NavItem[] = [
     {
         title: 'Produk Unggulan',
         href: dosen.produkUnggulan(),
-        icon: LayoutGrid,
+        icon: Trophy,
     },
     {
         title: 'Produk Inovasi',
         href: dosen.produkInovasi(),
-        icon: LayoutGrid,
+        icon: Lightbulb,
     },
 ];
 
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
+        href: 'https://github.com/xisain/webapp-rtpu',
         icon: Folder,
     },
     {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
+        title: 'LMS',
+        href: 'https://rtpu.vercel.app',
         icon: BookOpen,
     },
 ];
