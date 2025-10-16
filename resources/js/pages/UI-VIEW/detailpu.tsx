@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
 import { home, produk_unggulan} from '@/routes';
 
-interface DetailProdukUnggulan {
+ interface DetailProdukUnggulan {
   id: number;
   name: string;
   description: string;
