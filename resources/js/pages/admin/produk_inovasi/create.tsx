@@ -248,7 +248,7 @@ export default function ProdukInovasiCreate() {
                                     ) : (
                                         <div className="space-y-4">
                                             {fiturUtamaItems.map((item, index) => (
-                                                <div key={item.id} className="flex items-start gap-4 p-4 border rounded-lg bg-gray-50">
+                                                <div key={item.id} className="flex items-start gap-4 p-4 border rounded-lg">
                                                     <div className="flex-1">
                                                         <Label htmlFor={`fitur-${item.id}`} className="font-medium">
                                                             Fitur Utama {index + 1}
@@ -258,7 +258,7 @@ export default function ProdukInovasiCreate() {
                                                             value={item.nama_fitur}
                                                             onChange={(e) => handleFiturUtamaChange(item.id, 'nama_fitur', e.target.value)}
                                                             placeholder="Masukkan nama fitur utama"
-                                                            className="mt-2 bg-white"
+                                                            className="mt-2"
                                                         />
                                                     </div>
 

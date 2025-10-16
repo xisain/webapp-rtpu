@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
 import { register, home } from '@/routes';
 import { request } from '@/routes/password';
 
@@ -21,17 +20,18 @@ interface LoginProps {
 
 export default function Login({ status, canResetPassword }: LoginProps) {
   return (
-    <div className="p-4 max-w-md mx-auto">
+<div className="min-h-screen flex items-center justify-center">
+  <div className="p-2 max-w-sm w-full transform scale-100">
       {/* Logo */}
       <div className="flex justify-center mb-6">
-        <img src="/images/logo.png" alt="Logo" className="w-20 h-20 mt-7" />
+        <img src="/images/logo.png" alt="Logo" className="w-20 h-20 mt-2" />
       </div>
 
       {/* Title & Description */}
-      <h1 className="text-2xl font-bold text-center mb-2">
+      <h1 className="text-xl font-bold text-center mb-2">
         Log in ke Akun Anda
       </h1>
-      <p className="text-center text-muted-foreground mb-6">
+      <p className="text-center text-muted-foreground text-sm mb-6">
         Masukan Email dan Password untuk login
       </p>
 
@@ -128,7 +128,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             </div>
 
             {/* Back to Home */}
-            <div className="text-center mt-4">
+            <div className="text-center">
               <Link
                 href={home()}
                 className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900"
@@ -140,5 +140,6 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         )}
       </Form>
     </div>
+</div>  
   );
 }

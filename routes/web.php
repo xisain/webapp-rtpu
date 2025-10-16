@@ -58,11 +58,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     });
     Route::prefix('dosen')->middleware(DosenMiddleware::class)->group(function () {
-        Route::get('/', function() {return Inertia::render('dashboard');})->name('dosendashboard');
+        Route::get('/',[\App\Http\Controllers\portalController::class, 'adminpanel'])->name('dosendashboard');
         Route::prefix('produk-unggulan')->group(function ()
     {
         Route::get('/', [\App\Http\Controllers\ProdukUnggulanController::class, 'index'])->name('dosen.produk-unggulan');
         Route::get('/create', [\App\Http\Controllers\ProdukUnggulanController::class, 'create'])->name('dosen.produk-unggulan.dosen-create');
+        Route::get('/edit/{id}', [\App\Http\Controllers\ProdukUnggulanController::class, 'edit'])->name('dosen.produk-unggulan.dosen-editPU'); // New
+        Route::put('/update/{id}', [\App\Http\Controllers\ProdukUnggulanController::class, 'update'])->name('dosen.produk-unggulan.dosen-updatePU'); // New
         Route::post('/store', [\App\Http\Controllers\ProdukUnggulanController::class, 'store'])->name('dosen.produk-unggulan.dosen-store');
         Route::delete('/{id}', [\App\Http\Controllers\ProdukUnggulanController::class, 'destroy'])->name('dosen.produk-unggulan.dosen-delete');
     });

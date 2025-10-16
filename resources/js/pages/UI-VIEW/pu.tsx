@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Home, ChevronDown, ArrowLeft} from 'lucide-react';
+import { ChevronLeft, ChevronRight, Home, ChevronDown, ArrowLeft, Menu, X} from 'lucide-react';
 import { Link, usePage } from '@inertiajs/react';
 import { home } from '@/routes';
+import Navbar from '@/components/navbar';
 
 interface Product {
   id: number;
@@ -15,6 +16,7 @@ const App: React.FC = () => {
   const produkUnggulan = props.produkUnggulan;
 
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const [isOpen, setIsOpen] = useState<boolean>(false); // 🔹 burger menu state
   const productsPerPage = 9;
   const totalPages = Math.ceil(produkUnggulan.length / productsPerPage);
 
@@ -35,6 +37,8 @@ const App: React.FC = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+
+
 
   const ProductCard: React.FC<{ product: Product }> = ({ product }) => (
     <div className="bg-white border-2 border-gray-300 rounded-lg p-6 flex flex-col items-center space-y-4 shadow-sm hover:shadow-md transition-shadow duration-200">
@@ -63,30 +67,24 @@ const App: React.FC = () => {
     </div>
   );
 
+
+  const navLinks = [
+    { label: "Home", href: home().url },
+    { label: "About", href: "#about" },
+    { label: "Contact", href: "#contact" },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <img src="/images/logo.png" alt="Logo" className='w-10 h-10'/>
-              <span className="font-bold text-xl text-gray-900">RTPU PNJ</span>
-            </div>
-            <nav className="flex items-center space-x-6">
-              <a href= {home().url} className="text-gray-600 hover:text-gray-900">Home</a>
-              <a href="#about" className="text-gray-600 hover:text-gray-900">About</a>
-              <a href="#contact" className="text-gray-600 hover:text-gray-900">Contact</a>
-            </nav>
-          </div>
-        </div>
-      </div>
+      <Navbar links={navLinks}/>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-12">
-        {/* Title Section */}
         <div className="text-center mb-12">
-          <a href= {home().url} className="text-gray-600 hover:text-gray-900"><ArrowLeft strokeWidth={2.25} /></a>
+          <a href={home().url} className="text-gray-600 hover:text-gray-900">
+            <ArrowLeft strokeWidth={2.25} />
+          </a>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Produk Unggulan</h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Jelajahi berbagai hasil inovasi dari dosen, mahasiswa, dan mitra RTPU PNJ
@@ -101,10 +99,11 @@ const App: React.FC = () => {
           ))}
         </div>
 
-        {/* Navigation Controls */}
+        {/* Pagination */}
         <div className="flex justify-center items-center space-x-4">
+          {/* Prev Button */}
           <button
-            onClick={handlePrevPage}
+            onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
             disabled={currentPage === 0}
             className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors duration-200 ${
               currentPage === 0
@@ -116,7 +115,7 @@ const App: React.FC = () => {
             <span>Previous</span>
           </button>
 
-          {/* Page Indicator */}
+          {/* Page Indicators */}
           <div className="flex items-center space-x-2">
             {Array.from({ length: totalPages }, (_, i) => (
               <button
@@ -129,8 +128,9 @@ const App: React.FC = () => {
             ))}
           </div>
 
+          {/* Next Button */}
           <button
-            onClick={handleNextPage}
+            onClick={() => setCurrentPage((p) => Math.min(totalPages - 1, p + 1))}
             disabled={currentPage === totalPages - 1}
             className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors duration-200 ${
               currentPage === totalPages - 1
@@ -143,7 +143,6 @@ const App: React.FC = () => {
           </button>
         </div>
 
-        {/* Page Info */}
         <div className="text-center mt-4 text-sm text-gray-600">
           Halaman {currentPage + 1} dari {totalPages} ({produkUnggulan.length} total produk)
         </div>
@@ -151,5 +150,6 @@ const App: React.FC = () => {
     </div>
   );
 };
+
 
 export default App;
