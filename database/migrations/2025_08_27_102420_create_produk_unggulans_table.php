@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('produk_unggulans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
+            $table->text('description');
             $table->string('link_video_demo')->nullable(true);
             $table->string('link_video_pemaparan')->nullable(true);
             $table->string('main_image');
