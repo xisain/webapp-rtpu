@@ -224,7 +224,7 @@ const handleViewInnovation = (): void => {
           <div className="relative">
             <div className="bg-white rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
               <img
-                src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                src="images/poto peenjeh.jpg"
                 alt="RTPU PNJ Building"
                 className="w-full h-64 lg:h-80 object-cover"
               />
