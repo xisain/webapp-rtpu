@@ -273,14 +273,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
             </div>
           )}
         </div>
-        <div className="p-6">
-          <h3 className="font-bold text-xl text-gray-900 mb-3 group-hover:text-teal-600 transition-colors duration-200">
-            {product.title}
-          </h3>
-          <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
-            {product.description}
-          </p>
-          <a
+      <div className="p-6">
+      <h3 className="font-bold text-xl text-gray-900 mb-3 group-hover:text-teal-600 transition-colors duration-200 line-clamp-2 max-w-[60ch]">
+           {product.title}
+        </h3>
+        <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+           {product.description}
+        </p>
+           <a
             href={product.link}
             onClick={handleLinkClick}
             className="text-teal-500 hover:text-teal-600 inline-flex items-center text-sm font-medium group/link"

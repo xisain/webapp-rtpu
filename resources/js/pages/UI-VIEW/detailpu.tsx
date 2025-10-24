@@ -157,7 +157,7 @@ const FigmaStyleWebsite: React.FC = () => {
                   <div className="bg-white rounded-lg p-4 h-68 flex items-center justify-center relative overflow-hidden">
                     <img
                       src={`/storage/${produkUnggulan.gallery[currentGalleryIndex].image_path}`}
-                      alt={`Gallery ${currentGalleryIndex + 1}`}
+                      alt={`Gallery ${currentGalleryIndex + 2}`}
                       className="w-full h-full object-cover rounded"
                     />
                     <div className="absolute inset-0 bg-black/20 rounded"></div>
@@ -165,7 +165,7 @@ const FigmaStyleWebsite: React.FC = () => {
                       {currentGalleryIndex + 1} / {produkUnggulan.gallery.length}
                     </div>
                   </div>
-                  {currentGalleryIndex + 1 < produkUnggulan.gallery.length && (
+                  {currentGalleryIndex + 2 < produkUnggulan.gallery.length && (
                   <div className="bg-white rounded-lg p-4 h-68 flex items-center justify-center relative overflow-hidden">
                     <img
                       src={`/storage/${produkUnggulan.gallery[currentGalleryIndex + 1].image_path}`}
