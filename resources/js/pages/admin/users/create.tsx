@@ -28,7 +28,6 @@ export default function CreateUsers() {
   const { props } = usePage<PageProps>();
   const { roles } = props;
 
-  // pakai useForm inertia
   const { data, setData, post, processing, errors } = useForm({
     name: "",
     email: "",
@@ -38,7 +37,7 @@ export default function CreateUsers() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    post("/admin/users/"); // route name dari controller
+    post("/admin/users/");
   };
 
   return (
@@ -59,7 +58,7 @@ export default function CreateUsers() {
                   name="name"
                   value={data.name}
                   onChange={(e) => setData("name", e.target.value)}
-                  className="mt-1 block w-full rounded border p-2"
+                  className="mt-1 block w-full rounded border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-gray-100 p-2"
                 />
                 {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
               </div>
@@ -72,7 +71,7 @@ export default function CreateUsers() {
                   name="email"
                   value={data.email}
                   onChange={(e) => setData("email", e.target.value)}
-                  className="mt-1 block w-full rounded border p-2"
+                  className="mt-1 block w-full rounded border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-gray-100 p-2"
                 />
                 {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
               </div>
@@ -85,7 +84,7 @@ export default function CreateUsers() {
                   name="password"
                   value={data.password}
                   onChange={(e) => setData("password", e.target.value)}
-                  className="mt-1 block w-full rounded border p-2"
+                  className="mt-1 block w-full rounded border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-gray-100 p-2"
                 />
                 {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
               </div>
@@ -97,11 +96,19 @@ export default function CreateUsers() {
                   name="role_id"
                   value={data.role_id}
                   onChange={(e) => setData("role_id", e.target.value)}
-                  className="mt-1 block w-full rounded border p-2"
+                  className="mt-1 block w-full rounded border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-gray-100 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">-- Pilih Role --</option>
+                  {/* Placeholder, tidak muncul di dropdown */}
+                  <option value="" disabled hidden>
+                    -- Pilih Role --
+                  </option>
+
                   {roles.map((role) => (
-                    <option key={role.id} value={role.id}>
+                    <option
+                      key={role.id}
+                      value={role.id}
+                      className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                    >
                       {role.name}
                     </option>
                   ))}

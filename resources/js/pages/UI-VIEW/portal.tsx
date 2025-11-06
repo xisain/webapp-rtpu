@@ -16,12 +16,14 @@ interface Product {
 
 interface NavigationItem {
   label: string;
-  href: string;
+  href?: string;
   hasDropdown?: boolean;
+  subItems?: { label: string; href: string }[];
+  onClick?: () => void;
 }
 
 interface ProductCardProps {
-  product: Product;           
+  product: Product;
   onClick?: (product: Product) => void;
 }
 
@@ -105,46 +107,40 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
 };
 
 // Section Headers
-const ProdukUnggulanHeader: React.FC = () => {
-  return (
-    <SectionHeader
-      badgeText="Produk Terbaru"
-      title="Produk Unggulan Terbaru"
-      description="Berikut adalah produk inovatif dari RTPU yang telah dikembangkan dengan teknologi terdepan"
-      linkText="Lihat Selengkapnya"
-      linkUrl={produk_unggulan().url}
-      variant="gradient"
-    />
-  );
-};
+const ProdukUnggulanHeader: React.FC = () => (
+  <SectionHeader
+    badgeText="Produk Terbaru"
+    title="Produk Unggulan Terbaru"
+    description="Berikut adalah produk inovatif dari RTPU yang telah dikembangkan dengan teknologi terdepan"
+    linkText="Lihat Selengkapnya"
+    linkUrl={produk_unggulan().url}
+    variant="gradient"
+  />
+);
 
-const ProdukInovasiHeader: React.FC = () => {
-  return (
-    <SectionHeader
-      badgeText="Inovasi Terdepan"
-      title="Produk Inovasi Terbaru"
-      description="Temukan inovasi-inovasi terbaru hasil riset dan pengembangan dari tim RTPU PNJ"
-      linkText="Jelajahi Inovasi"
-      linkUrl={produk_inovasi().url}
-      variant="gradient"
-    />
-  );
-};
+const ProdukInovasiHeader: React.FC = () => (
+  <SectionHeader
+    badgeText="Inovasi Terdepan"
+    title="Produk Inovasi Terbaru"
+    description="Temukan inovasi-inovasi terbaru hasil riset dan pengembangan dari tim RTPU PNJ"
+    linkText="Jelajahi Inovasi"
+    linkUrl={produk_inovasi().url}
+    variant="gradient"
+  />
+);
 
-const PelatihanHeader: React.FC = () => {
-  return (
-    <SectionHeader
-      badgeText="Program Pelatihan"
-      title="Pelatihan & Workshop"
-      description="Tingkatkan kompetensi Anda melalui program pelatihan dan workshop yang dirancang oleh para ahli"
-      linkText="Daftar Pelatihan"
-      linkUrl="#"
-      variant="gradient"
-    />
-  );
-};
+const PelatihanHeader: React.FC = () => (
+  <SectionHeader
+    badgeText="Program Pelatihan"
+    title="Pelatihan & Workshop"
+    description="Tingkatkan kompetensi Anda melalui program pelatihan dan workshop yang dirancang oleh para ahli"
+    linkText="Daftar Pelatihan"
+    linkUrl="#"
+    variant="gradient"
+  />
+);
 
-// Header Component
+// Header Component (Navbar)
 const Header: React.FC = () => {
   const handleUserClick = (): void => {
     window.location.href = login().url;
@@ -153,33 +149,32 @@ const Header: React.FC = () => {
   const navigationItems: NavigationItem[] = [
     { label: "Home", href: "#" },
     { label: "LMS", href: "https://rtpu.vercel.app" },
-    { label: "About", href: "#" },
-    { label: "Contact", href: "#" },
+    {
+      label: "Menu",
+      hasDropdown: true,
+      subItems: [
+        { label: "Produk Unggulan", href: "pu" },
+        { label: "Produk Inovasi", href: "pi" },
+        { label: "Pelatihan", href: "#pelatihan" },
+      ],
+    },
     { label: "Login", onClick: handleUserClick },
   ];
 
-  return (
-  <Navbar links={navigationItems} showLoginRight />
-  );
+  return <Navbar links={navigationItems} showLoginRight />;
 };
-
 
 // Hero Section Component
-const HeroSection: React.FC<HeroSectionProps> = ({
-  onViewInnovation,
-  onGoToLMS
-}) => {
-const handleViewInnovation = (): void => {
-  const section = document.getElementById('inovasi');
-  if (section) {
-    section.scrollIntoView({ behavior: 'smooth' });
-  }
-};
+const HeroSection: React.FC<HeroSectionProps> = ({ onViewInnovation, onGoToLMS }) => {
+  const handleViewInnovation = (): void => {
+    const section = document.getElementById('inovasi');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const handleGoToLMS = (): void => {
-    if (onGoToLMS) {
-      onGoToLMS();
-    }
+    if (onGoToLMS) onGoToLMS();
     console.log('Go to LMS clicked');
   };
 
@@ -241,6 +236,7 @@ const handleViewInnovation = (): void => {
     </section>
   );
 };
+
 
 // Product Card Component
 const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
@@ -522,58 +518,36 @@ const TrainingGallery: React.FC<ProductGalleryProps> = ({ onProductClick }) => {
 };
 
 // Main App Component
+// Main App Component
 const App: React.FC = () => {
-  const handleViewInnovation = (): void => {
-    console.log('View Innovation clicked');
-  };
-
-  const handleGoToLMS = (): void => {
-    console.log('Go to LMS clicked');
-  };
-
-  const handleProductClick = (product: Product): void => {
-    console.log('Product clicked:', product);
-  };
+  const handleViewInnovation = (): void => console.log('View Innovation clicked');
+  const handleGoToLMS = (): void => console.log('Go to LMS clicked');
+  const handleProductClick = (product: Product): void => console.log('Product clicked:', product);
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <HeroSection
-        onViewInnovation={handleViewInnovation}
-        onGoToLMS={handleGoToLMS}
-      />
+      <HeroSection onViewInnovation={handleViewInnovation} onGoToLMS={handleGoToLMS} />
 
-      {/* Produk Unggulan Section */}
-      <ProductGallery
-        onProductClick={handleProductClick}
-        headerComponent={<ProdukUnggulanHeader />}
-      />
-
-      {/* Produk Inovasi Section */}
+      <ProductGallery onProductClick={handleProductClick} headerComponent={<ProdukUnggulanHeader />} />
       <ResearchGallery onProductClick={handleProductClick} />
-
-      {/* Pelatihan Section */}
       <TrainingGallery onProductClick={handleProductClick} />
 
-      {/* Footer */}
       <footer className="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center mb-6">
-              <img src="/images/logo.png" alt="Logo" className='w-10 h-10'/>
-              <span className="font-bold text-2xl ml-2">RTPU PNJ</span>
-            </div>
-            <p className="text-gray-400 text-lg mb-4">
-              Research and Technology Transfer Unit - Politeknik Negeri Jakarta
-            </p>
-            <p className="text-gray-500">
-              © 2024 Politeknik Negeri Jakarta. All rights reserved.
-            </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="flex items-center justify-center mb-6">
+            <img src="/images/logo.png" alt="Logo" className='w-10 h-10' />
+            <span className="font-bold text-2xl ml-2">RTPU PNJ</span>
           </div>
+          <p className="text-gray-400 text-lg mb-4">
+            Research and Technology Transfer Unit - Politeknik Negeri Jakarta
+          </p>
+          <p className="text-gray-500">© 2024 Politeknik Negeri Jakarta. All rights reserved.</p>
         </div>
       </footer>
     </div>
   );
 };
+
 
 export default App;

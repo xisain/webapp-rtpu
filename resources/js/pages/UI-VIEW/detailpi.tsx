@@ -103,12 +103,12 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
 
         {/* Sidebar Keunggulan + Fitur */}
         <div className="bg-gray-100 rounded-xl p-6 shadow-sm">
-          <h3 className="text-xl font-bold mb-4">Keunggulan Produk</h3>
+          <h3 className="text-xl text-gray-700 font-bold mb-4">Keunggulan Produk</h3>
           <p className="text-gray-700 text-sm leading-relaxed">{produk.keunggulan_produk}</p>
 
           {produk.fitur_utama?.length > 0 && (
             <div className="mt-6 pt-6 border-t border-gray-300">
-              <h4 className="font-semibold mb-3">Fitur Utama:</h4>
+              <h4 className="text-gray-700 font-semibold mb-3">Fitur Utama:</h4>
               <ul className="space-y-2 text-sm text-gray-700">
                 {produk.fitur_utama.map((f) => (
                   <li key={f.id} className="flex items-center space-x-2">
