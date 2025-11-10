@@ -71,7 +71,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
     if (variant === 'gradient') {
       if (badgeText.includes('Inovasi')) return 'bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent';
       if (badgeText.includes('Pelatihan')) return 'bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent';
-      return 'bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent';
+      return 'bg-gradient-to-r from-teal-500 to-blue-400 bg-clip-text text-transparent';
     }
     return 'text-gray-900';
   };
@@ -179,7 +179,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onViewInnovation, onGoToLMS }
   };
 
   return (
-    <section className="bg-gradient-to-br from-gray-50 to-gray-100 py-16">
+    <section className="bg-gradient-to-br from-gray-50 to-gray-100 py-23">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">

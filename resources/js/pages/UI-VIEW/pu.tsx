@@ -59,7 +59,7 @@ const App: React.FC = () => {
         {/* Lihat Button */}
         <Link
           href={`/detail-produk-unggulan/${product.id}`}
-          className="bg-transparent border-2 border-blue-400 text-blue-600 px-8 py-2 rounded-full hover:bg-blue-50 transition-colors duration-200 font-medium"
+          className="bg-gradient-to-r from-teal-500 to-blue-400 bg-clip-text text-transparent px-8 py-2 rounded-full hover:bg-blue-50 transition-colors duration-200 font-medium"
         >
           Lihat
         </Link>
@@ -85,7 +85,7 @@ const App: React.FC = () => {
           <a href={home().url} className="text-gray-600 hover:text-gray-900">
             <ArrowLeft strokeWidth={2.25} />
           </a>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Produk Unggulan</h1>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-teal-500 to-blue-400 bg-clip-text text-transparent mb-4">Produk Unggulan</h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Jelajahi berbagai hasil inovasi dari dosen, mahasiswa, dan mitra RTPU PNJ
             yang dikembangkan untuk menghadapi tantangan dunia nyata.
