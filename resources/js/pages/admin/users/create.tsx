@@ -3,6 +3,8 @@ import { users } from "@/routes/admin";
 import { type BreadcrumbItem } from "@/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useForm, usePage } from "@inertiajs/react";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -34,6 +36,8 @@ export default function CreateUsers() {
     password: "",
     role_id: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,15 +81,30 @@ export default function CreateUsers() {
               </div>
 
               {/* Password */}
-              <div>
+              <div className="relative">
                 <label className="block text-sm font-medium">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={data.password}
-                  onChange={(e) => setData("password", e.target.value)}
-                  className="mt-1 block w-full rounded border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-gray-100 p-2"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={data.password}
+                    onChange={(e) => setData("password", e.target.value)}
+                    className="mt-1 block w-full rounded border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-gray-100 p-2 pr-10"
+                    placeholder="Masukkan password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
                 {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
               </div>
 
@@ -98,7 +117,7 @@ export default function CreateUsers() {
                   onChange={(e) => setData("role_id", e.target.value)}
                   className="mt-1 block w-full rounded border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-gray-100 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  {/* Placeholder, tidak muncul di dropdown */}
+                  {/* Placeholder */}
                   <option value="" disabled hidden>
                     -- Pilih Role --
                   </option>
