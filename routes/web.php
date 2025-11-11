@@ -91,3 +91,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+
+
+Route::get('/about', function () {
+    return Inertia::render('UI-VIEW/aboutus');
+})->name('aboutus');

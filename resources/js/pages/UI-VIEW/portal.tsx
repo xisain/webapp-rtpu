@@ -148,17 +148,11 @@ const Header: React.FC = () => {
 
   const navigationItems: NavigationItem[] = [
     { label: "Home", href: "#" },
-    { label: "LMS", href: "https://rtpu.vercel.app" },
-    {
-      label: "Menu",
-      hasDropdown: true,
-      subItems: [
-        { label: "Produk Unggulan", href: "pu" },
-        { label: "Produk Inovasi", href: "pi" },
-        { label: "Pelatihan", href: "#pelatihan" },
-      ],
-    },
-    { label: "Login", onClick: handleUserClick },
+    { label :"Tentang Kami",  href: "#about" },
+    { label: "Berita", href: "#news" },
+    { label: "Produk Inovasi", href: "#inovasi" },
+    { label: "Produk Unggulan", href: "#training" },
+    { label: "Pelatihan", href: "#training" },
   ];
 
   return <Navbar links={navigationItems} showLoginRight />;
@@ -195,8 +189,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onViewInnovation, onGoToLMS }
               </h1>
             </div>
             <p className="text-lg text-gray-600 leading-relaxed">
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-              Discover innovative solutions and cutting-edge technology.
+                Rekayasa Teknologi dan Produk Unggulan (RTPU) Politeknik Negeri Jakarta
+                berfokus pada penelitian terapan, pengembangan produk, dan transfer teknologi
+                untuk mendukung industri serta peningkatan kompetensi mahasiswa dan staf.
+                Kami bekerja sama dengan mitra industri untuk mengkomersialkan inovasi dan menyediakan
+                pelatihan yang relevan dengan kebutuhan pasar.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <button
