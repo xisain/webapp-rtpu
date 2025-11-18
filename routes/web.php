@@ -55,6 +55,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/{id}', [\App\Http\Controllers\ProdukInovasiController::class, 'destroy'])->name('admin.produk-inovasi.delete');
         });
 
+        // News Routing For Admin
+        Route::prefix('news')->group(function () {
+            Route::get('/', [\App\Http\Controllers\NewsController::class, 'index'])->name('admin.news');
+            Route::get('/create', [\App\Http\Controllers\NewsController::class, 'create'])->name('admin.news.create');
+            Route::post('/store', [\App\Http\Controllers\NewsController::class, 'store'])->name('admin.news.store');
+            Route::get('/edit/{news}', [\App\Http\Controllers\NewsController::class, 'edit'])->name('admin.news.edit');
+            Route::put('/update/{news}', [\App\Http\Controllers\NewsController::class, 'update'])->name('admin.news.update');
+            Route::delete('/{news}', [\App\Http\Controllers\NewsController::class, 'destroy'])->name('admin.news.delete');
+        });
+
 
     });
     Route::prefix('dosen')->middleware(DosenMiddleware::class)->group(function () {
@@ -96,3 +106,5 @@ require __DIR__.'/auth.php';
 Route::get('/about', function () {
     return Inertia::render('UI-VIEW/aboutus');
 })->name('aboutus');
+
+Route::get('/news', [\App\Http\Controllers\NewsController::class, 'viewNews'])->name('news');

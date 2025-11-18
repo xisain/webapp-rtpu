@@ -10,7 +10,7 @@ import {
   SidebarMenuItem
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import { index, users, produkUnggulan, produkInovasi } from '@/routes/admin/';
+import { index, users, produkUnggulan, produkInovasi, news} from '@/routes/admin/';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, User, Lightbulb, Trophy } from 'lucide-react';
@@ -41,6 +41,11 @@ const adminNavItems: NavItem[] = [
     href: produkInovasi(),
     icon: Lightbulb,
   },
+  {
+    title: 'news',
+    href: news(),
+    icon: LayoutGrid,
+  }
 ];
 
 const dosenNavItems: NavItem[] = [

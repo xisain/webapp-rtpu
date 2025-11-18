@@ -196,20 +196,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onViewInnovation, onGoToLMS }
                 pelatihan yang relevan dengan kebutuhan pasar.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button
-                onClick={handleViewInnovation}
-                className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-              >
-                Lihat Inovasi
-              </button>
-              <a
-                href="https://rtpu.vercel.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border-2 border-teal-500 text-teal-500 hover:bg-teal-500 hover:text-white px-8 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105"
-              >
-                Menuju LMS
-              </a>
             </div>
           </div>
 

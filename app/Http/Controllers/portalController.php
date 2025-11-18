@@ -20,9 +20,11 @@ class portalController extends Controller
     {
         $produk_unggulan = Produk_unggulan::all();
         $produk_inovasi = Produk_inovasi::all();
+        $news = 
         return Inertia::render("UI-VIEW/portal",[
             'produkUnggulan' => $produk_unggulan,
-            'produkInovasi' => $produk_inovasi
+            'produkInovasi' => $produk_inovasi,
+            'NewsController' =>$news, 
         ]);
     }
 
