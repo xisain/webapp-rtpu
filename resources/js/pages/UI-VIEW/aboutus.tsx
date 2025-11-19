@@ -1,8 +1,46 @@
 import React, { useState } from 'react';
 import { MapPin, Mail, Users, Building2, Menu, ChevronDown } from 'lucide-react';
+import Navbar from '@/components/navbar';
+import { Head } from '@inertiajs/react';
+
+
+
+interface NavigationItem {
+  label: string;
+  href?: string;
+  hasDropdown?: boolean;
+  subItems?: { label: string; href: string }[];
+  onClick?: () => void;
+}
 
 const AboutUsPage = () => {
   const [activeLocation, setActiveLocation] = useState<'jakarta' | 'depok' | null>(null);
+
+
+  const Header: React.FC = () => {
+    const handleUserClick = (): void => {
+      const global = globalThis as { location: { href: string } };
+      global.location.href = login().url;
+    };
+
+    const navigationItems: NavigationItem[] = [
+    { label: "Home", href: "/" },
+    { label :"Tentang Kami",  href: "/about" },
+    { label: "Berita", href: "/news" },
+    {
+      label: "Product",
+      hasDropdown: true,
+      subItems: [
+        { label: "Produk Unggulan", href: "pu" },
+        { label: "Produk Inovasi", href: "pi" },
+        { label: "Pelatihan", href: "/#training" },
+      ],
+    },
+    { label: "Login", onClick: handleUserClick },
+  ];
+
+    return <Navbar links={navigationItems} showLoginRight />;
+  };
 
   const hrTeam = [
     { name: 'Sonki Prasetya', role: 'HR Staff' },
@@ -18,47 +56,9 @@ const AboutUsPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation Bar */}
-      <nav className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-lg flex items-center justify-center">
-                <svg viewBox="0 0 100 100" className="w-6 h-6">
-                  <path d="M20 80 L40 20 L50 40 L60 20 L80 80" fill="none" stroke="white" strokeWidth="12" strokeLinecap="round"/>
-                  <circle cx="50" cy="15" r="8" fill="#ef4444"/>
-                </svg>
-              </div>
-              <span className="text-xl font-bold text-gray-800">RTPU PNJ</span>
-            </div>
+      <Header />
 
-            {/* Navigation Menu */}
-            <div className="hidden md:flex items-center gap-8">
-              <a href="#" className="text-gray-600 hover:text-cyan-600 transition-colors">Home</a>
-              <a href="#" className="text-gray-600 hover:text-cyan-600 transition-colors">LMS</a>
-              <a href="#" className="text-cyan-600 font-medium">Tentang Kami</a>
-              <a href="#" className="text-gray-600 hover:text-cyan-600 transition-colors">Berita</a>
-              <div className="flex items-center gap-1 text-gray-600 hover:text-cyan-600 transition-colors cursor-pointer">
-                <span>Program</span>
-                <ChevronDown size={16} />
-              </div>
-            </div>
-
-            {/* Login Button */}
-            <button className="hidden md:block px-6 py-2 text-gray-700 hover:text-cyan-600 transition-colors font-medium">
-              Login
-            </button>
-
-            {/* Mobile Menu Button */}
-            <button className="md:hidden">
-              <Menu className="text-gray-700" size={24} />
-            </button>
-          </div>
-        </div>
-      </nav>
-
-   
-
+  
       {/* Main Content Section */}
       <div className="py-16 px-6">
         <div className="max-w-7xl mx-auto">
@@ -99,40 +99,17 @@ const AboutUsPage = () => {
               </div>
 
               {/* Interactive Map */}
-              <div className="relative bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl overflow-hidden shadow-lg mb-6">
-                <div className="absolute inset-0 opacity-10">
-                  <svg className="w-full h-full" viewBox="0 0 400 300">
-                    <path d="M0,150 Q100,100 200,150 T400,150" fill="none" stroke="white" strokeWidth="2"/>
-                    <path d="M0,180 Q100,130 200,180 T400,180" fill="none" stroke="white" strokeWidth="2"/>
-                  </svg>
-                </div>
-                
-                <div className="relative p-8 h-80">
-       
-
-                  {/* Depok Location */}
-                  <div 
-                    className="absolute bottom-24 left-1/2 transform -translate-x-1/2 cursor-pointer"
-                    onMouseEnter={() => setActiveLocation('depok')}
-                    onMouseLeave={() => setActiveLocation(null)}
-                  >
-                    <div className="relative">
-                      <div className={`w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center ${activeLocation === 'depok' ? 'scale-125' : ''} transition-transform`}>
-                        <MapPin className="text-green-500" size={18} />
-                      </div>
-                    </div>
-                    {activeLocation === 'depok' && (
-                      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-white rounded-lg shadow-2xl p-4 w-64 z-10 animate-fade-in">
-                        <p className="font-bold text-gray-800 mb-1">Depok</p>
-                        <p className="text-sm text-gray-600">Main Campus Location</p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Decorative Islands */}
-                  <div className="absolute bottom-8 right-12 w-32 h-24 bg-green-400 rounded-full opacity-60"></div>
-                  <div className="absolute bottom-12 right-8 w-24 h-20 bg-green-500 rounded-full opacity-70"></div>
-                </div>
+              <div className="rounded-xl overflow-hidden shadow-lg mb-6 border border-gray-200">
+                <iframe
+                  title="RTPU PNJ Map"
+                  src="https://www.google.com/maps?q=Politeknik+Negeri+Jakarta&hl=id&z=16&output=embed"
+                  width="100%"
+                  height="300"
+                  style={{ border: 0 }}
+                  allowFullScreen={true}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
               </div>
 
               {/* Address Info */}
