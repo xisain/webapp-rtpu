@@ -31,13 +31,18 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
 };
 
   const navLinks = [
-    { label: "Home", href: home().url },
-    { label: "PDF", onClick: handlepdf },
-    { label :"Tentang Kami",  href: "#about" },
-    { label: "Berita", href: "#news" },
-    { label: "Produk Inovasi", href: "#inovasi" },
-    { label: "Produk Unggulan", href: "#training" },
-    { label: "Pelatihan", href: "#training" },
+    { label: "Home", href: "/" },
+    { label :"Tentang Kami",  href: "/about" },
+    { label: "Berita", href: "/news" },
+    {
+      label: "Product",
+      hasDropdown: true,
+      subItems: [
+        { label: "Produk Unggulan", href: "pu" },
+        { label: "Produk Inovasi", href: "pi" },
+        { label: "Pelatihan", href: "/#training" },
+      ],
+    },
   ];
 
   return (

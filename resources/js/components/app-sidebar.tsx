@@ -42,7 +42,7 @@ const adminNavItems: NavItem[] = [
     icon: Lightbulb,
   },
   {
-    title: 'news',
+    title: 'News',
     href: news(),
     icon: LayoutGrid,
   }

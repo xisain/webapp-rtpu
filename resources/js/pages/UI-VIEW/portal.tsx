@@ -148,11 +148,18 @@ const Header: React.FC = () => {
 
   const navigationItems: NavigationItem[] = [
     { label: "Home", href: "#" },
-    { label :"Tentang Kami",  href: "#about" },
-    { label: "Berita", href: "#news" },
-    { label: "Produk Inovasi", href: "#inovasi" },
-    { label: "Produk Unggulan", href: "#training" },
-    { label: "Pelatihan", href: "#training" },
+    { label :"Tentang Kami",  href: "/about" },
+    { label: "Berita", href: "/news" },
+    {
+      label: "Product",
+      hasDropdown: true,
+      subItems: [
+        { label: "Produk Unggulan", href: "#ungulan" },
+        { label: "Produk Inovasi", href: "#inovasi" },
+        { label: "Pelatihan", href: "#training" },
+      ],
+    },
+    { label: "Login", onClick: handleUserClick },
   ];
 
   return <Navbar links={navigationItems} showLoginRight />;
@@ -316,7 +323,7 @@ const ProductGallery: React.FC<ProductGalleryProps> = ({
   if (products.length === 0) return null;
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white" id="unggulan">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {headerComponent}
 
@@ -388,107 +395,69 @@ const ResearchGallery: React.FC<ProductGalleryProps> = ({ onProductClick }) => {
 
 // Training Gallery Component
 const TrainingGallery: React.FC<ProductGalleryProps> = ({ onProductClick }) => {
-  const trainingProducts: Product[] = [
-    {
-      id: 19,
-      title: "Web Development Bootcamp",
-      description: "Pelatihan intensif pengembangan web modern dengan React, Node.js, dan teknologi terkini selama 3 bulan.",
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Programming"
-    },
-    {
-      id: 20,
-      title: "Data Science Fundamentals",
-      description: "Workshop analisis data dan machine learning menggunakan Python, pandas, dan scikit-learn untuk pemula.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Data Science"
-    },
-    {
-      id: 21,
-      title: "IoT Development Workshop",
-      description: "Pelatihan pengembangan sistem IoT dengan Arduino, Raspberry Pi, dan cloud integration.",
-      image: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "IoT"
-    },
-    {
-      id: 22,
-      title: "Digital Marketing Strategy",
-      description: "Workshop strategi pemasaran digital, SEO, social media marketing, dan content creation.",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Marketing"
-    },
-    {
-      id: 23,
-      title: "UI/UX Design Masterclass",
-      description: "Pelatihan desain antarmuka dan pengalaman pengguna menggunakan Figma dan Adobe Creative Suite.",
-      image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Design"
-    },
-    {
-      id: 24,
-      title: "Cybersecurity Essentials",
-      description: "Workshop keamanan siber, ethical hacking, dan network security untuk melindungi infrastruktur digital.",
-      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Security"
-    },
-    {
-      id: 25,
-      title: "IoT Development Workshop",
-      description: "Pelatihan pengembangan sistem IoT dengan Arduino, Raspberry Pi, dan cloud integration.",
-      image: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "IoT"
-    },
-    {
-      id: 26,
-      title: "Digital Marketing Strategy",
-      description: "Workshop strategi pemasaran digital, SEO, social media marketing, dan content creation.",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Marketing"
-    },
-    {
-      id: 27,
-      title: "UI/UX Design Masterclass",
-      description: "Pelatihan desain antarmuka dan pengalaman pengguna menggunakan Figma dan Adobe Creative Suite.",
-      image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Design"
-    },
-    {
-      id: 28,
-      title: "Cybersecurity Essentials",
-      description: "Workshop keamanan siber, ethical hacking, dan network security untuk melindungi infrastruktur digital.",
-      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Security"
-    },
-    {
-      id: 19,
-      title: "Web Development Bootcamp",
-      description: "Pelatihan intensif pengembangan web modern dengan React, Node.js, dan teknologi terkini selama 3 bulan.",
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Programming"
-    },
-    {
-      id: 20,
-      title: "Data Science Fundamentals",
-      description: "Workshop analisis data dan machine learning menggunakan Python, pandas, dan scikit-learn untuk pemula.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      link: "#",
-      category: "Data Science"
-    },
-  ];
+  const [trainingProducts, setTrainingProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    const fetchTrainingData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch('https://rtpu.pnj.ac.id/lms/api/course');
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          const formattedProducts: Product[] = result.data.map((course: any) => ({
+            id: course.id,
+            title: course.nama_course,
+            description: course.description,
+            image: course.image_link,
+            link: course.href,
+            category: "Pelatihan"
+          }));
+          
+          setTrainingProducts(formattedProducts);
+        }
+      } catch (err) {
+        console.error('Error fetching training data:', err);
+        setError('Gagal memuat data pelatihan');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTrainingData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <section className="-p-5 bg-white -mt-20" id="training">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <PelatihanHeader />
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+            <p className="mt-4 text-gray-600">Memuat data pelatihan...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="-p-5 bg-white -mt-20" id="training">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <PelatihanHeader />
+          <div className="text-center py-12">
+            <p className="text-red-600">{error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section className="-p-5 bg-white -mt-20">
+    <section className="-p-5 bg-white -mt-20" id="training">
       <div className="text-center mb-16">
         <ProductGallery
           products={trainingProducts}

@@ -35,10 +35,17 @@ const Header: React.FC = () => {
 
   const navigationItems: NavigationItem[] = [
     { label: "Home", href: "/" },
-    { label: "Tentang Kami", href: "/about" },
+    { label :"Tentang Kami",  href: "/about" },
     { label: "Berita", href: "/news" },
-    { label: "Produk Inovasi", href: "/pi" },
-    { label: "Produk Unggulan", href: "/pu" },
+    {
+      label: "Product",
+      hasDropdown: true,
+      subItems: [
+        { label: "Produk Unggulan", href: "/pu" },
+        { label: "Produk Inovasi", href: "/pi" },
+        { label: "Pelatihan", href: "#training" },
+      ],
+    },
     { label: "Login", onClick: handleUserClick },
   ];
 
@@ -100,7 +107,7 @@ const NewsPage: React.FC = () => {
       <Header />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-cyan-50 to-white py-16 px-6">
+      <section className="bg-gradient-to-b from-cyan-50 to-white py-19 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Berita & Artikel

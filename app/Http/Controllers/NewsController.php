@@ -2,62 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\news;
+use App\Models\News;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
-    /**
-     * Display a listing of the resource (admin).
-     */
     public function index()
     {
         $news = News::orderBy('created_at', 'desc')->paginate(10);
 
         return Inertia::render('admin/news/index', [
             'news' => $news,
+            'user' => auth()->user(),
+            'flash' => [
+                'message' => session('message'),
+                'error'   => session('error'),
+            ],
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return Inertia::render('admin/news/create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * STORE NEWS (CREATE)
      */
     public function store(Request $request)
     {
         $data = $request->validate([
-            'judul' => ['required', 'string', 'max:255'],
+            'judul'       => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'image' => ['nullable', 'image', 'max:2048'],
+            'images'      => ['nullable', 'image', 'max:4096'], // max 4MB
         ]);
 
-        // Handle image upload (single image)
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('news', 'public');
-            // store public path
-            $data['image_links'] = '/storage/' . $path;
+        // Upload Gambar
+        $imagePath = null;
+        if ($request->hasFile('images')) {
+            $path = $request->file('images')->store('news', 'public');
+            $imagePath = '/storage/' . $path;
         }
 
         News::create([
-            'judul' => $data['judul'],
-            'description' => $data['description'] ?? null,
-            'image_links' => $data['image_links'] ?? null,
+            'judul'        => $data['judul'],
+            'description'  => $data['description'] ?? null,
+            'image_links'  => $imagePath,
         ]);
 
         return redirect()->route('admin.news')->with('success', 'News created.');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * EDIT FORM
      */
     public function edit(News $news)
     {
@@ -67,44 +66,49 @@ class NewsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * UPDATE NEWS
      */
     public function update(Request $request, News $news)
     {
         $data = $request->validate([
-            'judul' => ['required', 'string', 'max:255'],
+            'judul'       => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'image' => ['nullable', 'image', 'max:2048'],
+            'images'      => ['nullable', 'image', 'max:8096'],
         ]);
 
-        if ($request->hasFile('image')) {
-            // delete old image if exists and is stored in /storage
+        $imagePath = $news->image_links; // default old image
+
+        // Update Image (jika user upload baru)
+        if ($request->hasFile('images')) {
+
+            // Hapus gambar lama
             if ($news->image_links) {
-                $existing = str_replace('/storage/', '', $news->image_links);
-                if (Storage::disk('public')->exists($existing)) {
-                    Storage::disk('public')->delete($existing);
+                $old = str_replace('/storage/', '', $news->image_links);
+                if (Storage::disk('public')->exists($old)) {
+                    Storage::disk('public')->delete($old);
                 }
             }
 
-            $path = $request->file('image')->store('news', 'public');
-            $data['image_links'] = '/storage/' . $path;
+            // Upload gambar baru
+            $path = $request->file('images')->store('news', 'public');
+            $imagePath = '/storage/' . $path;
         }
 
         $news->update([
-            'judul' => $data['judul'],
-            'description' => $data['description'] ?? null,
-            'image_links' => $data['image_links'] ?? $news->image_links,
+            'judul'        => $data['judul'],
+            'description'  => $data['description'] ?? null,
+            'image_links'  => $imagePath,
         ]);
 
         return redirect()->route('admin.news')->with('success', 'News updated.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * DELETE NEWS
      */
     public function destroy(News $news)
     {
-        // remove image file if present
+        // Hapus gambar jika ada
         if ($news->image_links) {
             $existing = str_replace('/storage/', '', $news->image_links);
             if (Storage::disk('public')->exists($existing)) {
@@ -118,13 +122,22 @@ class NewsController extends Controller
     }
 
     /**
-     * Display news listing for frontend view.
+     * FRONTEND VIEW
      */
     public function viewNews()
     {
         $news = News::orderBy('created_at', 'desc')->get();
 
         return Inertia::render('UI-VIEW/news', [
+            'news' => $news,
+        ]);
+    }
+
+    public function detailNews($id)
+    {
+        $news = news::find($id);
+
+        return Inertia::render('UI-VIEW/detailnews',[
             'news' => $news,
         ]);
     }
