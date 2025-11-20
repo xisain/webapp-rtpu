@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\News;
+use App\Models\news;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
@@ -11,7 +11,7 @@ class NewsController extends Controller
 {
     public function index()
     {
-        $news = News::orderBy('created_at', 'desc')->paginate(10);
+        $news = news::orderBy('created_at', 'desc')->paginate(10);
 
         return Inertia::render('admin/news/index', [
             'news' => $news,
@@ -46,7 +46,7 @@ class NewsController extends Controller
             $imagePath = '/storage/' . $path;
         }
 
-        News::create([
+        news::create([
             'judul'        => $data['judul'],
             'description'  => $data['description'] ?? null,
             'image_links'  => $imagePath,
@@ -58,7 +58,7 @@ class NewsController extends Controller
     /**
      * EDIT FORM
      */
-    public function edit(News $news)
+    public function edit(news $news)
     {
         return Inertia::render('admin/news/edit', [
             'news' => $news,
@@ -68,7 +68,7 @@ class NewsController extends Controller
     /**
      * UPDATE NEWS
      */
-    public function update(Request $request, News $news)
+    public function update(Request $request, news $news)
     {
         $data = $request->validate([
             'judul'       => ['required', 'string', 'max:255'],
@@ -106,7 +106,7 @@ class NewsController extends Controller
     /**
      * DELETE NEWS
      */
-    public function destroy(News $news)
+    public function destroy(news $news)
     {
         // Hapus gambar jika ada
         if ($news->image_links) {
@@ -126,7 +126,7 @@ class NewsController extends Controller
      */
     public function viewNews()
     {
-        $news = News::orderBy('created_at', 'desc')->get();
+        $news = news::orderBy('created_at', 'desc')->get();
 
         return Inertia::render('UI-VIEW/news', [
             'news' => $news,
