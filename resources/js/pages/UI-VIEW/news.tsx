@@ -62,27 +62,37 @@ const NewsCard: React.FC<{ item: NewsItem }> = ({ item }) => {
     });
   };
 
+  const stripHtml = (html: string) => {
+  return html.replace(/<[^>]*>/g, "").trim();
+};
+
+
   return (
     <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group">
-      {/* Image */}
+    {/* Image (Clickable) */}
       {item.image_links && (
-        <div className="relative h-48 overflow-hidden bg-gray-200">
-          <img
-            src={item.image_links}
-            alt={item.judul}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        </div>
+        <a href={`/news/detail-news/${item.id}`}>
+          <div className="relative h-48 overflow-hidden bg-gray-200">
+            <img
+              src={item.image_links}
+              alt={item.judul}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
+        </a>
       )}
 
-      {/* Content */}
       <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-cyan-600 transition-colors">
-          {item.judul}
-        </h3>
 
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-          {item.description || 'Tidak ada deskripsi'}
+        {/* Title (Clickable) */}
+        <a href={`/news/detail-news/${item.id}`}>
+          <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-cyan-600 transition-colors">
+            {item.judul}
+          </h3>
+        </a>
+
+        <p className="text-gray-600 text-sm mb-7 line-clamp-3">
+          {stripHtml(item.description) || 'Tidak ada deskripsi'}
         </p>
 
         {/* Meta */}

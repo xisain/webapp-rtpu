@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useEffect } from "react";
+
 
 interface NavigationItem {
   label: string;
@@ -13,6 +15,7 @@ interface NavigationItem {
 interface NavbarProps {
   links: NavigationItem[];
   showLoginRight?: boolean;
+  hideOnScroll?: boolean;
   underlineColor?: string;
 }
 
@@ -39,10 +42,15 @@ const textVariants = {
   exit: { x: -30, opacity: 0, transition: { duration: 0.3 } },
 };
 
+
+
+
 const Navbar: React.FC<NavbarProps> = ({
   links,
   showLoginRight,
   underlineColor = "#2563EB",
+  hideOnScroll = false, // <-- FIX: berikan default false
+
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -51,14 +59,42 @@ const Navbar: React.FC<NavbarProps> = ({
   const loginLink = links.find((l) => l.label === "Login");
   const mainLinks = links.filter((l) => l.label !== "Login");
 
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    if (!hideOnScroll) return; // ⛔ fitur mati jika tidak dipanggil dari halaman yang butuh
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        setIsVisible(false);  // hide
+      } else {
+        setIsVisible(true);   // show
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY, hideOnScroll]);
+
+
   return (
-    <motion.nav
-      variants={navVariants}
-      initial="hidden"
-      animate="show"
-      exit="exit"
-      className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50"
-    >
+      <motion.nav
+        variants={navVariants}
+        initial="hidden"
+        animate={hideOnScroll ? (isVisible ? "show" : "exit") : "show"}
+        className={
+          hideOnScroll
+            ? "bg-white sticky top-0 z-50"
+            : "bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50"
+        }
+      >
+
+
       <motion.div
         variants={containerVariants}
         initial="hidden"

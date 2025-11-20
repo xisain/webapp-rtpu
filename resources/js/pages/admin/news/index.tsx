@@ -270,9 +270,9 @@ export default function NewsIndex({ news, user, flash }: Props) {
                             </DropdownMenuTrigger>
 
                             <DropdownMenuContent align="end">
-                              {/* <DropdownMenuItem onClick={() => router.visit(`/news/${item.id}`)}>
+                              <DropdownMenuItem onClick={() => router.visit(`/news/detail-news/${item.id}`)}>
                                 <Eye className="mr-2 h-4 w-4" /> Lihat Detail
-                              </DropdownMenuItem> */}
+                              </DropdownMenuItem>
 
                               <DropdownMenuItem
                                 onClick={() =>

@@ -72,9 +72,8 @@ const App: React.FC = () => {
     { label: "Home", href: home().url },
     { label :"Tentang Kami",  href: "/about" },
     { label: "Berita", href: "/news" },
-    { label: "Produk Unggulan", href: "/pu" },
     { label: "Produk Inovasi", href: "/pi" },
-    { label: "Pelatihan", href: "#training" },
+    { label: "Pelatihan", href: "/#training" },
   ];
 
   return (

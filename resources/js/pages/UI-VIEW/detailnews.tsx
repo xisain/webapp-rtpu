@@ -8,6 +8,7 @@ interface NavigationItem {
   label: string;
   href?: string;
   hasDropdown?: boolean;
+  hideOnScroll?: boolean;
   subItems?: { label: string; href: string }[];
   onClick?: () => void;
 }
@@ -26,21 +27,28 @@ const Header: React.FC = () => {
     { label: "Home", href: "/" },
     { label: "Tentang Kami", href: "/about" },
     { label: "Berita", href: "/news" },
-    { label: "Produk Inovasi", href: "/pi" },
-    { label: "Produk Unggulan", href: "/pu" },
+    {
+      label: "Product",
+      hasDropdown: true,
+      subItems: [
+        { label: "Produk Unggulan", href: "/pu" },
+        { label: "Produk Inovasi", href: "/pi" },
+        { label: "Pelatihan", href: "#training" },
+      ],
+    },
     { label: "Login", onClick: handleUserClick },
   ];
 
-  return <Navbar links={navigationItems} showLoginRight />;
+  return <Navbar links={navigationItems} showLoginRight hideOnScroll />;
 };
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-white">
 
       <Header/>
 
       {/* === HERO IMAGE FULL WIDTH === */}
-      <div className="relative w-8xl h-[380px] md:h-[480px] lg:h-[520px] overflow-hidden mb-10 mt-5 ml-2 rounded-3xl">
+      <div className="relative w-7xl mx-auto h-[380px] md:h-[480px] lg:h-[550px] overflow-hidden mb-10 mt-5 rounded-3xl">
 
         {/* Image */}
         <motion.img
@@ -49,7 +57,7 @@ const Header: React.FC = () => {
           transition={{ duration: 0.8 }}
           src={news.image_links}
           alt={news.judul}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
 
         {/* Overlay Gradient */}
@@ -73,10 +81,10 @@ const Header: React.FC = () => {
 
       {/* === CONTENT === */}
       <div className="max-w-4xl mx-auto px-4">
-        <Card className="border-0 shadow-none">
+        <Card className="border-0 shadow-none bg-white">
           <CardContent>
             <div
-              className="prose prose-lg max-w-none text-gray-800"
+              className="prose prose-xl max-w-none text-gray-800"
               dangerouslySetInnerHTML={{ __html: news.description }}
             />
           </CardContent>

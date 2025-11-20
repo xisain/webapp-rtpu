@@ -57,17 +57,10 @@ const FigmaStyleWebsite: React.FC = () => {
 
   const navLinks = [
     { label: "Home", href: "/" },
-    { label :"Tentang Kami",  href: "/about" },
+    { label: "Galeri", onClick: handleViewGalery },
     { label: "Berita", href: "/news" },
-    {
-      label: "Product",
-      hasDropdown: true,
-      subItems: [
-        { label: "Produk Unggulan", href: "pu" },
-        { label: "Produk Inovasi", href: "pi" },
-        { label: "Pelatihan", href: "/#training" },
-      ],
-    },
+    { label: "Produk Inovasi", href: "/pi" },
+    { label: "Pelatihan", href: "/#training" },
   ];
 
   return (
