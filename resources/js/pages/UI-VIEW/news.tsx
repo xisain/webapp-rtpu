@@ -118,7 +118,7 @@ const NewsPage: React.FC = () => {
       <Header />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-cyan-50 to-white py-19 px-6">
+      <section className="bg-gradient-to-b from-cyan-50 to-bg-gray-200 py-19 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Berita & Artikel

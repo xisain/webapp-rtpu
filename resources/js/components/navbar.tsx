@@ -97,10 +97,9 @@ const Navbar: React.FC<NavbarProps> = ({
         initial="hidden"
         animate={hideOnScroll ? (isVisible ? "show" : "exit") : "show"}
         className={
-          (hideOnScroll
+          hideOnScroll
             ? "bg-white sticky top-0 z-50"
-            : "bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50")
-            + "transition-all duration-300"
+            : "bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50"
         }
       >
 
