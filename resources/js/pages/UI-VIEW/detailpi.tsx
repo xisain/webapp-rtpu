@@ -124,8 +124,8 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
           )}
         </div>
       </div>
-      <Footer />
     </div>
+    <Footer />
   </div>
 
   );
