@@ -9,7 +9,8 @@ interface NavigationItem {
   href?: string;
   onClick?: () => void;
   hasDropdown?: boolean;
-  subItems?: { label: string; href: string }[];
+  subItems?: { label: string; href?: string; onClick?: () => void }[];
+
 }
 
 interface NavbarProps {
@@ -192,8 +193,15 @@ const Navbar: React.FC<NavbarProps> = ({
                       {link.subItems.map((sub, subIdx) => (
                         <a
                           key={subIdx}
-                          href={sub.href}
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                          href={sub.href ?? "#"}
+                          onClick={(e) => {
+                            if (sub.onClick) {
+                              e.preventDefault();
+                              sub.onClick();
+                              setOpenDesktopDropdown(null);
+                            }
+                          }}
+                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
                         >
                           {sub.label}
                         </a>

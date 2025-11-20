@@ -18,7 +18,7 @@ interface NavigationItem {
   label: string;
   href?: string;
   hasDropdown?: boolean;
-  subItems?: { label: string; href: string }[];
+  subItems?: { label: string; href: string; onClick?: () => void }[];
   onClick?: () => void;
 }
 
@@ -140,27 +140,40 @@ const PelatihanHeader: React.FC = () => (
   />
 );
 
+const scrollToId = (id: string) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+};
+
+
 // Header Component (Navbar)
 const Header: React.FC = () => {
   const handleUserClick = (): void => {
     window.location.href = login().url;
+    
   };
 
-  const navigationItems: NavigationItem[] = [
-    { label: "Home", href: "#" },
-    { label :"Tentang Kami",  href: "/about" },
-    { label: "Berita", href: "/news" },
-    {
-      label: "Product",
-      hasDropdown: true,
-      subItems: [
-        { label: "Produk Unggulan", href: "#unggulan" },
-        { label: "Produk Inovasi", href: "#inovasi" },
-        { label: "Pelatihan", href: "#training" },
-      ],
-    },
-    { label: "Login", onClick: handleUserClick },
-  ];
+const navigationItems: NavigationItem[] = [
+  { label: "Home", href: "#" },
+  { label :"Tentang Kami",  href: "/about" },
+  { label: "Berita", href: "/news" },
+  {
+    label: "Product",
+    hasDropdown: true,
+    subItems: [
+      { label: "Produk Unggulan", href: "#unggulan", onClick: () => scrollToId("unggulan") },
+      { label: "Produk Inovasi", href: "#inovasi", onClick: () => scrollToId("inovasi") },
+      { label: "Pelatihan", href: "#training", onClick: () => scrollToId("training") },
+    ],
+  },
+  { label: "Login", onClick: handleUserClick },
+];
+
 
   return <Navbar links={navigationItems} showLoginRight />;
 };
