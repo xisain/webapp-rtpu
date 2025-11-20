@@ -8,7 +8,7 @@ use App\Models\produk_unggulan;
 use Inertia\Inertia;
 use App\Models\role;
 use App\Models\User;
-use App\Models\News;
+use App\Models\news;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +21,7 @@ class portalController extends Controller
     {
         $produk_unggulan = Produk_unggulan::all();
         $produk_inovasi = Produk_inovasi::all();
-        $news = News::all();
+        $news = news::all();
 
         return Inertia::render("UI-VIEW/portal", [
             'produkUnggulan' => $produk_unggulan,
