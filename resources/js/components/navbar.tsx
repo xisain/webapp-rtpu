@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
+import { usePage } from "@inertiajs/react";
+
 
 
 interface NavigationItem {
@@ -18,6 +20,8 @@ interface NavbarProps {
   showLoginRight?: boolean;
   hideOnScroll?: boolean;
   underlineColor?: string;
+  clientIp?: string;   // ← tambah ini
+
 }
 
 const containerVariants = {
@@ -60,27 +64,31 @@ const Navbar: React.FC<NavbarProps> = ({
   const loginLink = links.find((l) => l.label === "Login");
   const mainLinks = links.filter((l) => l.label !== "Login");
 
+  const { props } = usePage();
+  const clientIp = props.client_ip;
+
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
-    if (!hideOnScroll) return; // ⛔ fitur mati jika tidak dipanggil dari halaman yang butuh
+    if (!hideOnScroll) return;
 
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      const current = window.scrollY;
 
-      if (currentScrollY > lastScrollY && currentScrollY > 80) {
-        setIsVisible(false);  // hide
+      if (current > lastScrollY && current > 80) {
+        setIsVisible(false);
       } else {
-        setIsVisible(true);   // show
+        setIsVisible(true);
       }
 
-      setLastScrollY(currentScrollY);
+      setLastScrollY(current);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY, hideOnScroll]);
+  }, [hideOnScroll]); 
+
 
 
   return (
@@ -89,12 +97,12 @@ const Navbar: React.FC<NavbarProps> = ({
         initial="hidden"
         animate={hideOnScroll ? (isVisible ? "show" : "exit") : "show"}
         className={
-          hideOnScroll
+          (hideOnScroll
             ? "bg-white sticky top-0 z-50"
-            : "bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50"
+            : "bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50")
+            + "transition-all duration-300"
         }
       >
-
 
       <motion.div
         variants={containerVariants}
@@ -312,14 +320,28 @@ const Navbar: React.FC<NavbarProps> = ({
 
         {/* Login di kanan */}
         {showLoginRight && loginLink && (
-          <motion.button
-            variants={textVariants}
-            onClick={loginLink.onClick}
-            className="ml-4 px-4 py-2 text-black rounded-md transition"
-          >
-            {loginLink.label}
-          </motion.button>
-        )}
+        <motion.button
+          variants={textVariants}
+          onClick={() => {
+            if (clientIp === "10.152.0.100") {
+              loginLink.onClick && loginLink.onClick();
+            } else {
+              alert("Akses login hanya diperbolehkan dari jaringan internal.");
+            }
+          }}
+          disabled={clientIp !== "10.152.0.100"}
+          className={
+            `ml-4 px-4 py-2 rounded-md transition ${
+              clientIp === "10.152.0.100"
+                ? "text-black"
+                : "text-gray-400 cursor-not-allowed"
+            }`
+          }
+        >
+          {loginLink.label}
+        </motion.button>
+      )}
+
 
         {/* Burger Button */}
         <motion.button

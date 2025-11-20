@@ -107,6 +107,7 @@ Route::get('/about', function () {
     return Inertia::render('UI-VIEW/aboutus');
 })->name('aboutus');
 
+
 Route::prefix('news')->group(function(){
     Route::get('/', [\App\Http\Controllers\NewsController::class, 'viewNews'])->name('news');
     Route::get('/detail-news/{id}', [\App\Http\Controllers\NewsController::class, 'detailNews'])->name('detail.news');
