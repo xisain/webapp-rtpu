@@ -154,7 +154,7 @@ const Header: React.FC = () => {
       label: "Product",
       hasDropdown: true,
       subItems: [
-        { label: "Produk Unggulan", href: "#ungulan" },
+        { label: "Produk Unggulan", href: "#unggulan" },
         { label: "Produk Inovasi", href: "#inovasi" },
         { label: "Pelatihan", href: "#training" },
       ],
