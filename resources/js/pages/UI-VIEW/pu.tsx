@@ -3,6 +3,8 @@ import { ChevronLeft, ChevronRight, Home, ChevronDown, ArrowLeft, Menu, X} from 
 import { Link, usePage } from '@inertiajs/react';
 import { home } from '@/routes';
 import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
+
 
 interface Product {
   id: number;
@@ -149,6 +151,7 @@ const App: React.FC = () => {
           Halaman {currentPage + 1} dari {totalPages} ({produkUnggulan.length} total produk)
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

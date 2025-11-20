@@ -3,6 +3,8 @@ import { ChevronDown, ArrowLeft } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
 import { home, produk_inovasi} from '@/routes';
 import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
+
 
 interface FiturUtama {
   id: number;
@@ -39,7 +41,7 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+  <div className="min-h-screen bg-gray-50">
       {/* Header */}
     <Navbar links={navLinks}/>
       {/* Judul */}
@@ -122,6 +124,7 @@ const { props } = usePage<{ produkInovasi: ProdukInovasi }>();
           )}
         </div>
       </div>
+      <Footer />
     </div>
   </div>
 

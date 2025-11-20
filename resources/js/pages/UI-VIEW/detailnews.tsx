@@ -2,6 +2,8 @@ import { usePage } from "@inertiajs/react";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
+
 
 
 interface NavigationItem {
@@ -91,10 +93,8 @@ const Header: React.FC = () => {
         </Card>
 
         {/* Footer */}
-        <div className="mt-10 pt-6 border-t text-sm text-gray-500 text-center">
-          © {new Date().getFullYear()} Your Website — All rights reserved.
-        </div>
       </div>
+        <Footer/>
     </div>
   );
 }

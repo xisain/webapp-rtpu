@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Home, ChevronDown, ArrowLeft, Menu, X, Compo
 import { Link, usePage } from '@inertiajs/react';
 import { home } from '@/routes';
 import Navbar from "@/components/navbar";
+import Footer from '@/components/footer';
 
 interface ProdukInovasi { //ni yg bener kek mana?
   id: number;
@@ -145,6 +146,7 @@ const produkInovasi = props.produkInovasi; // default jadi array kosong
           Halaman {currentPage + 1} dari {totalPages} ({produkInovasi.length} total produk)
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -3,6 +3,8 @@ import { ChevronLeft, ChevronRight, ArrowLeft } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
 import { home, produk_unggulan} from '@/routes';
 import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
+
 
  interface DetailProdukUnggulan {
   id: number;
@@ -251,15 +253,7 @@ const FigmaStyleWebsite: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8 mt-16">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <img src="/images/logo.png" alt="Logo" className='w-10 h-10'/>
-            <span className="text-lg font-semibold">RTPU PNJ</span>
-          </div>
-          <p className="text-gray-400">© 2024 BTKU PRO. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

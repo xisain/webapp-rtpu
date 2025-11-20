@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { MapPin, Mail, Users, Building2, Menu, ChevronDown } from 'lucide-react';
 import Navbar from '@/components/navbar';
 import { Head } from '@inertiajs/react';
+import Footer from '@/components/footer';
+
 
 
 
@@ -190,36 +192,7 @@ const AboutUsPage = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-6 mt-16">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <h4 className="text-xl font-bold mb-4">RTPU PNJ</h4>
-              <p className="text-gray-400">
-                Rekayasa Teknologi dan Produk Unggulan
-              </p>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">Home</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">Tentang Kami</a></li>
-                <li><a href="#" className="hover:text-cyan-400 transition-colors">Program</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Contact</h4>
-              <p className="text-gray-400">
-                Politeknik Negeri Jakarta<br/>
-                Depok, Jawa Barat 16425
-              </p>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 RTPU PNJ. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       <style>{`
         @keyframes fade-in {
