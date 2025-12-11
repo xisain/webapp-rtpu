@@ -195,53 +195,55 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onViewInnovation, onGoToLMS }
   };
 
   return (
-    <section className="bg-gradient-to-br from-gray-50 to-gray-100 py-23">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <div className="inline-block px-4 py-2 bg-teal-100 text-teal-800 text-sm font-medium rounded-full">
-                Portal Resmi RTPU
-              </div>
-              <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                Selamat Datang Di<br />
-                <span className="bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-                  Portal RTPU PNJ
-                </span>
-              </h1>
-            </div>
-            <p className="text-lg text-gray-600 leading-relaxed">
-                Rekayasa Teknologi dan Produk Unggulan (RTPU) Politeknik Negeri Jakarta
-                berfokus pada penelitian terapan, pengembangan produk, dan transfer teknologi
-                untuk mendukung industri serta peningkatan kompetensi mahasiswa dan staf.
-                Kami bekerja sama dengan mitra industri untuk mengkomersialkan inovasi dan menyediakan
-                pelatihan yang relevan dengan kebutuhan pasar.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            </div>
+ <section className="bg-gradient-to-br from-gray-50 to-gray-100 py-23">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="space-y-6">
+        <div className="space-y-4">
+          <div className="inline-block px-4 py-2 bg-teal-100 text-teal-800 text-sm font-medium rounded-full">
+            Portal Resmi RTPU
           </div>
-
-          <div className="relative">
-            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
-              <img
-                src="images/poto peenjeh.jpg"
-                alt="RTPU PNJ Building"
-                className="w-full h-64 lg:h-80 object-cover"
-              />
-              <div className="absolute bottom-4 left-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-4 py-2 rounded-lg font-bold text-sm shadow-lg">
-                POLITEKNIK NEGERI JAKARTA
-              </div>
-              <div className="absolute top-4 right-4 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-            </div>
-            <div className="absolute -top-4 -right-4 w-24 h-24 bg-teal-200 rounded-full opacity-20 animate-bounce"></div>
-            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-200 rounded-full opacity-20"></div>
-          </div>
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+            Selamat Datang Di<br />
+            <span className="bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+              Portal RTPU PNJ
+            </span>
+          </h1>
+        </div>
+        <p className="text-lg text-gray-600 leading-relaxed">
+          Rekayasa Teknologi dan Produk Unggulan (RTPU) Politeknik Negeri Jakarta
+          berfokus pada penelitian terapan, pengembangan produk, dan transfer teknologi
+          untuk mendukung industri serta peningkatan kompetensi mahasiswa dan staf.
+          Kami bekerja sama dengan mitra industri untuk mengkomersialkan inovasi dan menyediakan
+          pelatihan yang relevan dengan kebutuhan pasar.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+           <a href="http://pnj.ac.id/" target="_blank" rel="noopener noreferrer" className="px-8 py-4 bg-gradient-to-r from-teal-600 to-blue-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 text-center">
+            Learn More
+          </a>
         </div>
       </div>
-    </section>
-  );
-};
 
+      <div className="relative">
+        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
+          <img
+            src="images/poto peenjeh.jpg"
+            alt="RTPU PNJ Building"
+            className="w-full h-64 lg:h-80 object-cover"
+          />
+          <div className="absolute bottom-4 left-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black px-4 py-2 rounded-lg font-bold text-sm shadow-lg">
+            POLITEKNIK NEGERI JAKARTA
+          </div>
+          <div className="absolute top-4 right-4 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+        </div>
+        <div className="absolute -top-4 -right-4 w-24 h-24 bg-teal-200 rounded-full opacity-20 animate-bounce"></div>
+        <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-200 rounded-full opacity-20"></div>
+      </div>
+    </div>
+  </div>
+</section>
+  );
+}
 
 // Product Card Component
 const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
