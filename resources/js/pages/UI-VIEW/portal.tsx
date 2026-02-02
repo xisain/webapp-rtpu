@@ -240,6 +240,22 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onViewInnovation, onGoToLMS }
         <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-200 rounded-full opacity-20"></div>
       </div>
     </div>
+
+    {/* YouTube Video Section */}
+    <div className="mt-16 w-full">
+      <div className="bg-white overflow-hidden">
+        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+          <iframe
+            className="absolute top-0 left-0 w-full h-full"
+            src="https://www.youtube.com/embed/Im00a5ZL46I?si=nhx0lHa2ph0vgkhf"
+            title="RTPU PNJ Video"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </section>
   );

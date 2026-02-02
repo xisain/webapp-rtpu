@@ -45,14 +45,14 @@ const AboutUsPage = () => {
   };
 
   const hrTeam = [
-    { name: 'Sonki Prasetya', role: 'HR Staff' },
-    { name: 'Asep Taufik Muharram', role: 'HR Staff' },
-    { name: 'Fitria Ayuningtias', role: 'HR Staff' }
+    { name: 'Dr., Ir., Dewi Yanti Liliana , S.Kom., M.Kom', role: 'ketua RTPU', photoUrl: '/images/FOTO1.jpeg' },
+    { name: 'sep Taufik Muharram, S.Kom, M.Kom', role: 'Sekertaris RPTU', photoUrl: '/images/FOTO2.jpeg' },
+    { name: 'Fitria Ayuningtias', role: 'Admin RTPU',},
   ];
 
   const contacts = [
-    { name: 'Yusti Fatmaningdyah', role: 'Contact Person' },
-    { name: 'Suci Vina Ramadini', role: 'Contact Person' }
+    { name: 'Yusti Fatmaningdyah', role: 'Contact Person', },
+    { name: 'Suci Vina Ramadini', role: 'Contact Person', }
   ];
 
   return (
@@ -147,8 +147,12 @@ const AboutUsPage = () => {
                     className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-5 border-l-4 border-teal-500 hover:shadow-md transition-all duration-300 hover:translate-x-1"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
-                        {member.name.charAt(0)}
+                      <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md overflow-hidden">
+                        {member.photoUrl ? (
+                          <img src={member.photoUrl} alt={member.name} className="w-full h-full object-cover" />
+                        ) : (
+                          member.name.charAt(0)
+                        )}
                       </div>
                       <div>
                         <p className="font-bold text-gray-800 text-lg">• {member.name}</p>
@@ -167,9 +171,18 @@ const AboutUsPage = () => {
                 </h4>
                 <div className="space-y-3">
                   {contacts.map((contact, index) => (
-                    <div key={index} className="bg-white bg-opacity-20 rounded-lg p-4 backdrop-blur-sm hover:bg-opacity-30 transition-all">
-                      <p className="text-black font-semibold text-lg">{contact.name}</p>
-                      <p className="text-sm text-cyan-300">{contact.role}</p>
+                    <div key={index} className="bg-white bg-opacity-20 rounded-lg p-4 backdrop-blur-sm hover:bg-opacity-30 transition-all flex items-center gap-3">
+                      <div className="w-10 h-10 bg-white rounded-full flex-shrink-0 overflow-hidden flex items-center justify-center">
+                        {contact.photoUrl ? (
+                          <img src={contact.photoUrl} alt={contact.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-teal-600 font-bold">{contact.name.charAt(0)}</span>
+                        )}
+                      </div>
+                      <div>
+                        <p className="text-black font-semibold text-lg">{contact.name}</p>
+                        <p className="text-sm text-cyan-300">{contact.role}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
