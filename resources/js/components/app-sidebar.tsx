@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '@/components/ui/sidebar';
-import { aboutus, dashboard } from '@/routes';
+import { about, dashboard } from '@/routes';
 import { index, users, produkUnggulan, produkInovasi, news} from '@/routes/admin/';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
@@ -48,7 +48,7 @@ const adminNavItems: NavItem[] = [
   },
 {
     title: 'About Us',
-    href: aboutus(),
+    href: about(),
     icon: BookOpen,
 }
 ];
