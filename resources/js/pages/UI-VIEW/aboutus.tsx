@@ -15,7 +15,19 @@ interface NavigationItem {
   onClick?: () => void;
 }
 
-const AboutUsPage = () => {
+interface TeamMember {
+  id: number;
+  nama: string;
+  role: 'ketua RTPU' | 'Sekertaris RPTU' | 'Admin RTPU';
+  image?: string;
+  created_at?: string;
+}
+
+interface PageProps {
+  teamMembers?: TeamMember[];
+}
+
+const AboutUsPage = ({ teamMembers = [] }: PageProps) => {
   const [activeLocation, setActiveLocation] = useState<'jakarta' | 'depok' | null>(null);
 
 
@@ -44,15 +56,45 @@ const AboutUsPage = () => {
     return <Navbar links={navigationItems} showLoginRight />;
   };
 
+  const getRoleColor = (role: string): string => {
+    switch (role) {
+      case 'ketua RTPU':
+        return 'from-amber-400 to-amber-600';
+      case 'Sekertaris RPTU':
+        return 'from-blue-400 to-blue-600';
+      case 'Admin RTPU':
+        return 'from-green-400 to-green-600';
+      default:
+        return 'from-gray-400 to-gray-600';
+    }
+  };
+
+  const getRoleBgColor = (role: string): string => {
+    switch (role) {
+      case 'ketua RTPU':
+        return 'bg-amber-50 border-amber-500';
+      case 'Sekertaris RPTU':
+        return 'bg-blue-50 border-blue-500';
+      case 'Admin RTPU':
+        return 'bg-green-50 border-green-500';
+      default:
+        return 'bg-gray-50 border-gray-500';
+    }
+  };
+
+  const getInitials = (name: string): string => {
+    return name
+      .split(' ')
+      .map((word) => word.charAt(0))
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
   const hrTeam = [
     { name: 'Dr., Ir., Dewi Yanti Liliana , S.Kom., M.Kom', role: 'ketua RTPU', photoUrl: '/images/FOTO1.jpeg' },
-    { name: 'sep Taufik Muharram, S.Kom, M.Kom', role: 'Sekertaris RPTU', photoUrl: '/images/FOTO2.jpeg' },
-    { name: 'Fitria Ayuningtias', role: 'Admin RTPU',},
-  ];
-
-  const contacts = [
-    { name: 'Yusti Fatmaningdyah', role: 'Contact Person', },
-    { name: 'Suci Vina Ramadini', role: 'Contact Person', }
+    { name: 'Asep Taufik Muharram, S.Kom, M.Kom', role: 'Sekertaris RPTU', photoUrl: 'images/FOTO2.jpeg' },
+    { name: 'Fitria Ayuningtias', role: 'Admin RTPU'},
   ];
 
   return (
@@ -136,34 +178,38 @@ const AboutUsPage = () => {
                 <div className="bg-teal-100 p-3 rounded-xl">
                   <Users className="text-teal-600" size={28} />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-800">Human Resources RTPU</h3>
+                <h3 className="text-2xl font-bold text-gray-800">Struktur RTPU</h3>
               </div>
 
               {/* HR Team Cards */}
               <div className="space-y-4 mb-8">
-                {hrTeam.map((member, index) => (
-                  <div 
-                    key={index}
-                    className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-5 border-l-4 border-teal-500 hover:shadow-md transition-all duration-300 hover:translate-x-1"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md overflow-hidden">
-                        {member.photoUrl ? (
-                          <img src={member.photoUrl} alt={member.name} className="w-full h-full object-cover" />
-                        ) : (
-                          member.name.charAt(0)
-                        )}
-                      </div>
-                      <div>
-                        <p className="font-bold text-gray-800 text-lg">• {member.name}</p>
-                        <p className="text-sm text-gray-600">{member.role}</p>
+                {teamMembers && teamMembers.length > 0 ? (
+                  teamMembers.map((member) => (
+                    <div
+                      key={member.id}
+                      className={`rounded-xl p-5 border-l-4 ${getRoleBgColor(member.role)} hover:shadow-md transition-all duration-300 hover:translate-x-1`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={`w-12 h-12 bg-gradient-to-br ${getRoleColor(member.role)} rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md overflow-hidden`}>
+                          {member.image ? (
+                            <img src={`/storage/${member.image}`} alt={member.nama} className="w-full h-full object-cover" />
+                          ) : (
+                            getInitials(member.nama)
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-bold text-gray-800 text-lg">• {member.nama}</p>
+                          <p className="text-sm text-gray-600">{member.role}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <p className="text-gray-500 text-center py-8">Belum ada data tim</p>
+                )}
               </div>
 
-              {/* Contact Persons */}
+              {/* Contact Persons
               <div className="bg-gradient-to-r from-cyan-500 to-teal-500 rounded-xl p-6 text-white shadow-md">
                 <h4 className="font-bold text-xl mb-4 flex items-center gap-2">
                   <Mail size={24} />
@@ -186,7 +232,7 @@ const AboutUsPage = () => {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
 
               {/* Contact Email */}
               <div className="mt-6 bg-gray-50 rounded-xl p-6 border-2 border-dashed border-gray-300">
