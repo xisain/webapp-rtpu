@@ -9,8 +9,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '@/components/ui/sidebar';
-import { about, dashboard } from '@/routes';
-import { index, users, produkUnggulan, produkInovasi, news} from '@/routes/admin/';
+import { dashboard } from '@/routes';
+import { index, users, produkUnggulan, produkInovasi, news } from '@/routes/admin/';
+import aboutus from '@/routes/admin/aboutus';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, User, Lightbulb, Trophy } from 'lucide-react';
@@ -46,11 +47,11 @@ const adminNavItems: NavItem[] = [
     href: news(),
     icon: LayoutGrid,
   },
-{
+  {
     title: 'About Us',
-    href: about(),
+    href: aboutus.index(),
     icon: BookOpen,
-}
+  }
 ];
 
 const dosenNavItems: NavItem[] = [
@@ -107,29 +108,30 @@ function getNavItemsForRole(role: string): NavItem[] {
 // =============================
 // 🔹 NAVIGATION MAIN COMPONENT
 // =============================
-function NavMain({ items }: { items: NavItem[] }) {
+function NavMain({ items }: { readonly items: NavItem[] }) {
   const { url } = usePage(); // ambil URL aktif saat ini
 
   return (
     <nav className="space-y-1">
       {items.map((item) => {
         const Icon = item.icon;
+        const href = typeof item.href === 'string' ? item.href : item.href.url;
         const isActive =
-          item.href === '/'
+          href === '/'
             ? url === '/'
-            : url.startsWith(item.href);
+            : url.startsWith(href);
 
         return (
           <Link
             key={item.title}
-            href={item.href}
+            href={href}
             className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors duration-150 ${
               isActive
                 ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white font-semibold'
                 : 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
-            <Icon className="h-4 w-4" />
+            {Icon && <Icon className="h-4 w-4" />}
             <span>{item.title}</span>
           </Link>
         );
@@ -142,7 +144,7 @@ function NavMain({ items }: { items: NavItem[] }) {
 // 🔹 APP SIDEBAR UTAMA
 // =============================
 export function AppSidebar() {
-  const { auth } = usePage().props as {
+  const props = usePage().props as unknown as {
     auth: {
       user: {
         id: number;
@@ -152,8 +154,9 @@ export function AppSidebar() {
       } | null;
     };
   };
+  const { auth } = props;
 
-  const navItems = auth.user ? getNavItemsForRole(auth.user.role) : [];
+  const navItems = auth?.user ? getNavItemsForRole(auth.user.role) : [];
 
   return (
     <Sidebar collapsible="icon" variant="inset">

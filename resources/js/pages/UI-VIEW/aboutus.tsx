@@ -27,7 +27,7 @@ interface PageProps {
   teamMembers?: TeamMember[];
 }
 
-const AboutUsPage = ({ teamMembers = [] }: PageProps) => {
+const AboutUs = ({ teamMembers = [] }: PageProps) => {
   const [activeLocation, setActiveLocation] = useState<'jakarta' | 'depok' | null>(null);
 
 
@@ -272,4 +272,4 @@ const AboutUsPage = ({ teamMembers = [] }: PageProps) => {
   );
 };
 
-export default AboutUsPage;
+export default AboutUs;

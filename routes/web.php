@@ -13,7 +13,7 @@ use Inertia\Inertia;
 // })->name('home');
 
 Route::get('/', [\App\Http\Controllers\portalController::class, 'index'])->name('home');
-Route::get('/about', [\App\Http\Controllers\AboutUsController::class, 'show'])->name('about');
+Route::get('/about', [\App\Http\Controllers\AboutUsController::class, 'about'])->name('about');
 Route::get('/pu', [\App\Http\Controllers\portalController::class, 'showList'])->name('produk_unggulan');
 Route::get('/pi', [\App\Http\Controllers\portalController::class, 'showPI'])->name('produk_inovasi');
 Route::get('detail-produk-unggulan/{id}', [ProdukUnggulanController::class, 'show'])->name('detail-produk-unggulan');
@@ -65,9 +65,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 
         // About Us Routing For Admin
-        Route::resource('aboutus', \App\Http\Controllers\AboutUsController::class);
-
+        Route::prefix('aboutus')->group(function () {
+            Route::get('/', [\App\Http\Controllers\AboutUsController::class, 'index'])->name('admin.aboutus.index');
+            Route::get('/create', [\App\Http\Controllers\AboutUsController::class, 'create'])->name('admin.aboutus.create');
+            Route::post('/store', [\App\Http\Controllers\AboutUsController::class, 'store'])->name('admin.aboutus.store');
+            Route::get('/{aboutUs}/edit', [\App\Http\Controllers\AboutUsController::class, 'edit'])->name('admin.aboutus.edit');
+            Route::put('/{aboutUs}', [\App\Http\Controllers\AboutUsController::class, 'update'])->name('admin.aboutus.update');
+            Route::delete('/{aboutUs}', [\App\Http\Controllers\AboutUsController::class, 'destroy'])->name('admin.aboutus.delete');
+        });
     });
+
+    
     Route::prefix('dosen')->middleware(DosenMiddleware::class)->group(function () {
         Route::get('/', [\App\Http\Controllers\portalController::class, 'adminpanel'])->name('dosendashboard');
         Route::prefix('produk-unggulan')->group(function () {
