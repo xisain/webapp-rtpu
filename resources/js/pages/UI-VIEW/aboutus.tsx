@@ -15,21 +15,28 @@ interface NavigationItem {
   onClick?: () => void;
 }
 
-interface TeamMember {
+interface HrTeam {
   id: number;
-  nama: string;
-  role: 'ketua RTPU' | 'Sekertaris RPTU' | 'Admin RTPU';
-  image?: string;
-  created_at?: string;
+  name: string;
+  position: string;
+  photo_path?: string;
+}
+
+interface AboutUsData {
+  id: number;
+  section_title?: string;
+  section_description?: string;
+  hr_teams: HrTeam[];
 }
 
 interface PageProps {
-  teamMembers?: TeamMember[];
+  aboutUs?: AboutUsData;
 }
 
-const AboutUs = ({ teamMembers = [] }: PageProps) => {
+const AboutUs = ({ aboutUs }: PageProps) => {
+     console.log('AboutUs data:', aboutUs);
+  console.log('HR Teams:', aboutUs?.hr_teams);
   const [activeLocation, setActiveLocation] = useState<'jakarta' | 'depok' | null>(null);
-
 
   const Header: React.FC = () => {
     const handleUserClick = (): void => {
@@ -56,32 +63,6 @@ const AboutUs = ({ teamMembers = [] }: PageProps) => {
     return <Navbar links={navigationItems} showLoginRight />;
   };
 
-  const getRoleColor = (role: string): string => {
-    switch (role) {
-      case 'ketua RTPU':
-        return 'from-amber-400 to-amber-600';
-      case 'Sekertaris RPTU':
-        return 'from-blue-400 to-blue-600';
-      case 'Admin RTPU':
-        return 'from-green-400 to-green-600';
-      default:
-        return 'from-gray-400 to-gray-600';
-    }
-  };
-
-  const getRoleBgColor = (role: string): string => {
-    switch (role) {
-      case 'ketua RTPU':
-        return 'bg-amber-50 border-amber-500';
-      case 'Sekertaris RPTU':
-        return 'bg-blue-50 border-blue-500';
-      case 'Admin RTPU':
-        return 'bg-green-50 border-green-500';
-      default:
-        return 'bg-gray-50 border-gray-500';
-    }
-  };
-
   const getInitials = (name: string): string => {
     return name
       .split(' ')
@@ -91,18 +72,12 @@ const AboutUs = ({ teamMembers = [] }: PageProps) => {
       .slice(0, 2);
   };
 
-  const hrTeam = [
-    { name: 'Dr., Ir., Dewi Yanti Liliana , S.Kom., M.Kom', role: 'ketua RTPU', photoUrl: '/images/FOTO1.jpeg' },
-    { name: 'Asep Taufik Muharram, S.Kom, M.Kom', role: 'Sekertaris RPTU', photoUrl: 'images/FOTO2.jpeg' },
-    { name: 'Fitria Ayuningtias', role: 'Admin RTPU'},
-  ];
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation Bar */}
       <Header />
 
-  
+
       {/* Main Content Section */}
       <div className="py-16 px-6">
         <div className="max-w-7xl mx-auto">
@@ -120,19 +95,17 @@ const AboutUs = ({ teamMembers = [] }: PageProps) => {
           {/* Description Section */}
           <div className="mb-8 px-10">
             <div className="bg-white rounded-2xl shadow-lg p-8 max-w-12xl mx-auto">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-3">Tentang RTPU PNJ</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-3">
+                {aboutUs?.section_title || 'Tentang RTPU PNJ'}
+              </h3>
               <p className="text-gray-600 leading-relaxed">
-                Rekayasa Teknologi dan Produk Unggulan (RTPU) Politeknik Negeri Jakarta
-                berfokus pada penelitian terapan, pengembangan produk, dan transfer teknologi
-                untuk mendukung industri serta peningkatan kompetensi mahasiswa dan staf.
-                Kami bekerja sama dengan mitra industri untuk mengkomersialkan inovasi dan menyediakan
-                pelatihan yang relevan dengan kebutuhan pasar.
+                {aboutUs?.section_description || 'Rekayasa Teknologi dan Produk Unggulan (RTPU) Politeknik Negeri Jakarta berfokus pada penelitian terapan, pengembangan produk, dan transfer teknologi untuk mendukung industri serta peningkatan kompetensi mahasiswa dan staf. Kami bekerja sama dengan mitra industri untuk mengkomersialkan inovasi dan menyediakan pelatihan yang relevan dengan kebutuhan pasar.'}
               </p>
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            
+
             {/* Location Section */}
             <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow">
               <div className="flex items-center gap-3 mb-6">
@@ -183,29 +156,33 @@ const AboutUs = ({ teamMembers = [] }: PageProps) => {
 
               {/* HR Team Cards */}
               <div className="space-y-4 mb-8">
-                {teamMembers && teamMembers.length > 0 ? (
-                  teamMembers.map((member) => (
+                {aboutUs && aboutUs.hr_teams && aboutUs.hr_teams.length > 0 ? (
+                  aboutUs.hr_teams.map((member) => (
                     <div
                       key={member.id}
-                      className={`rounded-xl p-5 border-l-4 ${getRoleBgColor(member.role)} hover:shadow-md transition-all duration-300 hover:translate-x-1`}
+                      className="rounded-xl p-5 border-l-4 border-cyan-500 bg-cyan-50 hover:shadow-md transition-all duration-300 hover:translate-x-1"
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 bg-gradient-to-br ${getRoleColor(member.role)} rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md overflow-hidden`}>
-                          {member.image ? (
-                            <img src={`/storage/${member.image}`} alt={member.nama} className="w-full h-full object-cover" />
+                        <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md overflow-hidden flex-shrink-0">
+                          {member.photo_path ? (
+                            <img src={`/storage/${member.photo_path}`} alt={member.name} className="w-full h-full object-cover" />
                           ) : (
-                            getInitials(member.nama)
+                            getInitials(member.name)
                           )}
                         </div>
-                        <div>
-                          <p className="font-bold text-gray-800 text-lg">• {member.nama}</p>
-                          <p className="text-sm text-gray-600">{member.role}</p>
+                        <div className="flex-1">
+                          <p className="font-bold text-gray-800 text-lg">• {member.name}</p>
+                          <p className="text-sm text-gray-600">{member.position}</p>
                         </div>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-500 text-center py-8">Belum ada data tim</p>
+                  <div className="text-center py-8 text-gray-500 border-2 border-dashed border-gray-300 rounded-xl">
+                    <Users className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                    <p>Belum ada data tim yang ditambahkan</p>
+                    <p className="text-xs mt-2">Admin dapat menambahkan data di halaman admin/aboutus</p>
+                  </div>
                 )}
               </div>
 
@@ -237,8 +214,8 @@ const AboutUs = ({ teamMembers = [] }: PageProps) => {
               {/* Contact Email */}
               <div className="mt-6 bg-gray-50 rounded-xl p-6 border-2 border-dashed border-gray-300">
                 <p className="text-gray-700 mb-2 font-semibold">Contact:</p>
-                <a 
-                  href="mailto:upartpu@pnj.ac.id" 
+                <a
+                  href="mailto:upartpu@pnj.ac.id"
                   className="text-cyan-600 hover:text-cyan-800 font-medium text-lg flex items-center gap-2 hover:underline transition-all"
                 >
                   <Mail size={20} />

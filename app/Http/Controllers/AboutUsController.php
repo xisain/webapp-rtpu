@@ -46,14 +46,15 @@ class AboutUsController extends Controller
 
         // Handle HR team members
         for ($i = 0; $i < (int)$request->hr_count; $i++) {
+            $photoPath = null;
             if ($request->hasFile("hr_photos.$i")) {
-                $path = $request->file("hr_photos.$i")->store('aboutus', 'public');
-                $aboutUs->hrTeams()->create([
-                    'name' => $request->input("hr_teams.$i.name"),
-                    'position' => $request->input("hr_teams.$i.position"),
-                    'photo_path' => $path,
-                ]);
+                $photoPath = $request->file("hr_photos.$i")->store('aboutus', 'public');
             }
+            $aboutUs->hrTeams()->create([
+                'name' => $request->input("hr_teams.$i.name"),
+                'position' => $request->input("hr_teams.$i.position"),
+                'photo_path' => $photoPath,
+            ]);
         }
 
         return redirect()->route('admin.aboutus.index')->with('success', 'About Us berhasil ditambahkan');
@@ -153,18 +154,22 @@ class AboutUsController extends Controller
      */
     public function about()
     {
-        $roleOrder = ['ketua RTPU', 'Sekertaris RPTU', 'Admin RTPU'];
-        $teamMembers = AboutUs::all();
-
-        // Sort by role hierarchy
-        $sortedTeamMembers = $teamMembers->sortBy(function ($item) use ($roleOrder) {
-            return array_search($item->role, $roleOrder) !== false
-                ? array_search($item->role, $roleOrder)
-                : count($roleOrder);
-        })->values();
+        $aboutUs = AboutUs::with('hrTeams')->first();
+        
+        // If no record exists, create empty structure with data
+        if (!$aboutUs) {
+            return Inertia::render('UI-VIEW/aboutus', [
+                'aboutUs' => [
+                    'id' => null,
+                    'section_title' => 'Tentang RTPU PNJ',
+                    'section_description' => 'Rekayasa Teknologi dan Produk Unggulan (RTPU) Politeknik Negeri Jakarta berfokus pada penelitian terapan, pengembangan produk, dan transfer teknologi untuk mendukung industri serta peningkatan kompetensi mahasiswa dan staf.',
+                    'hrTeams' => [],
+                ],
+            ]);
+        }
 
         return Inertia::render('UI-VIEW/aboutus', [
-            'teamMembers' => $sortedTeamMembers,
+            'aboutUs' => $aboutUs,
         ]);
     }
 }

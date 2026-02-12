@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             roleSeeders::class, // Seed roles first
             userSeeders::class, // Then seed users
+            AboutUsSeeder::class, // Then seed AboutUs data
         ]);
 
         // Create users after roles are seeded

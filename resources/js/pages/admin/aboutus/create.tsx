@@ -107,7 +107,7 @@ export default function AboutUsCreate() {
 
 		formData.append("hr_count", String(validMembers.length));
 
-		const url = user?.role?.id === 1 ? "/admin/aboutus/store" : "/dosen/aboutus/store";
+		const url ="/admin/aboutus/store"
 
 		router.post(url, formData, {
 			onSuccess: () => {

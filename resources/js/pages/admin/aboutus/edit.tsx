@@ -139,7 +139,7 @@ export default function AboutUsEdit() {
 		formData.append('existing_count', String(existingMembers.length));
 		formData.append('new_count', String(newMembers.length));
 
-		const url = user?.role?.id === 1 ? `/admin/aboutus/update/${about.id}` : `/dosen/aboutus/update/${about.id}`;
+		const url = `/admin/aboutus/${about.id}`
 
 		router.post(url, formData, {
 			onSuccess: () => {
