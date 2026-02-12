@@ -155,7 +155,7 @@ class AboutUsController extends Controller
     public function about()
     {
         $aboutUs = AboutUs::with('hrTeams')->first();
-        
+
         // If no record exists, create empty structure with data
         if (!$aboutUs) {
             return Inertia::render('UI-VIEW/aboutus', [
