@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\aboutUs;
+use App\Models\AboutUs;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,7 +13,7 @@ class AboutUsController extends Controller
      */
     public function index()
     {
-        $aboutUs = AboutUs::all();
+        $aboutUs = aboutUs::all();
 
         return Inertia::render('admin/aboutus/index', [
             'aboutUsItems' => $aboutUs,
@@ -45,7 +45,7 @@ class AboutUsController extends Controller
         ]);
 
         // Handle HR team members
-        for ($i = 0; $i < (int)$request->hr_count; $i++) {
+        for ($i = 0; $i < (int) $request->hr_count; $i++) {
             $photoPath = null;
             if ($request->hasFile("hr_photos.$i")) {
                 $photoPath = $request->file("hr_photos.$i")->store('aboutus', 'public');
@@ -157,7 +157,7 @@ class AboutUsController extends Controller
         $aboutUs = AboutUs::with('hrTeams')->first();
 
         // If no record exists, create empty structure with data
-        if (!$aboutUs) {
+        if (! $aboutUs) {
             return Inertia::render('UI-VIEW/aboutus', [
                 'aboutUs' => [
                     'id' => null,
